@@ -46,8 +46,10 @@ class OneGzusAdapter(BaseAdapter):
 
     def invoke(self, case: Case, *, run_id: str) -> AgentOutput:
         payload = {"messages": [m.model_dump() for m in case.input.messages]}
-        if "today" in case.input.options:
-            payload["today"] = case.input.options["today"]
+        # today 固定日期；fixtures 是软帮手 FixtureSource 的测试注入点（如藏指令的通知）
+        for key in ("today", "fixtures"):
+            if key in case.input.options:
+                payload[key] = case.input.options[key]
 
         mode = "record" if self.record else "replay"
         python = self.api_dir / ".venv" / "bin" / "python"
