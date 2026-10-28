@@ -90,7 +90,8 @@ def attribute(case: Case, trace: Trace) -> Attribution:
     # 1 —— 意图与规划：没有 plan，或 plan 里想的和实际做的不是一回事
     if plan is None:
         return Attribution("L1", "trace 中缺失 plan span，无法确认意图与规划", [])
-    if plan.steps and plan.steps != actual:
+    # 计划列的是工具名；对计划内工具换参数多调几次（如分学期查询）不算脱节
+    if plan.steps and _distinct(plan.steps) != _distinct(actual):
         return Attribution(
             "L1",
             f"计划执行 {plan.steps}，实际调用 {actual}，规划与执行脱节",
@@ -150,6 +151,11 @@ def attribute(case: Case, trace: Trace) -> Attribution:
 
     # 都不匹配 —— 不硬凑，进人工复核
     return Attribution("L1", f"未命中既定规则，需人工复核。失败项：{list(failed)}", [])
+
+
+def _distinct(names: list[str]) -> list[str]:
+    """按首次出现顺序去重。"""
+    return list(dict.fromkeys(names))
 
 
 def attribute_all(pairs: list[tuple[Case, Trace]]) -> dict[str, int]:
