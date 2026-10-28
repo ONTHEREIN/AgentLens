@@ -1,0 +1,23 @@
+id: rel_week_before_last_001
+title: 「上上周五」换算教学周
+dimension: tool_use
+difficulty: medium
+source: golden
+tags: [onegzus, param_filling, relative_time]
+
+input:
+  messages:
+    - role: user
+      content: "上上周五有什么课"
+  options:
+    today: "2026-09-21"   # 第 4 周周一 → 上上周是第 2 周
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+      args:
+        week:
+          equals: 2
+  refusal: false
+  answer_contains: ["体育"]

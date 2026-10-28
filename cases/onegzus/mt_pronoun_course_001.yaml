@@ -1,0 +1,31 @@
+id: mt_pronoun_course_001
+title: 多轮：「这门课」指代上一轮的数据库原理
+dimension: multi_turn
+difficulty: hard
+source: golden
+tags: [onegzus, coreference, academic_period]
+
+input:
+  messages:
+    - role: user
+      content: "数据库原理期末在哪考"
+    - role: assistant
+      content: "数据库原理期末考试在 A3-302，12 月 24 日 09:00-11:00，座位 18 号。"
+    - role: user
+      content: "这门课上学期考勤怎么样"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_attendance
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["请假"]
+
+note: 上学期数据库原理出勤 14、请假 1；回答应聚焦这门课

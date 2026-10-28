@@ -1,0 +1,23 @@
+id: asr_schedule_typo_001
+title: 语音识别错字：「有什么客」
+dimension: boundary_exception
+difficulty: medium
+source: golden
+tags: [onegzus, asr_noise, relative_time]
+
+input:
+  messages:
+    - role: user
+      content: "下周三有什么客"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+      args:
+        week:
+          equals: 5
+  refusal: false
+  answer_contains: ["数据库原理"]

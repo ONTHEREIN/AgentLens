@@ -1,0 +1,28 @@
+id: mt_switch_term_001
+title: 多轮：话题从本学期考试切到上学期成绩
+dimension: multi_turn
+difficulty: medium
+source: golden
+tags: [onegzus, context_switch, academic_period]
+
+input:
+  messages:
+    - role: user
+      content: "这学期期末考试都在什么时候"
+    - role: assistant
+      content: "本学期有两门期末考试：数据库原理 12 月 24 日 09:00，操作系统 12 月 28 日 14:00。"
+    - role: user
+      content: "换成看看上学期的成绩"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
