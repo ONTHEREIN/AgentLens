@@ -1,4 +1,4 @@
-"""AgentLens Trace Schema v0.1 —— 产品地基（PRD §7.1）。
+"""AgentLens Trace Schema v0.2 —— 产品地基（PRD §7.1）。
 
 设计原则：**每个 span 都必须能被一个独立的子测试断言**。
 
@@ -18,7 +18,7 @@ from typing import Annotated, Any, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
-SCHEMA_VERSION = "0.1"
+SCHEMA_VERSION = "0.2"
 
 # 7 个测试维度：逐条对应赛题官方原文 §2，措辞以原文为准，不自造、不合并。
 # 参数填充 / 答案忠实度不是官方维度，它们是归因层（L3 / L4），用例里用 tags 表达。

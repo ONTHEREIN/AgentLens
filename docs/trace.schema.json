@@ -559,6 +559,23 @@
       "title": "Adapter",
       "type": "string"
     },
+    "conversation_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversation Id"
+    },
+    "turn": {
+      "default": 0,
+      "title": "Turn",
+      "type": "integer"
+    },
     "seed": {
       "default": 42,
       "title": "Seed",
