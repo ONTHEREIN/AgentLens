@@ -178,6 +178,9 @@ class Trace(_Strict):
     run_id: str
     case_id: str
     adapter: str
+    # 多轮对话：同一 conversation_id 下按 turn 递增串起多条 trace；单轮用例保持默认
+    conversation_id: str | None = None
+    turn: int = 0
     seed: int = 42
     model: str = "rule-based@v0"
     status: Literal["ok", "error", "timeout", "blocked"] = "ok"
