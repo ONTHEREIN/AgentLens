@@ -1,0 +1,18 @@
+id: rag_001
+title: 补考申请流程（知识检索型问题）
+dimension: retrieval_quality
+difficulty: medium
+source: golden
+tags: [rag]
+
+input:
+  messages:
+    - role: user
+      content: "考试不及格怎么申请补考"
+
+expect:
+  mode: exact
+  tools:
+    - name: search_regulations
+  refusal: false
+  answer_contains: ["补考"]

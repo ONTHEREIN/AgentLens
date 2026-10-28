@@ -1,0 +1,23 @@
+id: schedule_001
+title: 查询指定周次课表
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [smoke, schedule]
+
+input:
+  messages:
+    - role: user
+      content: "帮我看看第 8 周的课表"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_timetable
+      args:
+        week:
+          equals: 8
+        term:
+          equals: "2026-2027-1"
+  refusal: false
+  answer_contains: ["第 8 周"]

@@ -1,0 +1,22 @@
+id: interpret_001
+title: 句子里带「课」但真正要问的是成绩（课表/成绩歧义）
+dimension: tool_use
+difficulty: medium
+source: golden
+tags: [smoke, ambiguity]
+
+input:
+  messages:
+    - role: user
+      content: "我第 8 周那几门课最后都过了吗"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        term:
+          equals: "2025-2026-2"
+  refusal: false
+
+note: 用户问的是「过没过」（成绩），却被字面里的「课」带到课表接口
