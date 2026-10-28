@@ -1,0 +1,26 @@
+id: grades_last_term_001
+title: 「上学期成绩」需要从当前日期推出学年学期
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [smoke, onegzus, param_filling, academic_period]
+
+input:
+  messages:
+    - role: user
+      content: "我上学期成绩怎么样"
+  options:
+    today: "2026-09-21"   # 2026-2027 学年第 1 学期 → 上学期是 2025-2026 学年第 2 学期
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+
+note: 学期是隐含上下文。不传参数时接口默认查当前学期，会拿到空成绩（接入设计 §6 的 L3 素材）
