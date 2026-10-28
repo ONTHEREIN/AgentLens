@@ -31,7 +31,7 @@ from ..schema import CheckResult, Trace
 ROOT = Path(__file__).resolve().parents[2]
 CACHE_DIR = ROOT / "judgements"
 ENV_FILE = ROOT / ".env.judge"
-PROMPT_VERSION = "faithfulness-v1"
+PROMPT_VERSION = "faithfulness-v2"
 TIMEOUT_S = 180
 
 SYSTEM = (
@@ -42,7 +42,8 @@ SYSTEM = (
 RULES = """判定规则：
 1. 回答中的每个事实（课程、分数、学分、日期、地点、次数、余额等）都必须能在工具观测中找到，或能由观测数据正确推导；
 2. 回答中的计算（平均分、加权平均、绩点、合计等）必须逐项复算，算错即为不忠实；
-3. 星期、教学周、学期可依据「今天」的日期推算；
+3. 时间上下文以材料中的 today / current_term（当前学年学期）/ week（今天所在教学周）为准，
+   不要自行重新推断当前学期；其他日期与周次据此推算，教学周按周一至周日计；
 4. 观测为空或报错时，回答不得给出确定性结论；
 5. 对观测未覆盖的内容给出的一般性建议（如「建议咨询辅导员」）不算不忠实；
 6. 若给了额外评判要求，也必须满足。
@@ -95,6 +96,8 @@ def evidence_of(case: Case, trace: Trace) -> dict[str, Any]:
         })
     return {
         "today": trace.meta.get("today"),
+        "current_term": trace.meta.get("current_term"),
+        "week": trace.meta.get("week"),
         "conversation": [m.model_dump() for m in case.input.messages],
         "observations": observations,
         "answer": trace.answer,
