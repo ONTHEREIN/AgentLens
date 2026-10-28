@@ -18,6 +18,7 @@ from pathlib import Path
 from rich.console import Console
 
 from .adapters.campus_copilot import CampusCopilotAdapter
+from .adapters.onegzus import OneGzusAdapter
 from .cases import Case, CaseError, load_cases
 from .render import print_summary, print_trace
 from .runner import load_run, run
@@ -27,7 +28,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CASES = ROOT / "cases"
 DEFAULT_OUT = ROOT / "results"
 
-ADAPTERS = {"campus_copilot": CampusCopilotAdapter}
+ADAPTERS = {"campus_copilot": CampusCopilotAdapter, "onegzus": OneGzusAdapter}
 
 
 def _filter(cases: list[Case], specs: list[str]) -> list[Case]:
