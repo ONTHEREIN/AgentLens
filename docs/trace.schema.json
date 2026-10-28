@@ -1,0 +1,689 @@
+{
+  "$defs": {
+    "CheckResult": {
+      "additionalProperties": false,
+      "properties": {
+        "check": {
+          "title": "Check",
+          "type": "string"
+        },
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "check",
+        "passed",
+        "reason"
+      ],
+      "title": "CheckResult",
+      "type": "object"
+    },
+    "GenerateSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        },
+        "t_start_ms": {
+          "default": 0.0,
+          "title": "T Start Ms",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "span": {
+          "const": "generate",
+          "default": "generate",
+          "title": "Span",
+          "type": "string"
+        },
+        "answer_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Answer Ref"
+        },
+        "citations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Citations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "span_id",
+        "step"
+      ],
+      "title": "GenerateSpan",
+      "type": "object"
+    },
+    "GuardrailSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        },
+        "t_start_ms": {
+          "default": 0.0,
+          "title": "T Start Ms",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "span": {
+          "const": "guardrail",
+          "default": "guardrail",
+          "title": "Span",
+          "type": "string"
+        },
+        "triggered": {
+          "default": false,
+          "title": "Triggered",
+          "type": "boolean"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule"
+        },
+        "action": {
+          "default": "allow",
+          "enum": [
+            "allow",
+            "refuse",
+            "rewrite"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "span_id",
+        "step"
+      ],
+      "title": "GuardrailSpan",
+      "type": "object"
+    },
+    "ObservationSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        },
+        "t_start_ms": {
+          "default": 0.0,
+          "title": "T Start Ms",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "span": {
+          "const": "observation",
+          "default": "observation",
+          "title": "Span",
+          "type": "string"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "row_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Row Count"
+        },
+        "raw": {
+          "default": null,
+          "title": "Raw"
+        },
+        "raw_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raw Ref"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        }
+      },
+      "required": [
+        "span_id",
+        "step"
+      ],
+      "title": "ObservationSpan",
+      "type": "object"
+    },
+    "PlanSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        },
+        "t_start_ms": {
+          "default": 0.0,
+          "title": "T Start Ms",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "span": {
+          "const": "plan",
+          "default": "plan",
+          "title": "Span",
+          "type": "string"
+        },
+        "intent": {
+          "title": "Intent",
+          "type": "string"
+        },
+        "steps": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "span_id",
+        "step",
+        "intent"
+      ],
+      "title": "PlanSpan",
+      "type": "object"
+    },
+    "RetrieveSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        },
+        "t_start_ms": {
+          "default": 0.0,
+          "title": "T Start Ms",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "span": {
+          "const": "retrieve",
+          "default": "retrieve",
+          "title": "Span",
+          "type": "string"
+        },
+        "query": {
+          "title": "Query",
+          "type": "string"
+        },
+        "chunk_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Chunk Ids",
+          "type": "array"
+        },
+        "scores": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Scores",
+          "type": "array"
+        }
+      },
+      "required": [
+        "span_id",
+        "step",
+        "query"
+      ],
+      "title": "RetrieveSpan",
+      "type": "object"
+    },
+    "TokenUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "prompt": {
+          "default": 0,
+          "title": "Prompt",
+          "type": "integer"
+        },
+        "completion": {
+          "default": 0,
+          "title": "Completion",
+          "type": "integer"
+        }
+      },
+      "title": "TokenUsage",
+      "type": "object"
+    },
+    "ToolCallSpan": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "step": {
+          "title": "Step",
+          "type": "integer"
+        },
+        "parent": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent"
+        },
+        "t_start_ms": {
+          "default": 0.0,
+          "title": "T Start Ms",
+          "type": "number"
+        },
+        "latency_ms": {
+          "default": 0,
+          "title": "Latency Ms",
+          "type": "integer"
+        },
+        "span": {
+          "const": "tool_call",
+          "default": "tool_call",
+          "title": "Span",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "args": {
+          "additionalProperties": true,
+          "title": "Args",
+          "type": "object"
+        },
+        "schema_ok": {
+          "default": true,
+          "title": "Schema Ok",
+          "type": "boolean"
+        },
+        "schema_errors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Schema Errors",
+          "type": "array"
+        }
+      },
+      "required": [
+        "span_id",
+        "step",
+        "name"
+      ],
+      "title": "ToolCallSpan",
+      "type": "object"
+    },
+    "Verdict": {
+      "additionalProperties": false,
+      "properties": {
+        "rule": {
+          "default": "skip",
+          "enum": [
+            "pass",
+            "fail",
+            "skip"
+          ],
+          "title": "Rule",
+          "type": "string"
+        },
+        "checks": {
+          "items": {
+            "$ref": "#/$defs/CheckResult"
+          },
+          "title": "Checks",
+          "type": "array"
+        },
+        "llm_score": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Llm Score"
+        },
+        "judge_degraded": {
+          "default": false,
+          "title": "Judge Degraded",
+          "type": "boolean"
+        }
+      },
+      "title": "Verdict",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "default": "0.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "case_id": {
+      "title": "Case Id",
+      "type": "string"
+    },
+    "adapter": {
+      "title": "Adapter",
+      "type": "string"
+    },
+    "seed": {
+      "default": 42,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "model": {
+      "default": "rule-based@v0",
+      "title": "Model",
+      "type": "string"
+    },
+    "status": {
+      "default": "ok",
+      "enum": [
+        "ok",
+        "error",
+        "timeout",
+        "blocked"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "answer": {
+      "default": "",
+      "title": "Answer",
+      "type": "string"
+    },
+    "spans": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "generate": "#/$defs/GenerateSpan",
+            "guardrail": "#/$defs/GuardrailSpan",
+            "observation": "#/$defs/ObservationSpan",
+            "plan": "#/$defs/PlanSpan",
+            "retrieve": "#/$defs/RetrieveSpan",
+            "tool_call": "#/$defs/ToolCallSpan"
+          },
+          "propertyName": "span"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/PlanSpan"
+          },
+          {
+            "$ref": "#/$defs/ToolCallSpan"
+          },
+          {
+            "$ref": "#/$defs/ObservationSpan"
+          },
+          {
+            "$ref": "#/$defs/RetrieveSpan"
+          },
+          {
+            "$ref": "#/$defs/GenerateSpan"
+          },
+          {
+            "$ref": "#/$defs/GuardrailSpan"
+          }
+        ]
+      },
+      "title": "Spans",
+      "type": "array"
+    },
+    "tokens": {
+      "$ref": "#/$defs/TokenUsage"
+    },
+    "latency_ms": {
+      "default": 0.0,
+      "title": "Latency Ms",
+      "type": "number"
+    },
+    "verdict": {
+      "$ref": "#/$defs/Verdict"
+    },
+    "layer": {
+      "anyOf": [
+        {
+          "enum": [
+            "L0",
+            "L1",
+            "L2",
+            "L3",
+            "L4",
+            "L5",
+            "L6"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Layer"
+    },
+    "layer_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Layer Reason"
+    },
+    "layer_evidence": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Layer Evidence",
+      "type": "array"
+    },
+    "meta": {
+      "additionalProperties": true,
+      "title": "Meta",
+      "type": "object"
+    }
+  },
+  "required": [
+    "run_id",
+    "case_id",
+    "adapter"
+  ],
+  "title": "Trace",
+  "type": "object"
+}
