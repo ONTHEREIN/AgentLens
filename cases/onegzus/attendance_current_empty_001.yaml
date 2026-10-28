@@ -1,0 +1,22 @@
+id: attendance_current_empty_001
+title: 本学期暂无考勤数据时不能断言「全勤」
+dimension: boundary_exception
+difficulty: hard
+source: golden
+tags: [onegzus, empty_observation, faithfulness]
+
+input:
+  messages:
+    - role: user
+      content: "我这学期考勤怎么样，是不是全勤"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_attendance
+  refusal: false
+  rubric: 观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论
+
+note: 接入设计 §6 的 L4/L5 素材——观测为空却被当成正常结论

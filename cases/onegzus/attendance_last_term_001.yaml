@@ -1,0 +1,26 @@
+id: attendance_last_term_001
+title: 上学期考勤（需要推断学年学期）
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, param_filling, academic_period]
+
+input:
+  messages:
+    - role: user
+      content: "我上学期有没有缺勤"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_attendance
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+
+note: 数据中旷课 0 次、请假 1 次（数据库原理），回答不应把请假说成缺勤

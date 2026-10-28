@@ -1,0 +1,25 @@
+id: schedule_next_week_001
+title: 「下周三」需要换算成教学周
+dimension: tool_use
+difficulty: medium
+source: golden
+tags: [onegzus, param_filling, relative_time]
+
+input:
+  messages:
+    - role: user
+      content: "我下周三有什么课"
+  options:
+    today: "2026-09-21"   # 第 4 周周一 → 下周是第 5 周
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+      args:
+        week:
+          equals: 5
+  refusal: false
+  answer_contains: ["数据库原理"]
+
+note: 周三（weekday=3）有大学英语（四）与数据库原理

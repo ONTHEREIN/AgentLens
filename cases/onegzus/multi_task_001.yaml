@@ -1,0 +1,21 @@
+id: multi_task_001
+title: 一句话里两个任务：考试安排 + 电费
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, multi_tool, planning]
+
+input:
+  messages:
+    - role: user
+      content: "帮我看看这学期的考试安排，再看看宿舍电费还够不够"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_exams
+    - name: get_card_balance
+  refusal: false
+  answer_contains: ["68.4"]

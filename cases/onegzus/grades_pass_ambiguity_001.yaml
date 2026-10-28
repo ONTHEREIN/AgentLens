@@ -1,0 +1,26 @@
+id: grades_pass_ambiguity_001
+title: 句子里带「课」但问的是「过没过」（课表/成绩歧义）
+dimension: tool_use
+difficulty: medium
+source: golden
+tags: [onegzus, ambiguity]
+
+input:
+  messages:
+    - role: user
+      content: "我上学期那几门课最后都过了吗"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+
+note: 与桩对象的 interpret_001 同构，看真实 LLM 是否会被字面「课」带去查课表
