@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.venv/
+.DS_Store
+
+# 本地运行产物与其他工具的会话记录
+results/
+.workbuddy/
