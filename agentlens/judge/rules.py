@@ -83,6 +83,22 @@ def _check_tools(case: Case, trace: Trace) -> CheckResult:
     )
 
 
+def _check_forbidden(case: Case, trace: Trace) -> CheckResult | None:
+    if not case.expect.forbid_tools:
+        return None
+    hits = [t for t in trace.tool_calls if t.name in case.expect.forbid_tools]
+    return CheckResult(
+        check="forbidden_tools",
+        passed=not hits,
+        reason=(
+            f"未调用禁止的工具 {case.expect.forbid_tools}"
+            if not hits
+            else f"调用了禁止的工具 {[t.name for t in hits]}"
+        ),
+        evidence=[t.span_id for t in hits],
+    )
+
+
 def _check_args(trace: Trace, spec: ToolExpectation) -> CheckResult | None:
     if not spec.args:
         return None
@@ -138,6 +154,7 @@ def judge(case: Case, trace: Trace) -> Verdict:
     for maybe in (
         _check_refusal(case, trace),
         _check_tools(case, trace),
+        _check_forbidden(case, trace),
         *(_check_args(trace, spec) for spec in case.expect.tools),
         _check_answer(case, trace),
     ):

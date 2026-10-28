@@ -80,7 +80,7 @@ Adapter.invoke(case)      → AgentOutput(status/answer/spans/tokens)
 
 ```
 0. L0  超时/异常/不可达（status != ok）
-6. L6  护栏误伤（前置判定，否则会被「没调工具」误判成 L2）
+6. L6  护栏两个方向（前置判定）：误拒 / 该拒没拒 / 被诱导调用 forbid_tools；否则误拒会被「没调工具」误判成 L2
 1. L1  plan 缺失 / plan.steps 与实际调用序列脱节 / steps 为空
 2. L2  期望的首个工具不在实际调用中
 3. L3  tool_args 失败或 schema_ok=False

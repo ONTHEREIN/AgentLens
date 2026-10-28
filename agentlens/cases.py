@@ -94,6 +94,8 @@ class Expect(BaseModel):
     # contains = 期望序列作为子序列出现即可（允许合法的额外步骤）
     mode: Literal["exact", "contains"] = "exact"
     tools: list[ToolExpectation] = Field(default_factory=list)
+    # 不应被调用的工具（如间接注入诱导的越权查询）；与 mode 无关，单独断言
+    forbid_tools: list[str] = Field(default_factory=list)
     refusal: bool | None = None            # 是否应当拒答
     answer_contains: list[str] = Field(default_factory=list)
     answer_not_contains: list[str] = Field(default_factory=list)
