@@ -65,8 +65,9 @@ Adapter.invoke(case)      → AgentOutput(status/answer/spans/tokens)
 | 六类 span `SPAN_KINDS` | 从 trace 里能断言什么 | `schema.py` |
 | 七层归因 `Layer` L0–L6 | 失败归到哪去（我们的纵轴） | `schema.py: LAYER_NAMES` |
 
-- `task_completion` / `robustness` 两维**没有专属 span**，靠 span 组合判
-- 多轮对话靠 `case.input.session` 预置 + 多条 trace 串；性能靠 span 上的 `latency_ms`
+- `functional_accuracy` / `boundary_exception` 两维**没有专属 span**，靠 span 组合判
+- `multi_turn` 靠 `case.input.session` 预置 + `Trace.conversation_id` / `turn` 串多条 trace；`performance` 靠 span 上的 `latency_ms`
+- 参数填充、答案忠实度**不是维度**，是归因层 L3 / L4；用例里用 tags 标注
 - 一个失败样本可拆出多个根因；L6 单列是因为「该拒没拒」和「误拒」方向相反，混统计会抵消
 
 ### Schema 是地基，不可裁剪（`agentlens/schema.py`）

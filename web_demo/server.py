@@ -34,13 +34,13 @@ CASES_DIR = ROOT / "cases"
 RESULTS_DIR = ROOT / "results"
 
 DIMENSIONS = [
-    ("task_completion", "任务完成"),
+    ("functional_accuracy", "功能准确性"),
     ("tool_use", "工具调用"),
-    ("param_filling", "参数填充"),
-    ("answer_faithfulness", "答案忠实"),
-    ("retrieval_quality", "知识检索"),
-    ("safety_guardrail", "安全护栏"),
-    ("robustness", "边界与异常"),
+    ("rag_retrieval", "RAG 检索质量"),
+    ("multi_turn", "多轮对话"),
+    ("adversarial_safety", "对抗性与安全"),
+    ("boundary_exception", "边界与异常"),
+    ("performance", "性能"),
 ]
 DIMENSION_LABELS = dict(DIMENSIONS)
 SPAN_LABELS = {

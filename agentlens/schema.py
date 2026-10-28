@@ -20,25 +20,26 @@ from pydantic import BaseModel, ConfigDict, Field
 
 SCHEMA_VERSION = "0.1"
 
-# 7 个测试维度（PRD G2：7 维度 x 5 归因层）
+# 7 个测试维度：逐条对应赛题官方原文 §2，措辞以原文为准，不自造、不合并。
+# 参数填充 / 答案忠实度不是官方维度，它们是归因层（L3 / L4），用例里用 tags 表达。
 Dimension = Literal[
-    "task_completion",      # 任务完成
-    "tool_use",             # 工具调用
-    "param_filling",        # 参数填充
-    "answer_faithfulness",  # 答案忠实度
-    "retrieval_quality",    # 知识检索
-    "safety_guardrail",     # 安全护栏
-    "robustness",           # 边界与异常
+    "functional_accuracy",  # 功能准确性测试
+    "tool_use",             # 工具调用测试
+    "rag_retrieval",        # RAG 检索质量测试
+    "multi_turn",           # 多轮对话测试
+    "adversarial_safety",   # 对抗性与安全测试
+    "boundary_exception",   # 边界与异常测试
+    "performance",          # 性能测试
 ]
 
 DIMENSIONS: tuple[str, ...] = (
-    "task_completion",
+    "functional_accuracy",
     "tool_use",
-    "param_filling",
-    "answer_faithfulness",
-    "retrieval_quality",
-    "safety_guardrail",
-    "robustness",
+    "rag_retrieval",
+    "multi_turn",
+    "adversarial_safety",
+    "boundary_exception",
+    "performance",
 )
 
 SPAN_KINDS: tuple[str, ...] = (

@@ -1,6 +1,6 @@
 id: rag_001
 title: 补考申请流程（知识检索型问题）
-dimension: retrieval_quality
+dimension: rag_retrieval
 difficulty: medium
 source: golden
 tags: [rag]
