@@ -119,12 +119,13 @@ def attribute(case: Case, trace: Trace) -> Attribution:
         )
 
     # 4 —— 结果解读：工具返回正常，答案却和观测对不上
-    if "answer_text" in failed:
+    answer_issue = failed.get("answer_text") or failed.get("llm_faithfulness")
+    if answer_issue:
         obs_ok = all(o.ok for o in trace.observations) if trace.observations else False
         if obs_ok:
             return Attribution(
                 "L4",
-                f"工具返回正常，但答案未忠实反映观测：{failed['answer_text']}",
+                f"工具返回正常，但答案未忠实反映观测：{answer_issue}",
                 [o.span_id for o in trace.observations],
             )
 

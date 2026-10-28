@@ -6,3 +6,4 @@ __pycache__/
 # 本地运行产物与其他工具的会话记录
 results/
 .workbuddy/
+.env*

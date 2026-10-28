@@ -14,6 +14,7 @@ from pathlib import Path
 from .adapters.base import BaseAdapter
 from .attribute import attribute
 from .cases import Case
+from .judge.llm import JudgeConfig, applicable, judge_faithfulness
 from .judge.rules import judge
 from .schema import Trace
 
@@ -89,12 +90,14 @@ def run(
     out_dir: Path,
     repeat: int = 1,
     seed: int = 42,
+    llm_judge: bool = False,
 ) -> RunResult:
     run_id = new_run_id()
     run_dir = out_dir / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
 
     result = RunResult(run_id=run_id, out_dir=run_dir)
+    judge_config = JudgeConfig.load() if llm_judge else None
 
     for case in cases:
         for _ in range(repeat):
@@ -113,6 +116,17 @@ def run(
                 meta=out.meta,
             )
             trace.verdict = judge(case, trace)
+            if llm_judge and trace.verdict.rule != "skip" and applicable(case, trace):
+                # 双轨判定：规则轨之后补语义轨；无法判定时只标记降级，不算失败
+                judged = judge_faithfulness(case, trace, judge_config)
+                if judged is None:
+                    trace.verdict.judge_degraded = True
+                else:
+                    check, score = judged
+                    trace.verdict.checks.append(check)
+                    trace.verdict.llm_score = score
+                    if not check.passed:
+                        trace.verdict.rule = "fail"
 
             if trace.verdict.rule == "fail":
                 att = attribute(case, trace)

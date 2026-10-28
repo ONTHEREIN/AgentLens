@@ -78,13 +78,19 @@ def cmd_run(args: argparse.Namespace, console: Console) -> int:
     adapter_cls = ADAPTERS[args.adapter]
     adapter = adapter_cls()
 
-    result = run(cases, adapter, out_dir=Path(args.out), repeat=args.repeat, seed=args.seed)
+    result = run(
+        cases, adapter, out_dir=Path(args.out), repeat=args.repeat, seed=args.seed,
+        llm_judge=args.llm_judge,
+    )
 
     if args.trace:
         for case, trace in result.pairs:
             print_trace(console, case, trace)
 
     print_summary(console, result.pairs, result.run_id)
+    degraded = sum(1 for _, t in result.pairs if t.verdict.judge_degraded)
+    if degraded:
+        console.print(f"[yellow]LLM 裁判降级 {degraded} 条[/yellow]：无缓存且未配置 .env.judge，这些条目只有规则轨结论")
     console.print(f"[dim]落盘：{result.out_dir}/traces.jsonl · summary.json[/dim]")
 
     if args.strict and result.metrics()["fail"]:
@@ -144,6 +150,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_run.add_argument("--out", default=str(DEFAULT_OUT))
     p_run.add_argument("--trace", action="store_true", help="打印每条用例的完整 span 链路")
     p_run.add_argument("--strict", action="store_true", help="有失败则以非零码退出（CI 门禁用）")
+    p_run.add_argument(
+        "--llm-judge", action="store_true",
+        help="追加 LLM 忠实度裁判（优先命中 judgements/ 缓存；未命中且未配置时标记降级）",
+    )
     p_run.set_defaults(func=cmd_run)
 
     p_show = sub.add_parser("show", help="回看某次运行")
