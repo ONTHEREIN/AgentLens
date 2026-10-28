@@ -1,0 +1,77 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "mt_followup_attendance_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我上学期成绩怎么样"
+      },
+      {
+        "role": "assistant",
+        "content": "上学期（2025-2026 学年第 2 学期）你 5 门课全部通过，加权平均绩点约 3.72。"
+      },
+      {
+        "role": "user",
+        "content": "那考勤呢"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": {
+          "status": "ok",
+          "items": [
+            {
+              "courseId": "demo-data-structures",
+              "courseName": "数据结构",
+              "courseCode": "SE204",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 16,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 0,
+              "total": 16,
+              "records": []
+            },
+            {
+              "courseId": "demo-database",
+              "courseName": "数据库原理",
+              "courseCode": "SE306",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 14,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 1,
+              "total": 15,
+              "records": []
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "2025-2026 学年第 2 学期（上学期）的考勤情况如下：\n\n| 课程 | 出勤 | 迟到 | 早退 | 旷课 | 请假 | 合计 |\n|---|---|---|---|---|---|---|\n| 数据结构（SE204） | 16 | 0 | 0 | 0 | 0 | 16 |\n| 数据库原理（SE306） | 14 | 0 | 0 | 0 | 1 | 15 |\n\n整体记录良好：两门课都没有迟到、早退和旷课，其中“数据库原理”有 1 次请假。",
+    "rubric": null
+  }
+}
