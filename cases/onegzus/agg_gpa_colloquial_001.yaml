@@ -1,0 +1,27 @@
+id: agg_gpa_colloquial_001
+title: 聚合计算：口语化问 GPA
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, aggregation, D-001]
+
+input:
+  messages:
+    - role: user
+      content: "帮我算一下上学期的GPA"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["3.72"]
+
+note: 同 agg_gpa_001，换口语说法，量化 D-001 的出错率

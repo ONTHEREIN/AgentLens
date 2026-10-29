@@ -1,0 +1,27 @@
+id: agg_avg_score_001
+title: 聚合计算：上学期学分加权平均分
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, aggregation, D-001]
+
+input:
+  messages:
+    - role: user
+      content: "上学期按学分加权的平均分是多少"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["88.6"]
+
+note: 1241/14 = 88.64（D-001 变体）
