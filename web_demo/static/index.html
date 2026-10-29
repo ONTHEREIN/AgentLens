@@ -4,17 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="AgentLens：给 AI 智能体做分层归因体检的测试平台。">
-  <title>AgentLens · 智能体体检中心</title>
+  <meta name="description" content="AgentLens 审计台：记录并可视化智能体的思考—行动链路，辅助缺陷定位与人工复核。">
+  <title>AgentLens · 智能体审计台</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c6145'/%3E%3Ccircle cx='14' cy='14' r='6.5' stroke='%23dcec9b' stroke-width='2' fill='none'/%3E%3Cpath d='m19 19 6 6' stroke='%23dcec9b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./audit.css">
 </head>
 <body>
   <div class="page-noise" aria-hidden="true"></div>
   <div class="run-progress" id="runProgress" aria-hidden="true"></div>
 
   <header class="topbar">
-    <a class="brand" href="#overview" aria-label="AgentLens 首页">
+    <a class="brand" href="#/runs" aria-label="AgentLens 审计台首页">
       <span class="brand-mark" aria-hidden="true">
         <svg viewBox="0 0 32 32" fill="none">
           <circle cx="14" cy="14" r="8.5" stroke="currentColor" stroke-width="2"/>
@@ -24,163 +25,34 @@
       </span>
       <span class="brand-copy">
         <strong>AgentLens</strong>
-        <small>智能体体检中心</small>
+        <small>智能体审计台</small>
       </span>
     </a>
 
     <nav class="topnav" aria-label="页面导航">
-      <a class="is-active" href="#overview">总览</a>
-      <a href="#workspace">病例</a>
-      <a href="#attribution">归因</a>
+      <a href="#/runs" data-nav="runs">运行记录</a>
+      <a href="#/reviews" data-nav="reviews">人工复核</a>
     </nav>
 
     <div class="top-actions">
-      <span class="offline-pill"><i></i> 本地离线</span>
-      <button class="run-button" id="runBtn" type="button">
-        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-          <path d="M10 3.5a6.5 6.5 0 1 0 5.9 3.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          <path d="M16 3.5v4h-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>重新体检</span>
-      </button>
+      <label class="reviewer-field">
+        <span>复核人</span>
+        <input id="reviewerInput" type="text" maxlength="40" placeholder="填写姓名" autocomplete="name">
+      </label>
+      <span class="offline-pill"><i></i> 本地回放</span>
     </div>
   </header>
 
-  <main>
-    <section class="hero" id="overview">
-      <div class="hero-copy">
-        <p class="eyebrow"><span>AI AGENT TESTING</span> / TRACE-LEVEL DIAGNOSIS</p>
-        <h1>不是判卷，<br><em>是找病根。</em></h1>
-        <p class="hero-lede">
-          普通测试只给 PASS / FAIL。AgentLens 把一次执行拆成可独立断言的 span，
-          再把失败落到 L0–L6 中具体的一层。
-        </p>
-        <div class="pipeline" aria-label="处理流程">
-          <span>trace</span><i></i><span>span 断言</span><i></i><span>失败归因</span><i></i><span>证据回溯</span>
-        </div>
-      </div>
-
-      <aside class="run-card" aria-label="本次运行信息">
-        <div class="run-card-head">
-          <span class="card-kicker">LIVE INSPECTION</span>
-          <span class="run-id" id="runId">等待运行</span>
-        </div>
-        <dl class="run-meta">
-          <div><dt>被测对象</dt><dd id="metaAdapter">CampusCopilot</dd></div>
-          <div><dt>裁判模式</dt><dd id="metaModel">rule-based@v0</dd></div>
-          <div><dt>用例集</dt><dd id="metaCases">加载中</dd></div>
-          <div><dt>数据来源</dt><dd>fixtures / 构造脱敏</dd></div>
-        </dl>
-        <div class="run-live">
-          <span class="pulse" id="runPulse"></span>
-          <span id="runStatus">正在连接本地执行器</span>
-        </div>
-      </aside>
-    </section>
-
-    <section class="scoreboard" aria-label="体检总览">
-      <article class="score-card">
-        <div class="score-ring-wrap">
-          <svg class="score-ring" viewBox="0 0 128 128" aria-hidden="true">
-            <circle class="ring-track" cx="64" cy="64" r="54"></circle>
-            <circle class="ring-value" id="ringValue" cx="64" cy="64" r="54"></circle>
-          </svg>
-          <div class="ring-center">
-            <strong id="scoreValue">--</strong>
-            <span>可靠性分</span>
-          </div>
-        </div>
-        <div class="score-copy">
-          <span class="card-kicker">RELIABILITY</span>
-          <h2 id="scoreHeadline">正在生成体检结论</h2>
-          <p id="scoreCaption">判定只是入场券，归因才是答案。</p>
-        </div>
-      </article>
-
-      <article class="kpi-card">
-        <span class="card-kicker">BATCH</span>
-        <strong id="kpiTotal">--</strong>
-        <span>条用例</span>
-        <div class="kpi-split">
-          <div><i class="dot pass"></i><b id="kpiPass">--</b><span>PASS</span></div>
-          <div><i class="dot fail"></i><b id="kpiFail">--</b><span>FAIL</span></div>
-        </div>
-      </article>
-
-      <article class="defect-card">
-        <div class="defect-head">
-          <span class="card-kicker">DEFECT MAP</span>
-          <span class="defect-total"><b id="defectTotal">--</b> 个可定位缺陷</span>
-        </div>
-        <div class="defect-bars" id="defectBars">
-          <p class="muted">等待运行结果…</p>
-        </div>
-      </article>
-    </section>
-
-    <section class="workspace" id="workspace">
-      <div class="section-head">
-        <div>
-          <p class="section-index">01 / CASES &amp; TRACES</p>
-          <h2>每一次失败，都有坐标。</h2>
-        </div>
-        <div class="filters" id="filters" role="group" aria-label="筛选用例">
-          <button class="filter is-active" type="button" data-filter="all">全部 <b>--</b></button>
-          <button class="filter" type="button" data-filter="fail">失败 <b>--</b></button>
-          <button class="filter" type="button" data-filter="pass">通过 <b>--</b></button>
-        </div>
-      </div>
-
-      <div class="workspace-grid">
-        <aside class="case-panel" aria-label="用例清单">
-          <div class="panel-head">
-            <span>CASES</span>
-            <span id="caseCount">--</span>
-          </div>
-          <div class="case-list" id="caseList">
-            <div class="case-skeleton"></div>
-            <div class="case-skeleton"></div>
-            <div class="case-skeleton"></div>
-          </div>
-          <div class="panel-foot">
-            <span class="shield-mini" aria-hidden="true">
-              <svg viewBox="0 0 20 20" fill="none">
-                <path d="M10 2.7 16 5v4.6c0 3.3-2.3 5.7-6 7.7-3.7-2-6-4.4-6-7.7V5l6-2.3Z" stroke="currentColor" stroke-width="1.4"/>
-                <path d="m7.2 10 1.8 1.8 3.8-3.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            只读数据 · 不向真实校园系统发写请求
-          </div>
-        </aside>
-
-        <section class="detail-panel" id="detailPanel" aria-live="polite">
-          <div class="detail-placeholder">
-            <span class="loading-orbit" aria-hidden="true"></span>
-            <p>正在读取 span 链路…</p>
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <section class="method-strip" aria-label="方法说明">
-      <div>
-        <span class="method-index">L0–L6</span>
-        <p><b>七层归因</b>：环境 / 规划 / 工具选型 / 参数 / 结果解读 / 知识检索 / 护栏。</p>
-      </div>
-      <div>
-        <span class="method-index">6 SPANS</span>
-        <p><b>分 span 断言</b>：规划、工具调用、观测、检索、生成、护栏，各判各的。</p>
-      </div>
-      <div>
-        <span class="method-index">0 NETWORK</span>
-        <p><b>结果可复现</b>：同 seed 同判定，报告里的每个数字都能顺着 run_id 找回原始 span。</p>
-      </div>
-    </section>
+  <main id="view" class="view" aria-live="polite">
+    <div class="detail-placeholder">
+      <span class="loading-orbit" aria-hidden="true"></span>
+      <p>正在连接本地审计服务…</p>
+    </div>
   </main>
 
   <footer class="footer">
     <span>AgentLens · 测链路，不是测答案</span>
-    <span>数据均为虚构样本 · 零网络 · 零 LLM 调用</span>
+    <span>数据来自 results/ 与 reviews/ · 页面发起的运行一律回放，不调用被测模型</span>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

@@ -1,11 +1,13 @@
-"""AgentLens Web Demo：把终端体检报告渲染成浏览器控制台。
+"""AgentLens 审计台：记录并可视化智能体的思考—行动链路，辅助缺陷定位与人工复核。
 
-只做一层薄 HTTP 封装，执行/判定/归因全部复用 agentlens 现有管线：
+只做一层薄 HTTP 封装：执行/判定/归因复用 agentlens 管线，数据统计在 agentlens.audit，
+页面上的数字全部从 results/ 与 reviews/ 现算。
 
     .venv/bin/python web_demo/server.py
     → http://127.0.0.1:8765
 
-零网络依赖、零 LLM 调用，绑本机回环地址。
+绑本机回环地址。页面发起的运行一律走回放（不调用被测模型）；LLM 裁判优先命中
+judgements/ 缓存，未命中且配置了 .env.judge 时才联网。
 """
 
 from __future__ import annotations
@@ -13,25 +15,30 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
+import re
 import sys
 import threading
-from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from agentlens import audit  # noqa: E402
+from agentlens.adapters.base import BaseAdapter  # noqa: E402
 from agentlens.adapters.campus_copilot import CampusCopilotAdapter  # noqa: E402
+from agentlens.adapters.onegzus import OneGzusAdapter  # noqa: E402
 from agentlens.cases import Case, CaseError, load_cases  # noqa: E402
+from agentlens.judge.llm import JudgeConfig  # noqa: E402
 from agentlens.runner import run  # noqa: E402
 from agentlens.schema import LAYER_NAMES, SPAN_KINDS  # noqa: E402
 
 WEB_DIR = Path(__file__).resolve().parent / "static"
-CASES_DIR = ROOT / "cases"
 RESULTS_DIR = ROOT / "results"
+LABELS_FILE = ROOT / "reviews" / "labels.jsonl"
+RUN_ID = re.compile(r"^[0-9A-Za-z_-]{1,64}$")
 
 DIMENSIONS = [
     ("functional_accuracy", "功能准确性"),
@@ -42,7 +49,6 @@ DIMENSIONS = [
     ("boundary_exception", "边界与异常"),
     ("performance", "性能"),
 ]
-DIMENSION_LABELS = dict(DIMENSIONS)
 SPAN_LABELS = {
     "plan": "规划",
     "tool_call": "工具调用",
@@ -52,66 +58,61 @@ SPAN_LABELS = {
     "guardrail": "护栏",
 }
 
+# 用例集：目录 + 被测对象。onegzus 在页面上只回放，绝不重新录制（录制会调用真实模型）
+SUITES: dict[str, dict] = {
+    "onegzus": {
+        "label": "软帮手智能体（真实录制）",
+        "dir": ROOT / "cases" / "onegzus",
+        "adapter": lambda: OneGzusAdapter(record=False),
+    },
+    "seed": {
+        "label": "CampusCopilot 桩对象（种子用例）",
+        "dir": ROOT / "cases",
+        "adapter": CampusCopilotAdapter,
+    },
+}
+
 RUN_LOCK = threading.Lock()
 
 
-def case_payload(case: Case) -> dict:
-    """浏览器需要的用例视图：原始 YAML 结构 + 两个计算字段。"""
-    data = case.model_dump(mode="json")
-    data["input_text"] = case.input.text
-    data["expected_tools"] = case.expected_tools
-    return data
-
-
-def catalog_payload(cases: list[Case]) -> dict:
+def catalog_payload(suites: dict[str, list[Case]]) -> dict:
     return {
-        "app": "AgentLens",
-        "tagline": "测链路，不是测答案",
-        "adapter": CampusCopilotAdapter.name,
-        "model": CampusCopilotAdapter.model,
-        "seed": 42,
+        "app": "AgentLens 审计台",
         "dimensions": [{"id": key, "label": label} for key, label in DIMENSIONS],
         "layers": LAYER_NAMES,
         "span_kinds": list(SPAN_KINDS),
         "span_labels": SPAN_LABELS,
-        "cases": [case_payload(c) for c in cases],
-    }
-
-
-def execute_run(cases: list[Case], selected_ids: list[str] | None) -> dict:
-    chosen = cases
-    if selected_ids:
-        wanted = set(selected_ids)
-        unknown = wanted - {c.id for c in cases}
-        if unknown:
-            raise ValueError(f"未知用例：{', '.join(sorted(unknown))}")
-        chosen = [c for c in cases if c.id in wanted]
-
-    if not chosen:
-        raise ValueError("筛完没有用例：拒绝生成 100% 通过的假报告")
-
-    adapter = CampusCopilotAdapter()
-    with RUN_LOCK:
-        result = run(chosen, adapter, out_dir=RESULTS_DIR, seed=42)
-
-    return {
-        "run_id": result.run_id,
-        "generated_at": datetime.now().isoformat(timespec="seconds"),
-        "out_dir": str(result.out_dir),
-        "metrics": result.metrics(),
-        "cases": [
-            {"case": case_payload(case), "trace": trace.dump()}
-            for case, trace in result.pairs
+        "review_targets": audit.REVIEW_TARGETS,
+        "judge_configured": JudgeConfig.load() is not None,
+        "suites": [
+            {"id": sid, "label": SUITES[sid]["label"], "cases": len(cases)}
+            for sid, cases in suites.items()
         ],
     }
+
+
+def execute_run(suite_cases: list[Case], adapter: BaseAdapter, selected: list[str], llm_judge: bool) -> dict:
+    chosen = suite_cases
+    if selected:
+        wanted = set(selected)
+        unknown = wanted - {c.id for c in suite_cases}
+        if unknown:
+            raise ValueError(f"未知用例：{', '.join(sorted(unknown))}")
+        chosen = [c for c in suite_cases if c.id in wanted]
+    if not chosen:
+        raise ValueError("筛完没有用例：拒绝生成 100% 通过的假报告")
+    with RUN_LOCK:
+        result = run(chosen, adapter, out_dir=RESULTS_DIR, seed=42, llm_judge=llm_judge)
+    return {"run_id": result.run_id}
 
 
 class AgentLensHTTPServer(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, address: tuple[str, int], cases: list[Case]) -> None:
+    def __init__(self, address: tuple[str, int], suites: dict[str, list[Case]]) -> None:
         super().__init__(address, AgentLensHandler)
-        self.cases = cases
+        self.suites = suites
+        self.case_index = {c.id: c for cases in suites.values() for c in cases}
 
 
 class AgentLensHandler(BaseHTTPRequestHandler):
@@ -160,77 +161,127 @@ class AgentLensHandler(BaseHTTPRequestHandler):
         except BrokenPipeError:
             pass
 
-    # -- routes ------------------------------------------------------
-    def do_GET(self) -> None:
-        path = urlparse(self.path).path
-        if path == "/api/health":
-            self._send_json({"ok": True})
-            return
-        if path == "/api/catalog":
-            self._send_json(catalog_payload(self.server.cases))
-            return
-        self._serve_static(path)
+    def _run_dir(self, run_id: str) -> Path | None:
+        if not RUN_ID.match(run_id):
+            return None
+        target = RESULTS_DIR / run_id
+        return target if (target / "traces.jsonl").is_file() else None
 
-    def do_POST(self) -> None:
-        path = urlparse(self.path).path
-        if path != "/api/run":
-            self._send_error_json("接口不存在", 404)
-            return
-
+    def _read_json_body(self) -> dict | None:
         try:
             length = int(self.headers.get("Content-Length", "0"))
         except ValueError:
             self._send_error_json("Content-Length 非法")
-            return
+            return None
         if length > 1_000_000:
             self._send_error_json("请求体过大", 413)
-            return
-
+            return None
         raw = self.rfile.read(length) if length else b"{}"
         try:
             payload = json.loads(raw.decode("utf-8") or "{}")
         except (UnicodeDecodeError, json.JSONDecodeError):
             self._send_error_json("请求体必须是合法 JSON")
+            return None
+        if not isinstance(payload, dict):
+            self._send_error_json("请求体必须是 JSON 对象")
+            return None
+        return payload
+
+    # -- routes ------------------------------------------------------
+    def do_GET(self) -> None:
+        url = urlparse(self.path)
+        path = url.path
+        if path == "/api/health":
+            self._send_json({"ok": True})
+        elif path == "/api/catalog":
+            self._send_json(catalog_payload(self.server.suites))
+        elif path == "/api/runs":
+            self._send_json({"runs": audit.list_runs(RESULTS_DIR)})
+        elif path.startswith("/api/runs/"):
+            run_dir = self._run_dir(path.removeprefix("/api/runs/"))
+            if run_dir is None:
+                self._send_error_json("运行不存在", 404)
+                return
+            detail = audit.run_detail(run_dir, self.server.case_index)
+            detail["labels"] = {
+                f"{key}|{target}": label
+                for (key, target), label in audit.latest_labels(audit.load_labels(LABELS_FILE)).items()
+            }
+            self._send_json(detail)
+        elif path == "/api/compare":
+            query = parse_qs(url.query)
+            dirs = [self._run_dir((query.get(k) or [""])[0]) for k in ("a", "b")]
+            if None in dirs:
+                self._send_error_json("对比需要两个存在的运行：?a=<run_id>&b=<run_id>", 404)
+                return
+            a, b = (audit.run_detail(d, self.server.case_index) for d in dirs)
+            self._send_json(audit.compare_runs(a, b))
+        elif path == "/api/reviews":
+            self._send_json(audit.agreement(audit.load_labels(LABELS_FILE)))
+        else:
+            self._serve_static(path)
+
+    def do_POST(self) -> None:
+        path = urlparse(self.path).path
+        if path not in ("/api/run", "/api/reviews"):
+            self._send_error_json("接口不存在", 404)
+            return
+        payload = self._read_json_body()
+        if payload is None:
             return
 
+        if path == "/api/reviews":
+            try:
+                record = audit.add_label(LABELS_FILE, payload)
+            except ValueError as exc:
+                self._send_error_json(str(exc))
+                return
+            self._send_json({"label": record})
+            return
+
+        suite = payload.get("suite", "onegzus")
+        if suite not in self.server.suites:
+            self._send_error_json(f"未知用例集：{suite}")
+            return
         selected = payload.get("case_ids") or []
         if not isinstance(selected, list) or not all(isinstance(x, str) for x in selected):
             self._send_error_json("case_ids 必须是字符串数组")
             return
-
         try:
-            result = execute_run(self.server.cases, selected)
+            result = execute_run(
+                self.server.suites[suite], SUITES[suite]["adapter"](), selected,
+                llm_judge=bool(payload.get("llm_judge", True)),
+            )
         except ValueError as exc:
             self._send_error_json(str(exc))
             return
-        except Exception as exc:  # 本地演示：把真实错误露出来，便于排障
+        except Exception as exc:  # 本地工具：把真实错误露出来，便于排障
             self._send_error_json(f"执行失败：{exc}", 500)
             return
-
-        self._send_json({"run": result})
+        self._send_json(result)
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="AgentLens 网页演示")
+    parser = argparse.ArgumentParser(description="AgentLens 审计台")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
 
     try:
-        cases = load_cases(CASES_DIR)
+        suites = {sid: load_cases(spec["dir"]) for sid, spec in SUITES.items()}
     except CaseError as exc:
         print(f"用例校验失败：{exc}", file=sys.stderr)
         return 2
 
     try:
-        server = AgentLensHTTPServer((args.host, args.port), cases)
+        server = AgentLensHTTPServer((args.host, args.port), suites)
     except OSError as exc:
         print(f"端口 {args.port} 启动失败：{exc}", file=sys.stderr)
         return 2
 
     url = f"http://{args.host}:{args.port}"
-    print(f"AgentLens Web Demo → {url}")
-    print(f"已载入 {len(cases)} 条用例；Ctrl+C 停止")
+    print(f"AgentLens 审计台 → {url}")
+    print("已载入用例：" + "，".join(f"{sid} {len(c)} 条" for sid, c in suites.items()) + "；Ctrl+C 停止")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
