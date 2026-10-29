@@ -8,16 +8,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 接手前先读 `docs/接手必读.md`；与 `docs/赛题官方原文与评分标准.md` 冲突时以官方原文为准。
 
-## 补充：两个演示入口（CODEBUDDY.md 未列）
+## 补充：审计台与终端演示（CODEBUDDY.md 未列）
 
 ```bash
+.venv/bin/python web_demo/server.py    # 审计台 → http://127.0.0.1:8765（仅绑回环地址）
 .venv/bin/python demo.py               # 终端一键演示：测链路 → 归因 → 回溯，复用 5 条种子用例
-.venv/bin/python web_demo/server.py    # 浏览器控制台 → http://127.0.0.1:8765（仅绑回环地址）
 ```
 
-两者都只是薄封装，直接 import `runner.run()` / `load_cases()` / `CampusCopilotAdapter`，
-不含任何执行、判定、归因逻辑——改管线行为去 `agentlens/` 改，不要在演示层补逻辑。
-`web_demo/server.py` 里另有一份维度中文名表 `DIMENSIONS`，`schema.py` 的维度若有变动需同步。
+审计台（运行记录 / 运行详情 / 运行对比 / 人工复核）是产品主界面：
+- 统计逻辑全部在 `agentlens/audit.py`，`web_demo/server.py` 只做 HTTP 封装，不要在页面层补逻辑。
+- 只读 `results/` 与 `reviews/labels.jsonl`。人工标注按 trace 内容指纹（不含计时字段）记账，回放复跑自动沿用；
+  `reviews/` 是标注集（M2 的 Kappa 数据），要提交，不要当运行产物清理。
+- 页面发起的运行：`onegzus` 固定 `record=False`，永远不从页面调用被测模型。
+- `web_demo/server.py` 里另有一份维度中文名表 `DIMENSIONS`，`schema.py` 的维度若有变动需同步。
 
 ## 注意
 

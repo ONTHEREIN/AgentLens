@@ -37,15 +37,24 @@ python -m agentlens show <run_id>          # 回看某次运行
 
 零外部依赖、零网络调用、零 LLM 调用 —— 演示不押在网络和额度上。
 
-### 演示入口
+### 审计台与演示入口
 
 ```bash
+.venv/bin/python web_demo/server.py      # 审计台：打开 http://127.0.0.1:8765
 .venv/bin/python demo.py                 # 终端版：四幕演示执行 → 归因 → 回溯
-.venv/bin/python web_demo/server.py      # 网页版：打开 http://127.0.0.1:8765
 ```
 
-网页版把 5 条种子用例渲染成可交互的体检控制台：总览分数、病例清单、span 时间线、
-规则裁判与归因证据都在同一页。前端零构建、零 CDN，仍由现有 `run()` 管线产出结果。
+审计台是 AgentLens 的主界面，四个视图：
+
+| 视图 | 用途 |
+|---|---|
+| 运行记录 | 历史运行列表；选择用例集发起运行（软帮手一律回放录制，不调用被测模型） |
+| 运行详情 | 可靠性分、维度 × 归因层缺陷热力图、逐条思考—行动链路、双轨判定与证据定位 |
+| 运行对比 | 两次运行按用例对齐，标出判定 / 归因 / LLM 结论 / 执行内容的变化 |
+| 人工复核 | 审计员对机器结论逐条标注，统计机器与人工的一致率和 Cohen's κ |
+
+数据只来自 `results/<run_id>/traces.jsonl` 与 `reviews/labels.jsonl`（人工标注，随仓库提交），
+统计逻辑在 `agentlens/audit.py`。前端零构建、零 CDN。
 
 ---
 
@@ -93,7 +102,7 @@ agentlens/
 ├── cases/                 # YAML 用例（声明式，非开发同学也能提交）
 ├── fixtures/campus.json   # 构造/脱敏数据（禁止替换为真实数据）
 ├── results/<run_id>/      # traces.jsonl（唯一真相源）+ summary.json
-├── web_demo/              # 网页演示（本地 HTTP + 原生前端，复用 run() 管线）
+├── web_demo/              # 审计台（本地 HTTP + 原生前端，数据层见 agentlens/audit.py）
 └── docs/trace.schema.json # 导出的 JSON Schema
 ```
 
