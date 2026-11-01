@@ -1,0 +1,235 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "312e73376001#1",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-10-30",
+    "current_term": "2026-2027-1",
+    "week": 9,
+    "conversation": [],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      },
+      {
+        "span": "s7",
+        "tool": "get_grades",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s9",
+        "tool": "get_schedule",
+        "args": {
+          "week": 10
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 7,
+        "data": [
+          {
+            "name": "软件工程导论",
+            "teacher": "林老师",
+            "classroom": "A3-201",
+            "weekday": 1,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "高等数学（下）",
+            "teacher": "周老师",
+            "classroom": "B2-305",
+            "weekday": 1,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据结构",
+            "teacher": "陈老师",
+            "classroom": "实训楼 204",
+            "weekday": 2,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "大学英语（四）",
+            "teacher": "王老师",
+            "classroom": "A1-108",
+            "weekday": 3,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据库原理",
+            "teacher": "赵老师",
+            "classroom": "A3-302",
+            "weekday": 3,
+            "startSection": 7,
+            "endSection": 8,
+            "weeks": "1-16"
+          },
+          {
+            "name": "操作系统",
+            "teacher": "黄老师",
+            "classroom": "B1-204",
+            "weekday": 4,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "体育（网球）",
+            "teacher": "何老师",
+            "classroom": "体育馆 2 号场",
+            "weekday": 5,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          }
+        ]
+      },
+      {
+        "span": "s11",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "已查询好啦，结果如下：\n\n**1. 宿舍水电余额（演示宿舍 A1-101）**\n- 电费：**68.4 度**（低电量提醒阈值是 30 度，目前还够用）\n- 冷水：9.6 吨\n- 热水：42.80 元\n- 数据更新时间是 2026-09-19。\n\n**2. 最近成绩**（2026-2027 第 1 学期还没有出成绩，以下为 2025-2026 第 2 学期）\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n加权平均分约 88.6，全部及格。\n\n**3. 下周二（11 月 3 日，第 10 周）的课**\n只有 **1 门课，2 节**：数据结构（陈老师，实训楼 204，第 3-4 节），上午后两节上完，下午和晚上都是空的。\n\n**4. 下周考试情况**\n本学期的考试安排里没有下周的考试，只有两场期末考试：数据库原理 12 月 24 日、操作系统 12 月 28 日。所以下周没有考试压力。\n\n**5. 下周（第 10 周）空闲情况一览**\n- 周一：软件工程导论（1-2 节）、高等数学（下）（5-6 节）——共 4 节，最忙\n- **周二：数据结构（3-4 节）——只有 2 节，最轻松** ✅\n- 周三：大学英语（四）（1-2 节）、数据库原理（7-8 节）——4 节\n- 周四：操作系统（3-4 节）——2 节 ✅\n- 周五：体育（网球）（5-6 节）——2 节 ✅\n- 周六、周日：完全没课，全天自由 ✅\n\n**建议**：下周没有考试，最适合出游。周二、周四、周五都只有一节课，搭配周末可以拼出三天的自由时间；如果想避开上课，周六、周日出发最省事。",
+    "rubric": null
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "50a06d54fb93#1",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-10-30",
+    "current_term": "2026-2027-1",
+    "week": 9,
+    "conversation": [],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      }
+    ],
+    "answer": "你上学期（2025-2026 学年春季学期）共 5 门课，全部通过：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n合计 14 学分，最高分是软件工程导论（92），最低是操作系统（85），所有成绩状态均为“正常”。",
+    "rubric": null
+  }
+}
