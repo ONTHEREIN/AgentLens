@@ -76,12 +76,24 @@ class JudgeConfig:
 
 def applicable(case: Case, trace: Trace) -> bool:
     """有回答、且有可对照的观测或 rubric 时才判；拒答与未完成的执行不判。"""
+    return applicable_to(trace, bool(case.expect.rubric))
+
+
+def applicable_to(trace: Trace, has_rubric: bool) -> bool:
+    """不依赖用例的版本：线上对话没有 rubric，只在有观测可对照时判。"""
     if trace.status != "ok" or trace.refused or not trace.answer.strip():
         return False
-    return bool(trace.observations) or bool(case.expect.rubric)
+    return bool(trace.observations) or has_rubric
 
 
 def evidence_of(case: Case, trace: Trace) -> dict[str, Any]:
+    return evidence_for(trace, [m.model_dump() for m in case.input.messages], case.expect.rubric)
+
+
+def evidence_for(
+    trace: Trace, conversation: list[dict[str, Any]], rubric: str | None,
+) -> dict[str, Any]:
+    """裁判材料。conversation 为 [{role, content}]：用例取自定义，线上对话取自 trace 记录的输入。"""
     observations = []
     for call in trace.tool_calls:
         obs = trace.observation_of(call)
@@ -98,10 +110,10 @@ def evidence_of(case: Case, trace: Trace) -> dict[str, Any]:
         "today": trace.meta.get("today"),
         "current_term": trace.meta.get("current_term"),
         "week": trace.meta.get("week"),
-        "conversation": [m.model_dump() for m in case.input.messages],
+        "conversation": conversation,
         "observations": observations,
         "answer": trace.answer,
-        "rubric": case.expect.rubric,
+        "rubric": rubric,
     }
 
 
@@ -114,7 +126,13 @@ def judge_faithfulness(
     case: Case, trace: Trace, config: JudgeConfig | None,
 ) -> tuple[CheckResult, int] | None:
     """返回 (llm_faithfulness 检查, 1~5 评分)；无法判定（无缓存且无配置、或调用失败）时返回 None。"""
-    evidence = evidence_of(case, trace)
+    return judge_evidence(case.id, evidence_of(case, trace), config)
+
+
+def judge_evidence(
+    case_id: str, evidence: dict[str, Any], config: JudgeConfig | None,
+) -> tuple[CheckResult, int] | None:
+    """按裁判材料判定（命中缓存即复用）；用例与线上对话共用这一入口。"""
     key = cache_key(evidence)
     path = CACHE_DIR / f"{key}.json"
 
@@ -129,7 +147,7 @@ def judge_faithfulness(
         record = {
             "prompt_version": PROMPT_VERSION,
             "model": config.model,
-            "case_id": case.id,
+            "case_id": case_id,
             "verdict": verdict,
             "evidence": evidence,
         }
