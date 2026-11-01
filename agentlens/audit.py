@@ -1,7 +1,10 @@
 """审计台的数据层：运行记录、维度 × 归因热力图、运行对比、人工复核与一致性。
 
-只读 `results/<run_id>/traces.jsonl`（唯一真相源）和 `reviews/labels.jsonl`（人工标注），
-不保存任何派生结果：页面上的每个数字都从这两份文件现算。
+只读三类文件，不保存任何派生结果，页面上的每个数字都从它们现算：
+- `results/<run_id>/traces.jsonl`：用例运行（唯一真相源）
+- 被测对象的线上对话日志（软帮手 `data/traces/<日期>.jsonl`）：每天一个 `chat-<日期>` 运行，
+  没有预设期望，只判执行状态与 LLM 忠实度
+- `reviews/labels.jsonl`：人工标注
 
 人工复核按「trace 内容指纹」而不是 run_id 记账：回放是确定性的，同一条 trace
 在任何一次复跑里指纹相同，标注自动沿用。
@@ -12,13 +15,16 @@ from __future__ import annotations
 import hashlib
 import json
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from .cases import Case
+from .judge.llm import JudgeConfig, applicable_to, evidence_for, judge_evidence
+from .judge.rules import _check_status
 from .runner import load_run
-from .schema import DIMENSIONS, LAYER_NAMES
+from .schema import DIMENSIONS, LAYER_NAMES, Trace, Verdict
 
 REVIEW_TARGETS: dict[str, str] = {
     "verdict": "总判定",
@@ -73,15 +79,24 @@ def run_summary(run_dir: Path) -> dict[str, Any] | None:
     traces = load_run(run_dir)
     if not traces:
         return None
-    counts = Counter(t["verdict"]["rule"] for t in traces)
-    total = len(traces)
     summary_file = run_dir / "summary.json"
     generated = None
     if summary_file.is_file():
         generated = json.loads(summary_file.read_text(encoding="utf-8")).get("generated_at")
+    return summarize(run_dir.name, generated or _mtime(file), traces, source="cases")
+
+
+def _mtime(file: Path) -> str:
+    return datetime.fromtimestamp(file.stat().st_mtime).isoformat(timespec="seconds")
+
+
+def summarize(run_id: str, generated_at: str, traces: list[dict[str, Any]], *, source: str) -> dict[str, Any]:
+    counts = Counter(t["verdict"]["rule"] for t in traces)
+    total = len(traces)
     return {
-        "run_id": run_dir.name,
-        "generated_at": generated or datetime.fromtimestamp(file.stat().st_mtime).isoformat(timespec="seconds"),
+        "run_id": run_id,
+        "source": source,
+        "generated_at": generated_at,
         "adapter": traces[0].get("adapter", "unknown"),
         "models": sorted({t.get("model", "unknown") for t in traces}),
         "total": total,
@@ -94,24 +109,102 @@ def run_summary(run_dir: Path) -> dict[str, Any] | None:
     }
 
 
-def list_runs(results_dir: Path) -> list[dict[str, Any]]:
-    if not results_dir.is_dir():
-        return []
-    runs = [run_summary(d) for d in results_dir.iterdir() if d.is_dir()]
+def list_runs(results_dir: Path, chat_dir: Path | None = None) -> list[dict[str, Any]]:
+    runs = [run_summary(d) for d in results_dir.iterdir() if d.is_dir()] if results_dir.is_dir() else []
+    if chat_dir is not None:
+        # 列表只读裁判缓存、不联网；打开某天的对话时才对未判定的条目调用裁判
+        runs += [chat_summary(f, judged_chat_traces(f, None)) for f in chat_files(chat_dir)]
     return sorted((r for r in runs if r), key=lambda r: r["generated_at"], reverse=True)
+
+
+# ---------------------------------------------------------------- 线上对话
+
+
+CHAT_PREFIX = "chat-"
+
+
+def chat_files(chat_dir: Path) -> list[Path]:
+    if not chat_dir.is_dir():
+        return []
+    return sorted(f for f in chat_dir.glob("*.jsonl") if f.stem.isdigit() and f.stat().st_size)
+
+
+def chat_file(chat_dir: Path, run_id: str) -> Path | None:
+    if not run_id.startswith(CHAT_PREFIX):
+        return None
+    file = chat_dir / f"{run_id.removeprefix(CHAT_PREFIX)}.jsonl"
+    return file if file in chat_files(chat_dir) else None
+
+
+def judge_chat_trace(raw: dict[str, Any], config: JudgeConfig | None) -> dict[str, Any]:
+    """线上对话没有预设期望：规则轨只判执行状态，语义轨对照观测判忠实度。"""
+    trace = Trace.model_validate(raw)
+    checks = [_check_status(trace)]
+    llm_score, degraded = None, False
+    if applicable_to(trace, has_rubric=False):
+        evidence = evidence_for(trace, trace.meta.get("input") or [], None)
+        judged = judge_evidence(trace.case_id, evidence, config)
+        if judged is None:
+            degraded = True
+        else:
+            check, llm_score = judged
+            checks.append(check)
+    # 检查项收齐后再构造 Verdict：pydantic 会复制传入的列表，之后的 append 不会进到 verdict 里
+    trace.verdict = Verdict(
+        rule="pass" if all(c.passed for c in checks) else "fail",
+        checks=checks, llm_score=llm_score, judge_degraded=degraded,
+    )
+    if trace.verdict.rule == "fail":
+        if trace.status != "ok":
+            trace.layer, trace.layer_reason = "L0", f"执行未正常完成（status={trace.status}）"
+        else:
+            failed = next(c for c in checks if not c.passed)
+            obs_ok = all(o.ok for o in trace.observations)
+            trace.layer = "L4" if obs_ok else "L5"
+            trace.layer_reason = (
+                f"工具返回正常，但答案未忠实反映观测：{failed.reason}"
+                if obs_ok else f"工具/数据源返回异常，答案受其影响：{failed.reason}"
+            )
+            trace.layer_evidence = [e for e in failed.evidence if not e.startswith("judgement:")]
+    return trace.dump()
+
+
+def judged_chat_traces(file: Path, config: JudgeConfig | None, workers: int = 4) -> list[dict[str, Any]]:
+    raws = [json.loads(line) for line in file.read_text(encoding="utf-8").splitlines() if line.strip()]
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        return list(pool.map(lambda raw: judge_chat_trace(raw, config), raws))
+
+
+def chat_summary(file: Path, traces: list[dict[str, Any]]) -> dict[str, Any]:
+    return summarize(f"{CHAT_PREFIX}{file.stem}", _mtime(file), traces, source="chat")
+
+
+def chat_detail(file: Path, config: JudgeConfig | None) -> dict[str, Any]:
+    traces = judged_chat_traces(file, config)
+    rows = [
+        {
+            "case": None,
+            "dimension": "chat",
+            "input_messages": t["meta"].get("input") or [],
+            "trace": t,
+            "trace_key": trace_key(t),
+        }
+        for t in traces
+    ]
+    return {"summary": chat_summary(file, traces), "heatmap": heatmap(rows), "rows": rows}
 
 
 def heatmap(rows: list[dict[str, Any]]) -> dict[str, Any]:
     """维度 × 归因层的失败计数；维度取自用例定义（老运行里改过名的维度归入 other）。"""
-    dims = [*DIMENSIONS, "other"]
+    dims = [*DIMENSIONS, "chat", "other"]
     cells = {d: {layer: 0 for layer in LAYER_NAMES} for d in dims}
     for row in rows:
         layer = row["trace"].get("layer")
         if row["trace"]["verdict"]["rule"] != "fail" or not layer:
             continue
-        dim = row["dimension"] if row["dimension"] in DIMENSIONS else "other"
+        dim = row["dimension"] if row["dimension"] in (*DIMENSIONS, "chat") else "other"
         cells[dim][layer] += 1
-    used = [d for d in dims if d != "other" or any(cells["other"].values())]
+    used = [d for d in dims if d not in ("chat", "other") or any(cells[d].values())]
     return {"dimensions": used, "layers": list(LAYER_NAMES), "cells": {d: cells[d] for d in used}}
 
 

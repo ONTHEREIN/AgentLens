@@ -17,6 +17,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 审计台（运行记录 / 运行详情 / 运行对比 / 人工复核）是产品主界面：
 - 统计逻辑全部在 `agentlens/audit.py`，`web_demo/server.py` 只做 HTTP 封装，不要在页面层补逻辑。
+- 线上对话：直接读软帮手聊天页的 trace 日志（`ONEGZUS_TRACE_DIR`，默认同级 `GZUS-PRO-agent/services/api/data/traces`），
+  每天一个 `chat-<日期>` 运行；没有预设期望，只判执行状态 + LLM 忠实度，列表只读裁判缓存、打开详情才联网判定。
 - 只读 `results/` 与 `reviews/labels.jsonl`。人工标注按 trace 内容指纹（不含计时字段）记账，回放复跑自动沿用；
   `reviews/` 是标注集（M2 的 Kappa 数据），要提交，不要当运行产物清理。
 - 页面发起的运行：`onegzus` 固定 `record=False`，永远不从页面调用被测模型。

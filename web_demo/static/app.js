@@ -80,6 +80,7 @@
 
   function dimensionLabel(id) {
     if (id === "other") return "其他（旧维度）";
+    if (id === "chat") return "线上对话";
     return state.catalog?.dimensions?.find((d) => d.id === id)?.label || id || "未知维度";
   }
 
@@ -109,6 +110,23 @@
 
   function adapterLabel(id) {
     return ADAPTER_LABELS[id] || id;
+  }
+
+  function runLabel(summary) {
+    return summary.source === "chat" ? "软帮手线上对话" : adapterLabel(summary.adapter);
+  }
+
+  // 用例运行的输入来自用例定义；线上对话的输入来自 trace 记录的对话
+  function rowMessages(row) {
+    return row.case?.input?.messages || row.input_messages || [];
+  }
+
+  function rowTitle(row) {
+    if (row.case?.title) return row.case.title;
+    const users = rowMessages(row).filter((m) => m.role === "user");
+    const last = users[users.length - 1]?.content;
+    if (last) return last.length > 40 ? `${last.slice(0, 40)}…` : last;
+    return row.case === null && row.dimension === "chat" ? "（未记录用户输入）" : "（用例定义已不存在）";
   }
 
   function showToast(message) {
@@ -305,7 +323,7 @@
           <td><input type="checkbox" class="cmp-box" data-run="${escapeHtml(r.run_id)}" ${sel.has(r.run_id) ? "checked" : ""} aria-label="选择 ${escapeHtml(r.run_id)} 用于对比"></td>
           <td class="mono"><a href="#/run/${encodeURIComponent(r.run_id)}">${escapeHtml(r.run_id)}</a></td>
           <td>${escapeHtml(formatTime(r.generated_at))}</td>
-          <td>${escapeHtml(adapterLabel(r.adapter))}<div class="muted small">${escapeHtml(r.models.join(", "))}</div></td>
+          <td>${escapeHtml(runLabel(r))}${r.source === "chat" ? ' <span class="tag">线上</span>' : ""}<div class="muted small">${escapeHtml(r.models.join(", "))}</div></td>
           <td class="num">${r.total}</td>
           <td class="num"><span class="pass-text">${r.pass}</span> / <span class="fail-text">${r.fail}</span>${r.skip ? ` / <span class="muted">${r.skip}</span>` : ""}</td>
           <td class="num"><b>${r.score.toFixed(1)}</b></td>
@@ -318,7 +336,7 @@
         <div>
           <p class="section-index">RUNS</p>
           <h1 class="page-title">运行记录</h1>
-          <p class="muted">每次运行都写入 results/&lt;run_id&gt;/traces.jsonl，这里的每个数字都能点进去找到原始 span。</p>
+          <p class="muted">用例运行写入 results/&lt;run_id&gt;/traces.jsonl；软帮手聊天页的真实对话按天汇成「线上对话」运行（没有预设期望，只判执行状态与 LLM 忠实度）。每个数字都能点进去找到原始 span。</p>
         </div>
       </section>
 
@@ -477,7 +495,7 @@
             <span class="case-id">${escapeHtml(t.case_id)}</span>
             <span class="verdict-pill ${rule}">${statusLabel(t.verdict.rule)}</span>
           </span>
-          <span class="case-title">${escapeHtml(row.case?.title || "（用例定义已不存在）")}</span>
+          <span class="case-title">${escapeHtml(rowTitle(row))}</span>
           <span class="case-bottom">
             <span class="dimension">${escapeHtml(dimensionLabel(row.dimension))}</span>
             ${layer}
@@ -546,11 +564,12 @@
     (t.verdict?.checks || []).forEach((c) => {
       if (!c.passed) (c.evidence || []).forEach((id) => evidence.add(id));
     });
-    const messages = (item.input?.messages || []).map((m) => `
+    const recorded = rowMessages(row);
+    const messages = recorded.length ? recorded.map((m) => `
       <div class="question ${m.role === "assistant" ? "is-assistant" : ""}">
         <span class="question-label">${m.role === "assistant" ? "AGENT（历史）" : "USER"}</span>
         <p>${escapeHtml(m.content)}</p>
-      </div>`).join("");
+      </div>`).join("") : '<p class="case-note">这条对话产生于记录用户输入之前，原始问题已无法还原；回答与执行链路仍可审计。</p>';
     const meta = t.meta || {};
     return `
       <article class="detail">
@@ -559,7 +578,7 @@
             <span class="status-badge ${rule}"><i></i>${statusLabel(t.verdict.rule)}</span>
             <div>
               <div class="case-kicker"><b>${escapeHtml(t.case_id)}</b> · ${escapeHtml(dimensionLabel(row.dimension))} · ${escapeHtml(item.difficulty || "")}</div>
-              <h2 class="case-h2">${escapeHtml(item.title || "（用例定义已不存在）")}</h2>
+              <h2 class="case-h2">${escapeHtml(rowTitle(row))}</h2>
             </div>
           </div>
           ${messages}
@@ -614,7 +633,7 @@
       <section class="page-head">
         <div>
           <p class="section-index"><a href="#/runs">运行记录</a> / ${escapeHtml(s.run_id)}</p>
-          <h1 class="page-title">${escapeHtml(adapterLabel(s.adapter))} · ${escapeHtml(formatTime(s.generated_at))}</h1>
+          <h1 class="page-title">${escapeHtml(runLabel(s))} · ${escapeHtml(formatTime(s.generated_at))}</h1>
           <p class="muted">模型 ${escapeHtml(s.models.join(", "))} · ${s.llm_judge ? "双轨判定（规则 + LLM 忠实度）" : "仅规则轨"}</p>
         </div>
       </section>
@@ -759,7 +778,7 @@
       <div class="cmp-side">
         <span class="cmp-tag">${tag}</span>
         <a class="mono" href="#/run/${encodeURIComponent(s.run_id)}">${escapeHtml(s.run_id)}</a>
-        <div class="muted small">${escapeHtml(adapterLabel(s.adapter))} · ${escapeHtml(formatTime(s.generated_at))} · ${s.total} 条</div>
+        <div class="muted small">${escapeHtml(runLabel(s))} · ${escapeHtml(formatTime(s.generated_at))} · ${s.total} 条</div>
         <strong>${s.score.toFixed(1)}</strong>
       </div>`;
     const delta = (c.b.score - c.a.score).toFixed(1);
@@ -875,7 +894,9 @@
       if (page === "run" && a) {
         setNav("runs");
         if (state.detail?.summary.run_id !== a) {
-          view.innerHTML = placeholder("正在读取运行…");
+          view.innerHTML = a.startsWith("chat-")
+            ? placeholder("正在读取线上对话并逐条判定…", "未判定过的对话需要调用裁判模型，首次打开可能要几十秒")
+            : placeholder("正在读取运行…");
           state.detail = await api(`/api/runs/${encodeURIComponent(a)}`);
           state.filter = { verdict: "all", dimension: "", layer: "" };
           state.selectedCase = null;

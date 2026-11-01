@@ -7,7 +7,7 @@
     → http://127.0.0.1:8765
 
 绑本机回环地址。页面发起的运行一律走回放（不调用被测模型）；LLM 裁判优先命中
-judgements/ 缓存，未命中且配置了 .env.judge 时才联网。
+judgements/ 缓存，未命中且配置了 .env.judge 时才联网。线上对话日志位置见 ONEGZUS_TRACE_DIR。
 """
 
 from __future__ import annotations
@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import mimetypes
+import os
 import re
 import sys
 import threading
@@ -38,6 +39,10 @@ from agentlens.schema import LAYER_NAMES, SPAN_KINDS  # noqa: E402
 WEB_DIR = Path(__file__).resolve().parent / "static"
 RESULTS_DIR = ROOT / "results"
 LABELS_FILE = ROOT / "reviews" / "labels.jsonl"
+# 软帮手线上对话日志（聊天页每轮一行），审计台按天读成 chat-<日期> 运行
+CHAT_DIR = Path(os.environ.get(
+    "ONEGZUS_TRACE_DIR", ROOT.parent / "GZUS-PRO-agent" / "services" / "api" / "data" / "traces",
+))
 RUN_ID = re.compile(r"^[0-9A-Za-z_-]{1,64}$")
 
 DIMENSIONS = [
@@ -167,6 +172,16 @@ class AgentLensHandler(BaseHTTPRequestHandler):
         target = RESULTS_DIR / run_id
         return target if (target / "traces.jsonl").is_file() else None
 
+    def _detail(self, run_id: str) -> dict | None:
+        """用例运行读 results/；chat-<日期> 读线上对话日志并即时判定（裁判命中缓存则不联网）。"""
+        if not RUN_ID.match(run_id):
+            return None
+        chat = audit.chat_file(CHAT_DIR, run_id)
+        if chat is not None:
+            return audit.chat_detail(chat, JudgeConfig.load())
+        run_dir = self._run_dir(run_id)
+        return None if run_dir is None else audit.run_detail(run_dir, self.server.case_index)
+
     def _read_json_body(self) -> dict | None:
         try:
             length = int(self.headers.get("Content-Length", "0"))
@@ -196,13 +211,12 @@ class AgentLensHandler(BaseHTTPRequestHandler):
         elif path == "/api/catalog":
             self._send_json(catalog_payload(self.server.suites))
         elif path == "/api/runs":
-            self._send_json({"runs": audit.list_runs(RESULTS_DIR)})
+            self._send_json({"runs": audit.list_runs(RESULTS_DIR, CHAT_DIR)})
         elif path.startswith("/api/runs/"):
-            run_dir = self._run_dir(path.removeprefix("/api/runs/"))
-            if run_dir is None:
+            detail = self._detail(path.removeprefix("/api/runs/"))
+            if detail is None:
                 self._send_error_json("运行不存在", 404)
                 return
-            detail = audit.run_detail(run_dir, self.server.case_index)
             detail["labels"] = {
                 f"{key}|{target}": label
                 for (key, target), label in audit.latest_labels(audit.load_labels(LABELS_FILE)).items()
@@ -210,12 +224,11 @@ class AgentLensHandler(BaseHTTPRequestHandler):
             self._send_json(detail)
         elif path == "/api/compare":
             query = parse_qs(url.query)
-            dirs = [self._run_dir((query.get(k) or [""])[0]) for k in ("a", "b")]
-            if None in dirs:
+            details = [self._detail((query.get(k) or [""])[0]) for k in ("a", "b")]
+            if None in details:
                 self._send_error_json("对比需要两个存在的运行：?a=<run_id>&b=<run_id>", 404)
                 return
-            a, b = (audit.run_detail(d, self.server.case_index) for d in dirs)
-            self._send_json(audit.compare_runs(a, b))
+            self._send_json(audit.compare_runs(*details))
         elif path == "/api/reviews":
             self._send_json(audit.agreement(audit.load_labels(LABELS_FILE)))
         else:
