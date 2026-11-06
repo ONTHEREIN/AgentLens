@@ -13,6 +13,7 @@
     3. L3  工具选对，参数/schema 不符
     4. L4  工具返回正常，但答案与观测矛盾
     5. L5  答案忠实于观测，但观测/召回本身是错的
+           （L4 步若 LLM 裁判确认答案忠实、且期望内容不在观测里，提前归 L5：照实转述也答不对）
         -   都不匹配 → 未定层，落人工复核队列（诚实标注，不硬凑）
 
 > v0 未经校准，接口稳定、规则可迭代。M2 用 100 条人工标注集跑准确率。
@@ -123,6 +124,16 @@ def attribute(case: Case, trace: Trace) -> Attribution:
     answer_issue = failed.get("answer_text") or failed.get("llm_faithfulness")
     if answer_issue:
         obs_ok = all(o.ok for o in trace.observations) if trace.observations else False
+        # LLM 裁判确认答案忠实于观测，且期望内容在观测里根本不存在：照实转述也答不对，
+        # 根因在数据源（L5）。只看「观测里找不到」不够——均分、绩点这类推算值本来就不在观测里
+        absent = _absent_from_observations(case, trace)
+        faithful = any(c.check == "llm_faithfulness" and c.passed for c in trace.verdict.checks)
+        if obs_ok and absent and faithful:
+            return Attribution(
+                "L5",
+                f"LLM 裁判确认答案忠实于观测，但期望内容 {absent} 在观测中不存在：数据源返回的数据本身有误或缺失",
+                [o.span_id for o in trace.observations],
+            )
         if obs_ok:
             return Attribution(
                 "L4",
@@ -151,6 +162,14 @@ def attribute(case: Case, trace: Trace) -> Attribution:
 
     # 都不匹配 —— 不硬凑，进人工复核
     return Attribution("L1", f"未命中既定规则，需人工复核。失败项：{list(failed)}", [])
+
+
+def _absent_from_observations(case: Case, trace: Trace) -> list[str]:
+    """answer_contains 中答案缺失、且在任何观测原始数据里也找不到的条目。"""
+    import json
+
+    seen = " ".join(json.dumps(o.raw, ensure_ascii=False) for o in trace.observations if o.raw is not None)
+    return [s for s in case.expect.answer_contains if s not in trace.answer and s not in seen]
 
 
 def _distinct(names: list[str]) -> list[str]:
