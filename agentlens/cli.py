@@ -5,6 +5,7 @@
     python -m agentlens run cases/ --filter tag:smoke --repeat 3
     python -m agentlens show results/<run_id>    # 回看某次运行
     python -m agentlens schema                   # 导出 trace 的 JSON Schema
+    python -m agentlens inject cases/onegzus/    # 由真实录制生成故障注入用例（给裁判和归因打分）
 """
 
 from __future__ import annotations
@@ -18,8 +19,9 @@ from pathlib import Path
 from rich.console import Console
 
 from .adapters.campus_copilot import CampusCopilotAdapter
-from .adapters.onegzus import OneGzusAdapter
+from .adapters.onegzus import MUTANT_RECORDINGS, RECORDINGS, OneGzusAdapter
 from .cases import Case, CaseError, load_cases
+from .inject import mutant_case, mutate
 from .render import print_summary, print_trace
 from .runner import load_run, run
 from .schema import Trace
@@ -133,6 +135,44 @@ def cmd_schema(args: argparse.Namespace, console: Console) -> int:
     return 0
 
 
+def cmd_inject(args: argparse.Namespace, console: Console) -> int:
+    import yaml
+
+    try:
+        cases = load_cases(Path(args.path))
+    except CaseError as exc:
+        console.print(f"[red]用例校验失败[/red] {exc}")
+        return 2
+
+    out_dir = Path(args.out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    MUTANT_RECORDINGS.mkdir(parents=True, exist_ok=True)
+    counts: dict[str, int] = {}
+    skipped = []
+    for case in cases:
+        rec_file = RECORDINGS / f"{case.id}.json"
+        if not rec_file.exists():
+            skipped.append(case.id)
+            continue
+        for mutant in mutate(case, json.loads(rec_file.read_text(encoding="utf-8"))):
+            doc = mutant_case(case, mutant)
+            (out_dir / f"{doc['id']}.yaml").write_text(
+                yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8",
+            )
+            (MUTANT_RECORDINGS / f"{doc['id']}.json").write_text(
+                json.dumps(mutant.recording, ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+            )
+            counts[f"{mutant.layer} {mutant.op}"] = counts.get(f"{mutant.layer} {mutant.op}", 0) + 1
+
+    load_cases(out_dir)  # 生成物必须能被正常加载，否则当场报错
+    console.print(f"[green]生成[/green] {sum(counts.values())} 条注入用例 → {out_dir}")
+    for key, n in sorted(counts.items()):
+        console.print(f"  {key:<22} {n}")
+    if skipped:
+        console.print(f"[yellow]无录制、跳过[/yellow] {len(skipped)} 条：{', '.join(skipped)}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="agentlens", description="AgentLens · 智能体分层归因体检中心")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -164,6 +204,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_schema = sub.add_parser("schema", help="导出 trace JSON Schema")
     p_schema.add_argument("--out", default="docs/trace.schema.json")
     p_schema.set_defaults(func=cmd_schema)
+
+    p_inj = sub.add_parser("inject", help="由真实录制生成故障注入用例（只改 LLM 回复，已知根因层）")
+    p_inj.add_argument("path", nargs="?", default=str(DEFAULT_CASES / "onegzus"))
+    p_inj.add_argument("--out", default=str(DEFAULT_CASES / "calibration"))
+    p_inj.set_defaults(func=cmd_inject)
     return parser
 
 

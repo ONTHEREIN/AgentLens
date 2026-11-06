@@ -30,6 +30,8 @@ from .base import AgentOutput, BaseAdapter
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORDINGS = ROOT / "recordings" / "onegzus"
+# 故障注入用例的变异录制（`agentlens.inject` 生成），只能回放
+MUTANT_RECORDINGS = ROOT / "recordings" / "mutants"
 DEFAULT_API_DIR = ROOT.parent / "GZUS-PRO-agent" / "services" / "api"
 TIMEOUT_S = 180
 
@@ -51,10 +53,12 @@ class OneGzusAdapter(BaseAdapter):
             if key in case.input.options:
                 payload[key] = case.input.options[key]
 
+        if case.inject is not None and self.record:
+            return _blocked("故障注入用例只能回放：重录会用真实回复覆盖掉注入的变异")
         mode = "record" if self.record else "replay"
+        replay_file = (MUTANT_RECORDINGS if case.inject is not None else RECORDINGS) / f"{case.id}.json"
         python = self.api_dir / ".venv" / "bin" / "python"
-        cmd = [str(python), "-m", "app.agent.cli", "--mode", mode,
-               "--replay-file", str(RECORDINGS / f"{case.id}.json")]
+        cmd = [str(python), "-m", "app.agent.cli", "--mode", mode, "--replay-file", str(replay_file)]
         try:
             proc = subprocess.run(
                 cmd, input=json.dumps(payload, ensure_ascii=False), capture_output=True,
