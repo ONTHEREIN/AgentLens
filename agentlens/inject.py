@@ -86,7 +86,8 @@ def _set_args(call: dict[str, Any], args: dict[str, Any]) -> None:
 
 def drop_plan(case: Case, rec: dict[str, Any]) -> Mutant | None:
     """删掉 make_plan 调用：trace 里没有 plan span → L1。"""
-    if _plan_call(rec) is None:
+    # 不调工具的回答（如模型自行拒答）本就无须规划，删掉是等价变异
+    if _plan_call(rec) is None or not _business_calls(rec):
         return None
     out = copy.deepcopy(rec)
     replies = []
@@ -172,8 +173,12 @@ def wrong_arg(case: Case, rec: dict[str, Any]) -> Mutant | None:
 def bad_arg(case: Case, rec: dict[str, Any]) -> Mutant | None:
     """学年参数写成「2025-2026」格式：参数 schema 校验失败 → L3。"""
     out = copy.deepcopy(rec)
+    calls = _business_calls(out)
+    # 只改该工具的最后一次调用：之后再有合法调用就等于已重试恢复，是等价变异
     call = next(
-        (c for c in _business_calls(out) if c["name"] in ("get_grades", "get_attendance", "get_exams")),
+        (c for i, c in enumerate(calls)
+         if c["name"] in ("get_grades", "get_attendance", "get_exams")
+         and all(d["name"] != c["name"] for d in calls[i + 1 :])),
         None,
     )
     if call is None:
