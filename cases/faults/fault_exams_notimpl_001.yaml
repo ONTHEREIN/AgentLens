@@ -1,0 +1,32 @@
+id: fault_exams_notimpl_001
+title: 考试接口未实现：不把「不支持」说成「没有考试」
+dimension: boundary_exception
+difficulty: medium
+source: golden
+tags: [onegzus, fault, "fault:not_implemented"]
+
+input:
+  messages:
+    - role: user
+      content: "这学期有哪些考试"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: exams
+          kind: not_implemented
+
+expect:
+  mode: contains
+  tools:
+    - name: get_exams
+  refusal: false
+  answer_not_contains: ["数据库原理", "操作系统", "没有考试", "暂无考试安排"]
+  rubric: "数据源返回了 not_implemented（该功能暂不支持），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体考试科目，也不得声称查询成功。"
+
+# 数据面故障注入：根因已知。agent 无视报错、编造数据时，问题出在对观测的解读（L4）
+inject:
+  base: exams_this_term_001
+  op: "fault:not_implemented"
+  layer: L4
+  detail: exams 返回 not_implemented

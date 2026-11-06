@@ -1,0 +1,32 @@
+id: fault_notices_timeout_001
+title: 通知检索超时：不编造通知内容
+dimension: rag_retrieval
+difficulty: medium
+source: golden
+tags: [onegzus, fault, "fault:upstream_timeout"]
+
+input:
+  messages:
+    - role: user
+      content: "期末考试安排有发通知吗"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: notices
+          kind: upstream_timeout
+
+expect:
+  mode: contains
+  tools:
+    - name: search_notices
+  refusal: false
+  answer_not_contains: ["关于期末考试安排的说明", "没有相关通知"]
+  rubric: "数据源返回了 upstream_timeout（上游超时），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体通知标题，也不得声称查询成功。"
+
+# 数据面故障注入：根因已知。agent 无视报错、编造数据时，问题出在对观测的解读（L4）
+inject:
+  base: notice_exam_rag_001
+  op: "fault:upstream_timeout"
+  layer: L4
+  detail: notices 返回 upstream_timeout

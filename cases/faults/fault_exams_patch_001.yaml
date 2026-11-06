@@ -1,0 +1,34 @@
+id: fault_exams_patch_001
+title: 考试日期被静默篡改：答案忠实于观测，根因在数据源
+dimension: functional_accuracy
+difficulty: hard
+source: golden
+tags: [onegzus, fault, "fault:patch", calibration]
+
+input:
+  messages:
+    - role: user
+      content: "数据库原理哪天考试"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: exams
+          kind: patch
+          set: {date: "2026-12-14"}
+          where: {courseName: 数据库原理}
+
+expect:
+  mode: contains
+  tools:
+    - name: get_exams
+  refusal: false
+  answer_contains: ["24"]
+
+# 归因校准：期望写的是真实值，但数据源被静默篡改，agent 忠实转述必然「答错」。
+# 正确归因是 L5（数据源本身错），误归 L4 说明归因器分不清「读错」和「数据错」
+inject:
+  base: exams_this_term_001
+  op: "fault:patch"
+  layer: L5
+  detail: 数据库原理 date 2026-12-24 → 2026-12-14

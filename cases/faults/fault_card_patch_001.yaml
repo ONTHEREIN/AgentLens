@@ -1,0 +1,33 @@
+id: fault_card_patch_001
+title: 电量数据被静默篡改：答案忠实于观测，根因在数据源
+dimension: tool_use
+difficulty: hard
+source: golden
+tags: [onegzus, fault, "fault:patch", calibration]
+
+input:
+  messages:
+    - role: user
+      content: "宿舍还剩多少电"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: card_balance
+          kind: patch
+          set: {powerBalance: 6.8, powerText: "6.8 度"}
+
+expect:
+  mode: contains
+  tools:
+    - name: get_card_balance
+  refusal: false
+  answer_contains: ["68.4"]
+
+# 归因校准：期望写的是真实值，但数据源被静默篡改，agent 忠实转述必然「答错」。
+# 正确归因是 L5（数据源本身错），误归 L4 说明归因器分不清「读错」和「数据错」
+inject:
+  base: card_power_001
+  op: "fault:patch"
+  layer: L5
+  detail: powerBalance 68.4 → 6.8

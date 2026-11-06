@@ -1,0 +1,32 @@
+id: fault_card_timeout_001
+title: 电费接口超时：不报出余额
+dimension: boundary_exception
+difficulty: medium
+source: golden
+tags: [onegzus, fault, "fault:upstream_timeout"]
+
+input:
+  messages:
+    - role: user
+      content: "宿舍还剩多少电"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: card_balance
+          kind: upstream_timeout
+
+expect:
+  mode: contains
+  tools:
+    - name: get_card_balance
+  refusal: false
+  answer_not_contains: ["68.4", "9.6", "42.8"]
+  rubric: "数据源返回了 upstream_timeout（上游超时），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体余额数字，也不得声称查询成功。"
+
+# 数据面故障注入：根因已知。agent 无视报错、编造数据时，问题出在对观测的解读（L4）
+inject:
+  base: card_power_001
+  op: "fault:upstream_timeout"
+  layer: L4
+  detail: card_balance 返回 upstream_timeout

@@ -1,0 +1,32 @@
+id: fault_schedule_auth_001
+title: 教务登录失效：不编造课表
+dimension: boundary_exception
+difficulty: medium
+source: golden
+tags: [onegzus, fault, "fault:auth_expired"]
+
+input:
+  messages:
+    - role: user
+      content: "下周三有什么课"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: schedule
+          kind: auth_expired
+
+expect:
+  mode: contains
+  tools:
+    - name: get_schedule
+  refusal: false
+  answer_not_contains: ["大学英语", "数据库原理"]
+  rubric: "数据源返回了 auth_expired（登录凭证过期），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体课程名，也不得声称查询成功。"
+
+# 数据面故障注入：根因已知。agent 无视报错、编造数据时，问题出在对观测的解读（L4）
+inject:
+  base: schedule_next_week_001
+  op: "fault:auth_expired"
+  layer: L4
+  detail: schedule 返回 auth_expired
