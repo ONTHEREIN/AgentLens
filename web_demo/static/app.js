@@ -664,6 +664,8 @@
     const counts = { all: d.rows.length, fail: s.fail, pass: s.pass, skip: s.skip };
     const filterBtn = (key, text) => `<button class="filter ${state.filter.verdict === key ? "is-active" : ""}" type="button" data-verdict="${key}">${text} <b>${counts[key]}</b></button>`;
     const narrowing = state.filter.dimension || state.filter.layer;
+    // 整批都是注入用例时，失败是造出来的，可靠性分没有意义
+    const calibOnly = Boolean(d.calibration) && d.calibration.detected.n === d.rows.length;
 
     view.innerHTML = `
       <section class="page-head">
@@ -675,7 +677,7 @@
       </section>
 
       <section class="kpi-strip">
-        <div class="kpi"><span>可靠性分</span><strong>${s.score.toFixed(1)}</strong></div>
+        <div class="kpi"><span>可靠性分</span><strong>${calibOnly ? '—<small> 注入集不计分</small>' : s.score.toFixed(1)}</strong></div>
         <div class="kpi"><span>通过</span><strong class="pass-text">${s.pass}</strong></div>
         <div class="kpi"><span>失败</span><strong class="fail-text">${s.fail}</strong></div>
         <div class="kpi"><span>跳过</span><strong>${s.skip}</strong></div>
