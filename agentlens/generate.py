@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import re
+import http.client
 import urllib.error
 import urllib.request
 from typing import Any
@@ -66,7 +67,8 @@ def _ask(config: JudgeConfig, text: str, history: list[dict[str, str]]) -> dict[
         with urllib.request.urlopen(req, timeout=TIMEOUT_S) as resp:
             payload = json.loads(resp.read().decode("utf-8"))
         rewrites = json.loads(payload["choices"][0]["message"]["content"])["rewrites"]
-    except (urllib.error.URLError, TimeoutError, KeyError, ValueError, TypeError, json.JSONDecodeError):
+    # OSError 覆盖 URLError、超时与连接被重置；单条失败只降级，不能中断整批运行
+    except (OSError, http.client.HTTPException, KeyError, ValueError, TypeError, json.JSONDecodeError):
         return None
     return {k: v.strip() for k, v in rewrites.items() if k in STYLES and isinstance(v, str)}
 

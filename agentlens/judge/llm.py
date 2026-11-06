@@ -19,6 +19,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import http.client
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -195,5 +196,6 @@ def _ask(config: JudgeConfig, evidence: dict[str, Any]) -> dict[str, Any] | None
         if not isinstance(verdict.get("faithful"), bool) or not 1 <= int(verdict.get("score", 0)) <= 5:
             return None
         return verdict
-    except (urllib.error.URLError, TimeoutError, KeyError, ValueError, json.JSONDecodeError):
+    # OSError 覆盖 URLError、超时与连接被重置；单条失败只降级，不能中断整批运行
+    except (OSError, http.client.HTTPException, KeyError, ValueError, json.JSONDecodeError):
         return None
