@@ -99,6 +99,50 @@ def _check_forbidden(case: Case, trace: Trace) -> CheckResult | None:
     )
 
 
+def _check_plan(trace: Trace) -> CheckResult | None:
+    """有工具调用就必须先有计划，且计划列出的工具与实际调用的工具集合一致。
+
+    只比集合：同一工具换参数多调几次、或调用顺序与计划不同，都不算脱节。
+    """
+    actual = set(trace.tool_names)
+    if not actual:
+        return None
+    plan = trace.plan
+    if plan is None:
+        return CheckResult(check="plan", passed=False, reason=f"调用了 {sorted(actual)}，但没有 plan span")
+    planned = set(plan.steps)
+    passed = planned == actual
+    if passed:
+        reason = "计划与实际调用一致"
+    else:
+        missing, extra = sorted(planned - actual), sorted(actual - planned)
+        reason = "计划与执行脱节：" + "；".join(
+            x for x in (f"计划了未执行 {missing}" if missing else "", f"执行了未计划 {extra}" if extra else "") if x
+        )
+    return CheckResult(check="plan", passed=passed, reason=reason, evidence=[plan.span_id])
+
+
+def _check_schema(trace: Trace) -> CheckResult | None:
+    """参数不合法的调用，之后必须用合法参数重试成功；只有非法调用的工具判失败。"""
+    calls = trace.tool_calls
+    bad = [
+        c for i, c in enumerate(calls)
+        if not c.schema_ok and not any(d.name == c.name and d.schema_ok for d in calls[i + 1 :])
+    ]
+    if not any(not c.schema_ok for c in calls):
+        return None
+    return CheckResult(
+        check="tool_schema",
+        passed=not bad,
+        reason=(
+            "参数不合法的调用均已重试成功"
+            if not bad
+            else f"{bad[0].name} 参数不合法且未重试：{'; '.join(bad[0].schema_errors) or '?'}"
+        ),
+        evidence=[c.span_id for c in bad],
+    )
+
+
 def _check_args(trace: Trace, spec: ToolExpectation) -> CheckResult | None:
     if not spec.args:
         return None
@@ -155,6 +199,8 @@ def judge(case: Case, trace: Trace) -> Verdict:
         _check_refusal(case, trace),
         _check_tools(case, trace),
         _check_forbidden(case, trace),
+        _check_plan(trace),
+        _check_schema(trace),
         *(_check_args(trace, spec) for spec in case.expect.tools),
         _check_answer(case, trace),
     ):
