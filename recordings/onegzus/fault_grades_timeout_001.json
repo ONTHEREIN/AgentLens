@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "9ed5ea85eba1dd58",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ORVP0qceIoOCifUw4pkb8053",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询上一学期（2025-2026 学年第二学期）的课程成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks about last semester's grades. Today is 2026-09-21, current academic year 2026-2027 term 1. Last semester = 2025-2026 term 2 (spring). So call get_grades with year \"2025\", term \"2\".\n\nNeed make_plan first.",
+      "prompt_tokens": 1256,
+      "completion_tokens": 145,
+      "latency_ms": 1419.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_XvvxayufpOVpPZaKin2u5999",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "Call get_grades with year 2025, term 2.",
+      "prompt_tokens": 1420,
+      "completion_tokens": 70,
+      "latency_ms": 697.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_1r84N814edKsEC5PUDYz5566",
+          "name": "get_grades",
+          "arguments": "{\"term\": \"2\", \"year\": \"2025\"}"
+        }
+      ],
+      "reasoning": "Tool returned an error. Should retry maybe once.",
+      "prompt_tokens": 1511,
+      "completion_tokens": 67,
+      "latency_ms": 959.1
+    },
+    {
+      "content": "查询上学期（2025-2026 学年第二学期，即春季学期）成绩时，成绩系统连续两次返回超时错误（upstream_timeout），因此我暂时拿不到你的成绩数据，也无法给出任何结论。\n\n建议：\n- 稍等几分钟后再让我查一次；\n- 或者登录教务系统自行查看（路径：成绩查询 → 2025-2026 学年第二学期）；\n- 如果长时间无法打开，可能是教务系统维护，可联系教务处确认。\n\n需要我过一会儿再帮你重试，或者顺便查一下本学期的课表、考勤吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1599,
+      "completion_tokens": 125,
+      "latency_ms": 1831.0
+    }
+  ]
+}

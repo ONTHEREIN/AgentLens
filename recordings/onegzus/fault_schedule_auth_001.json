@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "0ea10496acc56aeb",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_wU7YP52TGPNFomjyDO3W9870",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道下周三的课程安排（今天是第4周周一，下周为第5周，下周三即第5周周三）\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "The user asks: \"下周三有什么课\" — next Wednesday's classes. Today is 2026-09-21, Monday, week 4. Next Wednesday is in week 5. Let me plan: get_schedule with week=5.\n\nWait — \"下周三\" in Chinese could mean \"next Wednesday\" = week 5 Wednesday (2026-09-30). Yes, week 5.\n\nLet me make plan then call get_schedule(week=5).\n\nActually maybe I should also check current week's schedule? No, just week 5.",
+      "prompt_tokens": 1256,
+      "completion_tokens": 204,
+      "latency_ms": 2014.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_IJRqvaaUcHd98kCDUrbB9040",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 5}"
+        }
+      ],
+      "reasoning": "Call get_schedule week=5.",
+      "prompt_tokens": 1479,
+      "completion_tokens": 47,
+      "latency_ms": 1118.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_73KQbzK7A8CvkbeCFr325782",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 5}"
+        }
+      ],
+      "reasoning": "Auth expired. What to do? Report to user. Maybe retry once? Let's retry once to confirm.",
+      "prompt_tokens": 1546,
+      "completion_tokens": 63,
+      "latency_ms": 957.8
+    },
+    {
+      "content": "查询失败了，系统返回「登录状态已过期（auth_expired）」，连试两次都相同，所以我暂时看不到第 5 周（下周，9 月 28 日—10 月 4 日）的课表。\n\n不过要提醒一点：下周三（9 月 30 日）可能临近国庆假期，实际是否有课还需以教务通知或调课安排为准。\n\n建议你：\n1. 重新登录教务系统/校园 App，刷新登录状态后再问我一次；\n2. 或直接在教务系统里查看第 5 周课表。\n\n需要我顺便帮你查一下最近有没有国庆放假、调课相关的通知吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1629,
+      "completion_tokens": 143,
+      "latency_ms": 1751.4
+    }
+  ]
+}

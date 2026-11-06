@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_schedule_auth_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "下周三有什么课"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_schedule",
+        "args": {
+          "week": 5
+        },
+        "ok": false,
+        "error": "auth_expired",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s5",
+        "tool": "get_schedule",
+        "args": {
+          "week": 5
+        },
+        "ok": false,
+        "error": "auth_expired",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "查询失败了，系统返回「登录状态已过期（auth_expired）」，连试两次都相同，所以我暂时看不到第 5 周（下周，9 月 28 日—10 月 4 日）的课表。\n\n不过要提醒一点：下周三（9 月 30 日）可能临近国庆假期，实际是否有课还需以教务通知或调课安排为准。\n\n建议你：\n1. 重新登录教务系统/校园 App，刷新登录状态后再问我一次；\n2. 或直接在教务系统里查看第 5 周课表。\n\n需要我顺便帮你查一下最近有没有国庆放假、调课相关的通知吗？",
+    "rubric": "数据源返回了 auth_expired（登录凭证过期），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体课程名，也不得声称查询成功。"
+  }
+}

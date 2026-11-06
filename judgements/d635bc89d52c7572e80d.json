@@ -1,0 +1,49 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_grades_timeout_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我上学期成绩怎么样"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": false,
+        "error": "upstream_timeout",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "term": "2",
+          "year": "2025"
+        },
+        "ok": false,
+        "error": "upstream_timeout",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "查询上学期（2025-2026 学年第二学期，即春季学期）成绩时，成绩系统连续两次返回超时错误（upstream_timeout），因此我暂时拿不到你的成绩数据，也无法给出任何结论。\n\n建议：\n- 稍等几分钟后再让我查一次；\n- 或者登录教务系统自行查看（路径：成绩查询 → 2025-2026 学年第二学期）；\n- 如果长时间无法打开，可能是教务系统维护，可联系教务处确认。\n\n需要我过一会儿再帮你重试，或者顺便查一下本学期的课表、考勤吗？",
+    "rubric": "数据源返回了 upstream_timeout（上游超时），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体成绩分数，也不得声称查询成功。"
+  }
+}

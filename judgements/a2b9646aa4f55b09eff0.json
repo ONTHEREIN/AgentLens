@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_card_patch_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍还剩多少电"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 6.8,
+          "powerUnit": "度",
+          "powerText": "6.8 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "演示宿舍 A1-101 的电费余额是 **6.8 度**，已低于 30 度的低电量提醒线，建议尽快充值，以免停电。\n\n顺便也为你查了水费：\n- 冷水：9.6 吨\n- 热水：42.80 元\n\n数据更新于 2026-09-19 08:00。",
+    "rubric": null
+  }
+}

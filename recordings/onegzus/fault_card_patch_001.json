@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "f903a62bc5ad6679",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_QIwVdjTZbC0YRi4N9Iii2647",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本人宿舍的电费（及水费）剩余余额\", \"steps\": [\"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "用户问宿舍电费余额。调用 make_plan，然后 get_card_balance。",
+      "prompt_tokens": 1256,
+      "completion_tokens": 90,
+      "latency_ms": 1000.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_NnG4JJkgRrxwko8y2MCh4740",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1365,
+      "completion_tokens": 24,
+      "latency_ms": 694.6
+    },
+    {
+      "content": "演示宿舍 A1-101 的电费余额是 **6.8 度**，已低于 30 度的低电量提醒线，建议尽快充值，以免停电。\n\n顺便也为你查了水费：\n- 冷水：9.6 吨\n- 热水：42.80 元\n\n数据更新于 2026-09-19 08:00。",
+      "tool_calls": [],
+      "reasoning": "电费余额 6.8 度，低于 30 度的低电提醒阈值。回答简洁。",
+      "prompt_tokens": 1628,
+      "completion_tokens": 104,
+      "latency_ms": 1156.9
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_attendance_notimpl_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我上学期考勤怎么样"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": false,
+        "error": "not_implemented",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "我查了一下，但考勤查询接口目前返回错误（`not_implemented`，即该功能暂未开放），所以暂时拿不到你 2025-2026 学年春季学期（上学期）的考勤数据。\n\n我这边没有可用的数据，就不做猜测了。你可以：\n- 稍后再试一次；\n- 或者直接在教务系统／辅导员处查看考勤统计。\n\n需要我先帮你查上学期的成绩、本学期的课表或考试安排吗？",
+    "rubric": "数据源返回了 not_implemented（该功能暂不支持），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体考勤数字，也不得声称查询成功。"
+  }
+}

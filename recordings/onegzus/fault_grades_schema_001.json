@@ -1,0 +1,99 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "199d51c8cabde3b7",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_8Sdm3KOYK5eF4QZ4KzgX5992",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上一学期（2025-2026 学年第 2 学期）的课程成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户问上学期成绩。今天是2026-09-21，当前是2026-2027学年第1学期。上学期是2025-2026学年第2学期（春季）。所以year=\"2025\", term=\"2\"。\n\n先调用 make_plan。",
+      "prompt_tokens": 1256,
+      "completion_tokens": 136,
+      "latency_ms": 1462.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_GpOM4U5CK2MMS9VR4XAQ0703",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1411,
+      "completion_tokens": 56,
+      "latency_ms": 922.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_F5m7HwzNL6HpnYBBg57l2409",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "Schema mismatch — 可能 year 需要是字符串 \"2025\"，我已经传了字符串。term \"2\" 也是字符串。嗯，报错 schema_mismatch。也许参数需要为 null？试试不带参数？不带参数默认当前学年当前学期，不是上学期。\n\n也许应该传 year: null, term: null？那样是当前学期。不对。\n\n再试一次同样的调用？也许 year 应为 \"2025\"（对）。或者错误是 term 需要 \"2\"（对）。可能工具期望 year 为数字？schema 说字符串。\n\n尝试传 year=\"2025\", term=\"2\"，与之前一样。可能瞬时错误。再试。\n\n或者可以先尝试调用不带参数，看看工具是否可用。但那是当前学期（2026-2027 第1学期）的成绩，可能为空/不适用。\n\n我先重试一次完整参数调用。",
+      "prompt_tokens": 1488,
+      "completion_tokens": 238,
+      "latency_ms": 2049.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_2euuc2l1Ab1cZJfPZTcH0390",
+          "name": "get_grades",
+          "arguments": "{\"year\": null, \"term\": null}"
+        }
+      ],
+      "reasoning": "一直 schema_mismatch。试试缺省参数（null）调用来测试工具本身是否工作。",
+      "prompt_tokens": 1747,
+      "completion_tokens": 76,
+      "latency_ms": 1206.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_MdncZcbaXXPVvjdCEm8e4552",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"null\"}"
+        }
+      ],
+      "reasoning": "工具返回 schema_mismatch，无论参数如何。可能是工具本身故障。我应该告知用户无法获取，不要编造成绩。\n\n也许我可以试 year=\"2025\" without term？但 schema 要求两个字段（可为 null）。试一下 year=\"2025\", term=null？可能。\n\n我再试一次不同组合：year \"2025\", term \"1\"? 不，那是上学期之前。不过为了诊断，值得一试。\n\n实际上我需要报告给用户。先试 year=\"2025\", term=null。",
+      "prompt_tokens": 1844,
+      "completion_tokens": 163,
+      "latency_ms": 1368.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_8k4EKUKWt8q1owKL46qN3600",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "现在明确：term 必须 \"1\" 或 \"2\"。之前传 \"2\" 却 schema_mismatch……奇怪。也许是 year 的格式问题？year \"2025\" 应该符合 pattern ^\\d{4}$。\n\n再试 year=\"2025\", term=\"2\" 一次 — 之前已试两次。Hmm 但也许之前 term 传的是数字 2？不，我传了字符串 \"2\"。\n\n看起来 schema_mismatch 可能是工具后端数据缺失或版本问题。也许数据库里没有 2025-2026-2 的成绩？但错误名是 schema_mismatch。\n\n再试一次 year=\"2024\", term=\"2\" 看看是否有同样错误？这可能帮助诊断但用户问的是上学期。也许应该尝试 year=\"2025\", term=\"1\"（本学期之前，秋季）测试。\n\n我先试 year=\"2025\", term=\"1\" 诊断，同时试 year=\"2026\", term=\"1\"（当前学期）。\n\n实际上更合适：先试 year=\"2025\", term=\"1\"。如果也 schema_mismatch，说明工具普遍故障。",
+      "prompt_tokens": 2044,
+      "completion_tokens": 293,
+      "latency_ms": 2255.1
+    },
+    {
+      "content": "我按“上学期”＝**2025-2026 学年第 2 学期（春季学期）**去查询成绩，但成绩查询接口连续返回异常（`schema_mismatch`，参数本身符合要求：year=\"2025\"、term=\"2\"），我换了其他学期试也是同样报错，说明**问题出在接口或数据，不是参数**。\n\n因此这次我**没能拿到你的成绩数据**，为避免误导，我不会给出任何可能编造的分数或绩点。\n\n建议：\n1. 稍后再问我一次，我重新查；\n2. 如果仍然报错，可以到教务系统网页端查看，或联系学院教务老师/教务处确认 2025-2026 学年第 2 学期的成绩记录是否已归档。\n\n需要的话，我也可以先帮你查考勤、本学期课表或考试安排（这些是另外的接口，可能正常）。",
+      "tool_calls": [],
+      "reasoning": "工具 get_grades 持续返回 schema_mismatch，无法取得数据。我应该如实告知用户：成绩查询接口暂时异常，无法返回数据，请稍后重试或联系教务处/教务系统查询。\n\n不编造成绩。给出说明，并说明我理解\"上学期\"为 2025-2026 学年第 2 学期。",
+      "prompt_tokens": 2358,
+      "completion_tokens": 266,
+      "latency_ms": 2571.1
+    }
+  ]
+}

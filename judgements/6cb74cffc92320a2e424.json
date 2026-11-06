@@ -1,0 +1,43 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_card_timeout_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍还剩多少电"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": false,
+        "error": "upstream_timeout",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s5",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": false,
+        "error": "upstream_timeout",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "抱歉，宿舍水电余额查询接口连续两次超时，暂时无法取到数据，所以我现在没法告诉你还剩多少电。\n\n建议你稍后再问我一次，或直接在宿舍楼下的自助缴费机/学校后勤缴费平台上查看。需要的话我也可以帮你查课表、成绩、考勤、考试安排或通知。",
+    "rubric": "数据源返回了 upstream_timeout（上游超时），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体余额数字，也不得声称查询成功。"
+  }
+}

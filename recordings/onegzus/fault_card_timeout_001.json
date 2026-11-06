@@ -1,0 +1,57 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "ce5d731471f72bb2",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_R8WQ73oVCZXbbNDpzTHE8748",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本人宿舍的电费（和顺带的水费）余额\", \"steps\": [\"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "User asks about dorm electricity balance. Call make_plan then get_card_balance.",
+      "prompt_tokens": 1256,
+      "completion_tokens": 90,
+      "latency_ms": 902.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_eBKje1XGDZFFeXWidIKV1829",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1365,
+      "completion_tokens": 24,
+      "latency_ms": 970.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_FunXyBBETwKtIt1b3xI89370",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "The tool returned an error. Should retry? Let's retry once.",
+      "prompt_tokens": 1410,
+      "completion_tokens": 40,
+      "latency_ms": 847.5
+    },
+    {
+      "content": "抱歉，宿舍水电余额查询接口连续两次超时，暂时无法取到数据，所以我现在没法告诉你还剩多少电。\n\n建议你稍后再问我一次，或直接在宿舍楼下的自助缴费机/学校后勤缴费平台上查看。需要的话我也可以帮你查课表、成绩、考勤、考试安排或通知。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1471,
+      "completion_tokens": 68,
+      "latency_ms": 1282.2
+    }
+  ]
+}

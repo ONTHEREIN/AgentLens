@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "6269f786ea31dda6",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_HonKqgDvh724cYnsigPu8055",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上学期（2025-2026 学年春季学期，即 term 2）的考勤统计\", \"steps\": [\"get_attendance\"]}"
+        }
+      ],
+      "reasoning": "The user asks about last semester's attendance. Today is 2026-09-21, which is 2026-2027 academic year term 1. Last semester = 2025-2026 academic year term 2.\n\nI should make_plan first.",
+      "prompt_tokens": 1257,
+      "completion_tokens": 138,
+      "latency_ms": 1465.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_VN1hpDElYekHxYz7LMYE6804",
+          "name": "get_attendance",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1414,
+      "completion_tokens": 57,
+      "latency_ms": 627.8
+    },
+    {
+      "content": "我查了一下，但考勤查询接口目前返回错误（`not_implemented`，即该功能暂未开放），所以暂时拿不到你 2025-2026 学年春季学期（上学期）的考勤数据。\n\n我这边没有可用的数据，就不做猜测了。你可以：\n- 稍后再试一次；\n- 或者直接在教务系统／辅导员处查看考勤统计。\n\n需要我先帮你查上学期的成绩、本学期的课表或考试安排吗？",
+      "tool_calls": [],
+      "reasoning": "The tool returned error \"not_implemented\". Let me report honestly. Maybe try current semester? No — the user asked last semester. I shouldn't fabricate. Report that query failed.\n\nMaybe I could retry once? It's a system limitation. Just inform user.",
+      "prompt_tokens": 1492,
+      "completion_tokens": 159,
+      "latency_ms": 1791.1
+    }
+  ]
+}

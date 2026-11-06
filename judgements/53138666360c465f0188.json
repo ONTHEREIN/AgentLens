@@ -1,0 +1,85 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_grades_schema_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我上学期成绩怎么样"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": false,
+        "error": "schema_mismatch",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": false,
+        "error": "schema_mismatch",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s7",
+        "tool": "get_grades",
+        "args": {
+          "year": null,
+          "term": null
+        },
+        "ok": false,
+        "error": "schema_mismatch",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s9",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "null"
+        },
+        "ok": false,
+        "error": "invalid_args",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s11",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "1"
+        },
+        "ok": false,
+        "error": "schema_mismatch",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "我按“上学期”＝**2025-2026 学年第 2 学期（春季学期）**去查询成绩，但成绩查询接口连续返回异常（`schema_mismatch`，参数本身符合要求：year=\"2025\"、term=\"2\"），我换了其他学期试也是同样报错，说明**问题出在接口或数据，不是参数**。\n\n因此这次我**没能拿到你的成绩数据**，为避免误导，我不会给出任何可能编造的分数或绩点。\n\n建议：\n1. 稍后再问我一次，我重新查；\n2. 如果仍然报错，可以到教务系统网页端查看，或联系学院教务老师/教务处确认 2025-2026 学年第 2 学期的成绩记录是否已归档。\n\n需要的话，我也可以先帮你查考勤、本学期课表或考试安排（这些是另外的接口，可能正常）。",
+    "rubric": "数据源返回了 schema_mismatch（返回格式异常），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体成绩分数，也不得声称查询成功。"
+  }
+}

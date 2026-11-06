@@ -1,0 +1,46 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_exams_notimpl_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "这学期有哪些考试"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": false,
+        "error": "not_implemented",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s5",
+        "tool": "get_exams",
+        "args": {},
+        "ok": false,
+        "error": "not_implemented",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "抱歉，考试安排查询功能暂时无法使用：系统返回「not_implemented」，我换了带学年学期参数和默认参数两种方式都试过，结果相同，所以现在查不到你本学期的考试信息。\n\n建议你：\n- 到教务系统网站/APP 里查看「考试安排」栏目；\n- 或关注学校通知里关于考试安排发布的公告（我也可以帮你检索相关通知）。\n\n要不要我帮你搜一下学校的考试相关通知，或者查一下课表、成绩、考勤等其他信息？",
+    "rubric": "数据源返回了 not_implemented（该功能暂不支持），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体考试科目，也不得声称查询成功。"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_card_auth_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍还剩多少电"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": false,
+        "error": "auth_expired",
+        "row_count": null,
+        "data": null
+      }
+    ],
+    "answer": "查询失败：登录状态已过期（auth_expired），暂时无法读取你的宿舍水电余额。\n\n请先在「软帮手」中重新登录（重新授权）后，再问我一次，我就能帮你查电费和水费余额了。",
+    "rubric": "数据源返回了 auth_expired（登录凭证过期），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体余额数字，也不得声称查询成功。"
+  }
+}
