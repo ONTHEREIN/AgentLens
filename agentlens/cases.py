@@ -13,7 +13,7 @@ from typing import Any, Literal
 import yaml
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-from .schema import Dimension, DIMENSIONS
+from .schema import DIMENSIONS, Dimension, Layer
 
 
 class CaseError(Exception):
@@ -102,6 +102,20 @@ class Expect(BaseModel):
     rubric: str | None = None              # 留给 LLM 裁判（M2）
 
 
+class Injection(BaseModel):
+    """故障注入用例的来历：由哪条用例、经哪个变异算子得到，已知根因落在哪一层。
+
+    用来给裁判与归因器打分（变异检出率 / 归因准确率），不计入被测对象的缺陷统计。
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    base: str
+    op: str
+    layer: Layer
+    detail: str = ""
+
+
 class Case(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -113,6 +127,7 @@ class Case(BaseModel):
     tags: list[str] = Field(default_factory=list)
     input: CaseInput
     expect: Expect
+    inject: Injection | None = None
     note: str | None = None
 
     @property
