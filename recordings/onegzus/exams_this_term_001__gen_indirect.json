@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "8b51b25a550057e5",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_WPMGji5IJLFNsuVt9a3x0510",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期（2026-2027 学年第 1 学期）期末考试的具体日期安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks about final exam dates this semester. Need get_exams with current year (2026) term 1.\n\nFirst make_plan.",
+      "prompt_tokens": 1260,
+      "completion_tokens": 109,
+      "latency_ms": 1341.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_WxQd3imRmYbGpJWNkVvg9386",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1388,
+      "completion_tokens": 56,
+      "latency_ms": 1157.2
+    },
+    {
+      "content": "本学期期末考试共有两门，具体日期如下：\n\n| 日期 | 科目 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 2026-12-24（周四） | 数据库原理 | 09:00-11:00 | A3-302 | 18 |\n| 2026-12-28（周一） | 操作系统 | 14:00-16:00 | B1-204 | 27 |\n\n也就是说，考试安排在 12 月 24 日和 12 月 28 日这两天，两场考试中间隔了几天，方便复习。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1586,
+      "completion_tokens": 129,
+      "latency_ms": 1329.2
+    }
+  ]
+}

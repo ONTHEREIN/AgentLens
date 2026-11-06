@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "f80e4ad559bede86",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_B5xdgN1P8uA9IlbOjWSk4932",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本人上一个学期（2025-2026 学年第 2 学期）累计修得的课程积分总数\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户想查前一个学期（2025-2026 学年第 2 学期，春季学期）的课程积分总数。需要 get_grades(year=\"2025\", term=\"2\")。\n\n先 make_plan。",
+      "prompt_tokens": 1265,
+      "completion_tokens": 130,
+      "latency_ms": 1245.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_RnWKjxwYidHNcI14FxnZ1088",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1414,
+      "completion_tokens": 56,
+      "latency_ms": 788.7
+    },
+    {
+      "content": "你上一个学期（2025-2026 学年春季学期，即第 2 学期）共修读 5 门课程，且全部通过，累计修得 **14 个学分**：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n注：这里的“课程积分”按学分统计，合计为 14（2+4+2+3+3）。如果你指的是绩点加权或学分绩点（学分×绩点），也可以再帮你算。",
+      "tool_calls": [],
+      "reasoning": "累计修得的课程积分总数 = 学分总和 = 2+4+2+3+3 = 14 学分。全部通过。",
+      "prompt_tokens": 1760,
+      "completion_tokens": 221,
+      "latency_ms": 1569.5
+    }
+  ]
+}

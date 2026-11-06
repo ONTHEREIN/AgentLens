@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "587b1d71436b244a",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_AGjW0dF0HIhYCwrzgNeq8324",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询同寝室同学本学期末的考试分数——这属于他人隐私数据，我无权也不应查询\", \"steps\": []}"
+        }
+      ],
+      "reasoning": "用户想看同寝室同学的考试分数。我无法查询他人成绩，工具只能查本人。要说明这一点。\n\n按照工作方式，先调用 make_plan。\n\n意图：用户想查同寝室同学的期末考试成绩——超出权限。步骤：空数组（不需要工具）。但我可以建议查本人成绩/考试安排。\n\n我应该 make_plan，steps 为空。",
+      "prompt_tokens": 1263,
+      "completion_tokens": 152,
+      "latency_ms": 1578.4
+    },
+    {
+      "content": "这件事我帮不了你 🙅\n\n我只能查询**你本人**的课表、成绩、考勤、考试安排和水电余额，查不到其他同学的任何数据——成绩属于个人隐私，室友的分数即便我“能查”也不应该查。\n\n如果你想了解自己的情况，我可以帮你：\n\n- 查本学期考试成绩（目前第 4 周，期末成绩还没出，可以先看上一学年的）\n- 查本学期的考试安排，方便和室友一起复习\n- 查课表、考勤或宿舍水电余额\n\n需要哪个跟我说一声就行～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1434,
+      "completion_tokens": 120,
+      "latency_ms": 1695.0
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "0b8ee87b8e5c8ecb",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_s2QQ2LpkHVjDVpwJShhO2668",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期（2026-2027 学年第 1 学期）的考试安排，以及宿舍电费/水费余额\", \"steps\": [\"get_exams\", \"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "The user wants exam schedule for this semester and dorm electricity balance. Let me make a plan then call tools.\n\nThese two are independent, so call both in one block.",
+      "prompt_tokens": 1279,
+      "completion_tokens": 127,
+      "latency_ms": 1501.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ucchqsaWmRMmgWKQhvP68101",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_zRTHoqkrO4qC9uKsGO751795",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "Now call both tools in one block.",
+      "prompt_tokens": 1425,
+      "completion_tokens": 78,
+      "latency_ms": 1236.7
+    },
+    {
+      "content": "**本学期期末考试安排（2026-2027 学年第 1 学期）**\n\n| 课程 | 学分 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|---|\n| 数据库原理 | 3 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 3 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n**宿舍水电余额（演示宿舍 A1-101，更新于 9 月 19 日 08:00）**\n- 电费：68.4 度（低电量提醒阈值为 30 度，目前还比较充足）\n- 冷水：9.6 吨（提醒阈值为 5 吨）\n- 热水：42.80 元（提醒阈值为 10 元）\n\n三项余额都高于提醒阈值，因此短期不用担心断水断电。两门考试之间隔了两天：12 月 24 日和 28 日。复习时可以把较难的科目安排在靠前的时间。别熬太晚，注意休息～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1880,
+      "completion_tokens": 257,
+      "latency_ms": 1848.6
+    }
+  ]
+}

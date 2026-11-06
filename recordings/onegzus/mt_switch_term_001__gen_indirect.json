@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "ab883c18f48e800f",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_0Evgz0ZH8ulBU9tL216w0586",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询上一学期（2025-2026 学年第 2 学期）各科成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User wants grades for previous semester: current is 2026-2027 fall (year 2026, term 1). Previous semester = 2025-2026 year, term 2 (spring). Call make_plan then get_grades with year 2025, term 2.\n\nWait, previous semester relative to current — 2025-2026 第2学期. Yes.\n\nActually \"前一个学期\" — previous semester. Current is 2026-2027学年第1学期 (fall). Previous semester is 2025-2026学年 第2学期 (spring). So year \"2025\", term \"2\".\n\nBut I should also note the last turn — I answered exams without tool calls apparently. Hmm, the conversation shows my previous answer without tool output. Anyway now proceed.\n\nLet me call make_plan and then get_grades.",
+      "prompt_tokens": 1305,
+      "completion_tokens": 259,
+      "latency_ms": 2075.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_Cj3FdSAcfcmdNLDVUpao7128",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1583,
+      "completion_tokens": 56,
+      "latency_ms": 1034.4
+    },
+    {
+      "content": "上一学期（2025-2026 学年第 2 学期）共 5 门课程，成绩如下：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n全部课程均已通过，成绩状态正常，共计 14 学分。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1929,
+      "completion_tokens": 142,
+      "latency_ms": 1468.5
+    }
+  ]
+}

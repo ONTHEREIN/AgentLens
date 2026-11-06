@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "bd62fd6f6e810872",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_rZjuVQqZYRJ8778PV2p12666",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道本学期的期末考试时间安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "User asks about final exam schedule for this semester. Call make_plan then get_exams with current year 2026, term 1.\n\nActually the academic year 2026-2027, so year \"2026\", term \"1\".",
+      "prompt_tokens": 1262,
+      "completion_tokens": 116,
+      "latency_ms": 1151.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_e8QZxbsRIVi3gpvmdLoe4944",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1397,
+      "completion_tokens": 56,
+      "latency_ms": 810.2
+    },
+    {
+      "content": "本学期期末考试安排如下：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n目前系统里只查到这两门课的考试安排。如果后续还有其他科目的安排，可能会再更新；到时候我可以帮你再查一次。需要我顺便看看本学期课表，帮助安排复习吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1595,
+      "completion_tokens": 141,
+      "latency_ms": 1603.6
+    }
+  ]
+}

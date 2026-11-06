@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "a35a97822c122b56",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_3g6H8KCKGtnAXWAymlAf5491",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想问（猜测是）期末考试安排是否已经发布通知，需要查学校通知并核对自己的考试安排\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user's message is garbled: \"期默考试安排有发桶汁吗\" — probably \"期末考试安排有发通知吗\" (Has there been a notice about final exam arrangements?). Or \"期中考试安排有发通知吗\"?\n\n\"期默\" likely typo for \"期末\" or \"期中\". \"发桶汁\" = \"发通知\". So the question: has a notice been issued about exam arrangements?\n\nI should plan: search_notices with keyword \"考试\" and maybe get_exams. The user asks about notice publication, so search_notices primary; also could check own exam arrangements via get_exams. Let's do both — steps: search_notices, get_exams.\n\nActually the ambiguity: \"期中\" vs \"期末\". I'll search \"考试\" generally and also could search \"期末考试\". Let me do make_plan then call search_notices(\"考试\") and get_exams() in parallel. Maybe also search_notices(\"期末考试\"). But two searches with different keywords are independent — can do both.\n\nLet me make plan with steps [\"search_notices\",\"get_exams\"]. Then call search_notices twice? Steps list is about tool names. Fine.\n\nI'll do: search_notices(keyword=\"考试\") and get_exams() in one block.\n\nActually get_exams current semester = 2026-2027 第1学期 — exam arrangements for this term. That's useful.\n\nLet's do it.",
+      "prompt_tokens": 1261,
+      "completion_tokens": 384,
+      "latency_ms": 3855.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_Opicui1004hOtKmKVaZs9230",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试\"}"
+        },
+        {
+          "id": "call_01_ET_t5CE9ssSGvUO7MuMyA7Z6818",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1664,
+      "completion_tokens": 85,
+      "latency_ms": 1006.6
+    },
+    {
+      "content": "有通知，而且你的期末考试安排也已经出来了：\n\n**相关通知**\n- 《关于期末考试安排的说明》（教务通知，2026-09-12）：考试安排已更新，请及时查看。\n- 《2026 年秋季学期课程提醒》（2026-09-18）：请关注近期课程安排和考试时间。\n\n**你本学期的期末考试安排**\n\n| 课程 | 日期 | 星期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24 | 四 | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 2026-12-28 | 一 | 14:00-16:00 | B1-204 | 27 |\n\n此外，如果你刚才是想问“期中”考试，我可以再帮你查；目前工具返回的本学期考试安排只有这两门期末考试记录。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 2029,
+      "completion_tokens": 192,
+      "latency_ms": 1288.5
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "89e04c8b70609ace",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ubbmcLaVbyl7LIS6LQCz5794",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询本学期（2026-2027 学年第 1 学期）的考试安排，以及宿舍电费/水费余额\", \"steps\": [\"get_exams\", \"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "The user wants exam arrangements for this semester and dorm electricity balance. Let me make a plan and call tools.\n\nCurrent: 2026-2027 学年第 1 学期. So year \"2026\", term \"1\".\n\nThese two are independent, so call in same block after make_plan.",
+      "prompt_tokens": 1274,
+      "completion_tokens": 158,
+      "latency_ms": 1466.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_lfZLV9M7uBjq040U75jI6102",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_4vkJFE8FoEfY0V9EjZw58471",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1451,
+      "completion_tokens": 70,
+      "latency_ms": 1044.8
+    },
+    {
+      "content": "都查到啦～\n\n**📝 本学期考试安排（2026-2027 学年第 1 学期）**\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 类型 |\n|---|---|---|---|---|---|\n| 数据库原理（3 学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 号 | 期末考试 |\n| 操作系统（3 学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 号 | 期末考试 |\n\n**⚡ 宿舍余额（演示宿舍 A1-101，更新于 09-19）**\n- 电费：**68.4 度**（低于 30 度会提醒，目前充足 ✅）\n- 冷水：9.6 吨（充足）\n- 热水：42.80 元（充足）\n\n两场考试都在 12 月下旬，中间隔了 4 天，复习时间安排得开。电费也够用，暂时不用充～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1898,
+      "completion_tokens": 239,
+      "latency_ms": 1430.9
+    }
+  ]
+}

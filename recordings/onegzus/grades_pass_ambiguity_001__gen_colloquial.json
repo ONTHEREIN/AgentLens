@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "6bcfa8aa0e3da4eb",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_HfUwEZsHeo3n3udrT6806629",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询上学期（2025-2026 学年春季学期）各门课程的成绩，看是否都及格\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks about last semester's grades. Today is 2026-09-21, current semester is 2026-2027 term 1, so last semester is 2025-2026 term 2.\n\nAlso could check attendance? The question is about whether they passed courses — grades. Just grades. But maybe attendance too? Keep to grades primarily. Let me plan.",
+      "prompt_tokens": 1266,
+      "completion_tokens": 161,
+      "latency_ms": 1520.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_gKY5OZ4UFnvTKEk2OwGc9528",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1446,
+      "completion_tokens": 56,
+      "latency_ms": 799.4
+    },
+    {
+      "content": "上学期（2025-2026 学年春季学期）你一共修了 5 门课，**全部通过** ✅\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n- 无一门不及格，成绩状态均为「正常」，也没有补考或重修记录。\n- 按学分加权平均约 **88.6 分**，总计 14 学分。\n\n要继续看本学期的课表或考试安排吗？",
+      "tool_calls": [],
+      "reasoning": "Answer: all passed. Compute weighted average? 92*2+89*4+88*2+90*3+85*3 = 184+356+176+270+255 = 1241; credits 14 → 88.64. Optional.",
+      "prompt_tokens": 1792,
+      "completion_tokens": 237,
+      "latency_ms": 1808.8
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "dd1c5c2bb659e1ad",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_AT0yVsuq3shpKPJ6qPOB9790",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本人 2025-2026 学年春季学期（上学期）各门课程成绩，判断是否有不及格课程\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户问上学期课程是否全部及格。今天是2026-09-21，当前是2026-2027学年第1学期。上学期是2025-2026学年第2学期（春季学期），year=\"2025\", term=\"2\"。\n\n需要调用 get_grades。先 make_plan。",
+      "prompt_tokens": 1265,
+      "completion_tokens": 148,
+      "latency_ms": 1573.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_kAQgg9QUZTwKWHekvZee5919",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1432,
+      "completion_tokens": 56,
+      "latency_ms": 892.6
+    },
+    {
+      "content": "上学期（2025-2026 学年春季学期）的成绩已查到，**全部及格了**，没有不及格的课程：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n5 门课状态均为“正常”，成绩全部通过，最低 85 分，表现不错 👍",
+      "tool_calls": [],
+      "reasoning": "All passed. Note: only 5 courses returned — that's what tool gave.",
+      "prompt_tokens": 1778,
+      "completion_tokens": 167,
+      "latency_ms": 1586.0
+    }
+  ]
+}

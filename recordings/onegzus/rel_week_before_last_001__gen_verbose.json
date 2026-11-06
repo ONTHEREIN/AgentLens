@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "10856953dd4571af",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_Ewa3PABm1CdoS2nzdWgJ7330",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询上上周（第 2 周）周五的课表安排\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问\"上上周五有什么课\"。今天是2026-09-21，第4周星期一。上上周 = 第2周。周五 = 第2周周五。所以调用 get_schedule week=2。\n\n先 make_plan。",
+      "prompt_tokens": 1266,
+      "completion_tokens": 126,
+      "latency_ms": 1251.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_lzQu4iLsKauoSf1H4C9z1724",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 2}"
+        }
+      ],
+      "reasoning": "调用 get_schedule week=2。",
+      "prompt_tokens": 1411,
+      "completion_tokens": 47,
+      "latency_ms": 756.4
+    },
+    {
+      "content": "今天是第 4 周星期一，上上周是第 2 周；第 2 周周五，也就是 9 月 11 日，你的课只有一门：\n\n- **体育（网球）**：何老师，第 5-6 节，体育馆 2 号场\n\n那天上午没有课，只有下午第 5-6 节这一门。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1859,
+      "completion_tokens": 83,
+      "latency_ms": 1088.3
+    }
+  ]
+}

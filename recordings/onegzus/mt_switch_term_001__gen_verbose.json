@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "7cc0e0745ad81e9b",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_nXbvFxwADRGnUs0efPLD1199",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询上一学期（2025-2026 学年春季学期）的成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks about last semester grades. Today is 2026-09-21, current academic year 2026-2027 term 1. Last semester = 2025-2026 term 2.\n\nWait — but previous turn I answered about exams without calling tools (that's in the history). Now I should make_plan and call get_grades.\n\nNote: user says \"上学期\" — last semester. Could interpret as previous academic year's spring semester: 2025-2026, term 2.\n\nLet me make plan then call.",
+      "prompt_tokens": 1312,
+      "completion_tokens": 189,
+      "latency_ms": 1876.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_S1mUpUTVOJCaeAzWB1rl5875",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1520,
+      "completion_tokens": 56,
+      "latency_ms": 859.3
+    },
+    {
+      "content": "找到了，你 2025-2026 学年春季学期（上学期）共有 5 门课成绩，全部及格，成绩状态均正常：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n加权平均分约 **88.6 分**，加权平均绩点约 **3.74**。\n\n关于食堂，我这边只能查询课表、成绩、考勤、考试、水电余额和通知这几类信息，饭菜口味没法帮你处理，也不敢替学校的食堂给反馈。要是想正式反映，可以到学校通知里查一下后勤或膳食相关的意见反馈渠道。需要我帮你搜一下吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1866,
+      "completion_tokens": 221,
+      "latency_ms": 1865.7
+    }
+  ]
+}

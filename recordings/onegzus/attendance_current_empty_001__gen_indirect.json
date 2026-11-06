@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "a6e0197dd525c678",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_nZYtddzz1nKib0Kma7lr2552",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询本学期的考勤记录，确认是否有缺课情况\", \"steps\": [\"get_attendance\"]}"
+        }
+      ],
+      "reasoning": "User wants attendance records for this semester. Should call make_plan then get_attendance with current year/term. Current: 2026-2027学年第1学期, so year \"2026\", term \"1\".\n\nMaybe also they want details per course — get_attendance provides stats. Let's plan just get_attendance.",
+      "prompt_tokens": 1267,
+      "completion_tokens": 145,
+      "latency_ms": 1454.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_xzLf2AbYTymTEkiY9eGJ6619",
+          "name": "get_attendance",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1431,
+      "completion_tokens": 57,
+      "latency_ms": 966.7
+    },
+    {
+      "content": "我查了本学期（2026-2027 学年第一学期）的考勤统计，系统里目前还没有任何考勤记录，所以暂时看不出有缺课情况。\n\n可能的原因有以下几种：\n- 前几周课程刚开课，老师还没录入签到数据；现在才第 4 周。\n- 部分课程用线下点名，没有接入系统。\n\n建议你过段时间再来查一次，或者直接问一下任课老师、辅导员确认签到录入进度。需要我顺便帮你查一下本周课表或考试安排吗？",
+      "tool_calls": [],
+      "reasoning": "Empty result. Answer honestly: no attendance records found for this semester.",
+      "prompt_tokens": 1510,
+      "completion_tokens": 129,
+      "latency_ms": 1383.2
+    }
+  ]
+}

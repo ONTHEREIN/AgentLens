@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "d33c2b5d1d910890",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_uyoxL2H5C03knisdPZG95062",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询上学期（2025-2026 学年春季学期）的课程成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks about last semester's grades. Today is 2026-09-21, current semester 2026-2027 term 1. Last semester = 2025-2026 term 2 (spring). \"乘积\" likely typo for 成绩.\n\nCall make_plan then get_grades with year 2025, term 2.",
+      "prompt_tokens": 1257,
+      "completion_tokens": 150,
+      "latency_ms": 1265.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_peLEDdxL7VudczngVTju1330",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1426,
+      "completion_tokens": 56,
+      "latency_ms": 646.8
+    },
+    {
+      "content": "你上学期（2025-2026 学年春季学期）共 5 门课，全部通过：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n加权平均分约 **88.9**（总学分 14），加权平均绩点约 **3.74**。最高分是软件工程导论 92，最低是操作系统 85，整体表现不错。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1772,
+      "completion_tokens": 170,
+      "latency_ms": 1336.3
+    }
+  ]
+}

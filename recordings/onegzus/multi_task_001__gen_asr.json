@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "2975e719ac87e423",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_q8YZYPTI4bnIk2rm4mcF1059",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询本学期的考试安排，以及宿舍电费余额是否充足\", \"steps\": [\"get_exams\", \"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "The user's message has typos: \"这学期的考试安排\" and \"宿舍电费还够不够\". So: get_exams (current semester) and get_card_balance.\n\nLet me make a plan first.",
+      "prompt_tokens": 1267,
+      "completion_tokens": 125,
+      "latency_ms": 1283.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_oZs5URrIpgdVX6nEMct90818",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_uqVy85Ma9GkXeS9lGZDw2727",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1411,
+      "completion_tokens": 70,
+      "latency_ms": 1313.2
+    },
+    {
+      "content": "**本学期（2026-2027 学年第 1 学期）考试安排：**\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 类型 | 学分 |\n|---|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 期末考试 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 期末考试 | 3 |\n\n**宿舍水电余额（演示宿舍 A1-101，更新于 2026-09-19 08:00）：**\n- 电费：剩余 **68.4 度**（低电量提醒阈值为 30 度，目前余额充足）\n- 冷水：剩余 **9.6 吨**（提醒阈值为 5 吨，余额充足）\n- 热水：剩余 **42.80 元**（提醒阈值为 10 元，余额充足）\n\n三项余额都高于提醒阈值，短期不用充值。需要我帮你看看考试前的课表安排吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1858,
+      "completion_tokens": 250,
+      "latency_ms": 1763.2
+    }
+  ]
+}

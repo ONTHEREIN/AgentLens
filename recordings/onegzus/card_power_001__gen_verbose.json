@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "3c36723e5c6138c8",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_OPCpnkKISmvKwMLMDeWu8472",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道宿舍电费余额（顺带提到天热空调常开）\", \"steps\": [\"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "User asks about dorm electricity balance. Need get_card_balance. Also weather comment — just respond. Make plan then call.",
+      "prompt_tokens": 1269,
+      "completion_tokens": 101,
+      "latency_ms": 1285.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_0Opbcmlo7vTeXKbeTlX95473",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1389,
+      "completion_tokens": 24,
+      "latency_ms": 789.7
+    },
+    {
+      "content": "你的宿舍（演示宿舍 A1-101）目前余额如下：\n\n- **电费：68.4 度**（还有不少，低于 30 度时会有提醒）\n- 冷水：9.6 吨\n- 热水：42.80 元\n\n数据更新于 2026-09-19 08:00，是最新的。天热空调常开的话，电量会消耗得快一些，建议过几天再看一眼～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1652,
+      "completion_tokens": 96,
+      "latency_ms": 1517.8
+    }
+  ]
+}

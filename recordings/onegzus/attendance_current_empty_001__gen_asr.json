@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "7d86eab5b1e82768",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_1x33ShEKViUUh6iPTovt6835",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想问本学期（2026-2027学年第1学期）的考勤情况，是否全勤\", \"steps\": [\"get_attendance\"]}"
+        }
+      ],
+      "reasoning": "The user's message is garbled: \"我这学其烤琴怎么样是不是全琴\" — likely \"我这学期考勤怎么样，是不是全勤\" (attendance this semester — is it full attendance?). Typos. So call make_plan with get_attendance for current term.\n\nCurrent semester: 2026-2027学年第1学期, year \"2026\", term \"1\".",
+      "prompt_tokens": 1261,
+      "completion_tokens": 165,
+      "latency_ms": 1639.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_XRDJDm2XAEpRiMHKShqh2259",
+          "name": "get_attendance",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1445,
+      "completion_tokens": 57,
+      "latency_ms": 751.9
+    },
+    {
+      "content": "你大概是问“我这学期考勤怎么样、是不是全勤”吧？\n\n我查了 2026-2027 学年第 1 学期（当前学期）的考勤记录，结果是：**暂无任何考勤记录**（返回的数据为空）。\n\n可能的原因有：\n- 本学期刚开学第 4 周，任课老师还没录入考勤数据；\n- 有些课不考勤，或者数据还没同步到系统。\n\n所以目前既不能说你是全勤，也不能说有缺勤。建议等老师录入后再查一次；如果你担心某门课，也可以直接找任课老师或辅导员确认。\n\n需要我再帮你看看本周课表，或者期末/期中考试安排吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1524,
+      "completion_tokens": 148,
+      "latency_ms": 1983.2
+    }
+  ]
+}

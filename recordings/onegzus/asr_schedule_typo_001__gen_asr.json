@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "c455526360689f41",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_9oUk0MvBP6T0TdvYx4Jg8915",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道下周三（第5周周三）的课程安排\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问\"下周三有什么课\"。今天是2026-09-21，星期一，第4周。下周三应该是第5周的周三。本周是第4周，下周三属于第5周。\n\n需要调用 get_schedule，week=5。\n\n先 make_plan。",
+      "prompt_tokens": 1258,
+      "completion_tokens": 130,
+      "latency_ms": 1673.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_i5TJX3zQAT4891SE2PjZ8656",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 5}"
+        }
+      ],
+      "reasoning": "本周第4周，下周三为第5周周三。",
+      "prompt_tokens": 1407,
+      "completion_tokens": 52,
+      "latency_ms": 1019.7
+    },
+    {
+      "content": "下周三（第 5 周周三）你有 2 门课：\n\n| 节次 | 课程 | 教师 | 教室 |\n|---|---|---|---|\n| 第 1-2 节 | 大学英语（四） | 王老师 | A1-108 |\n| 第 7-8 节 | 数据库原理 | 赵老师 | A3-302 |\n\n上午和下午各一门，中间时间比较空。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1860,
+      "completion_tokens": 95,
+      "latency_ms": 843.3
+    }
+  ]
+}

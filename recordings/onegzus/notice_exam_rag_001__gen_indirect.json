@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "aeb8a413345e8a6b",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_gbSgccKzjJfWueNmCNg89008",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道本学期期末考评（考试）的具体日程安排是否已经公布\", \"steps\": [\"get_exams\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "用户问\"关于期末考评的具体日程表公布了吗\" —— 需要查考试安排和通知公告。先 make_plan，然后调用 get_exams 和 search_notices。\n\n这两个调用相互独立，可以同时调用。但需要先 make_plan。",
+      "prompt_tokens": 1260,
+      "completion_tokens": 132,
+      "latency_ms": 1154.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_OP09YPNLLMOOMIT592EY7184",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_0dJfELIldCXRgaInxgBu9948",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"期末考评\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1411,
+      "completion_tokens": 86,
+      "latency_ms": 739.5
+    },
+    {
+      "content": "已公布，我这边能查到具体安排：\n\n**本学期期末考试安排（2026-2027 学年第 1 学期）**\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n另外，教务系统在 **2026-09-12** 发布了《关于期末考试安排的说明》（来源：教务处），其中提到“考试安排已更新，请及时查看”。\n\n需要注意，目前我只查到这两门课程的考试安排。如果你的期末考评还包括其他课程，或者你问的是“考评”中的平时成绩、课程设计等非笔试环节，目前的查询结果里没有相关信息。你可以告诉我具体是哪门课或哪种考评，我再帮你查。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1710,
+      "completion_tokens": 218,
+      "latency_ms": 1884.1
+    }
+  ]
+}

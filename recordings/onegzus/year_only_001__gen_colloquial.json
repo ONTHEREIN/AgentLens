@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "9baeff3188d80c55",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_6Y1ZZJmCnt9yDxnKUSg89509",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询 2024-2025 学年的课程成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks for 2024 grades. That's 2024-2025 academic year. But term is ambiguous — both terms? The tool asks year and term. Year \"2024\". Term default is current term (1). Better to query both terms? Let me plan: get grades for 2024 term 1 and term 2.\n\nLet me make plan first.",
+      "prompt_tokens": 1260,
+      "completion_tokens": 150,
+      "latency_ms": 1397.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_s8kuubV57PokYqgupOx04826",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2024\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_w2J0d0XJJksQGgUwLS8X9837",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2024\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "Call both terms in parallel since user didn't specify.",
+      "prompt_tokens": 1429,
+      "completion_tokens": 113,
+      "latency_ms": 1880.6
+    },
+    {
+      "content": "我查了 2024-2025 学年两个学期的成绩记录，结果都是空的：\n\n- 2024-2025 学年 秋季学期（第1学期）：没有成绩记录\n- 2024-2025 学年 春季学期（第2学期）：没有成绩记录\n\n可能的原因有：该学年你还没有修课，或成绩尚未录入系统。如果你想查的是其他学年，例如 2025-2026 学年，或者只想查当前学期，告诉我一声，我再帮你查。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1564,
+      "completion_tokens": 109,
+      "latency_ms": 1438.5
+    }
+  ]
+}

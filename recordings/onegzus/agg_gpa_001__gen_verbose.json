@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "f4aad584087bbb86",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_1M4zLUCFkqi8mpJe0Y4q8206",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上学期（2025-2026 学年第 2 学期）的成绩，计算加权平均绩点\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "The user asks about last semester's GPA. Today is 2026-09-21, current semester 2026-2027 term 1. Last semester = 2025-2026 term 2. So year \"2025\", term \"2\".\n\nMake plan then call get_grades.",
+      "prompt_tokens": 1269,
+      "completion_tokens": 145,
+      "latency_ms": 1496.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_zQ37dBBEJ6Z8Dqsj2oEp6188",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1433,
+      "completion_tokens": 56,
+      "latency_ms": 963.9
+    },
+    {
+      "content": "上学期（2025-2026 学年第 2 学期）你的成绩如下：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n- 总学分：14\n- **加权平均绩点 ≈ 3.72**（52.1 ÷ 14）\n- 加权平均分 ≈ 88.6 分\n\n5 门课全部通过，成绩状态均正常。食堂的饭嘛……要不换个窗口试试？😄",
+      "tool_calls": [],
+      "reasoning": "Compute weighted: credits total 2+4+2+3+3 = 14\npoints: 4.0*2=8, 3.7*4=14.8, 3.7*2=7.4, 4.0*3=12, 3.3*3=9.9 → sum=52.1\n52.1/14 = 3.7214... ≈ 3.72\n\nMaybe also mention average score: 92*2=184, 89*4=356, 88*2=176, 90*3=270, 85*3=255 → total 1241/14 = 88.64.",
+      "prompt_tokens": 1779,
+      "completion_tokens": 333,
+      "latency_ms": 2412.8
+    }
+  ]
+}

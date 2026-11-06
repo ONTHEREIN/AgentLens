@@ -1,0 +1,81 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "aea2f65e07b6d1a6",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_CU2gxzEsI5XlwVHN6v5b3806",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道奖学金评定相关的学校通知是否已发布\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user asks about scholarship notices. Also mentions \"最近快期末了事情真多\" — but today is 2026-09-21, which is week 4 of the fall semester, so it's not near finals. Should I gently correct? Yes, but the main task: search notices for 奖学金.\n\nLet me make_plan and call.",
+      "prompt_tokens": 1269,
+      "completion_tokens": 142,
+      "latency_ms": 1622.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_eR8nvgY2vmEAmrfn1aHy9232",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"奖学金\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1430,
+      "completion_tokens": 39,
+      "latency_ms": 794.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_FFuh3Bannhi3vkmt6s3U8496",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"奖学金评定\"}"
+        },
+        {
+          "id": "call_01_q2cD0jke2IocyRJoI2QY5690",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"评奖评优\"}"
+        }
+      ],
+      "reasoning": "No results. Try other keywords: 奖学金评定, 评奖评优, 奖助学金.",
+      "prompt_tokens": 1482,
+      "completion_tokens": 94,
+      "latency_ms": 1365.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ndSi5rVAzK87fBHjzRfJ2818",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"奖助学金\"}"
+        },
+        {
+          "id": "call_01_IaNKrQ1JAdMDjOmgR2Bh2239",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"评优\"}"
+        }
+      ],
+      "reasoning": "Try \"奖助学金\" and \"通知\"? Maybe \"奖\".",
+      "prompt_tokens": 1598,
+      "completion_tokens": 85,
+      "latency_ms": 1024.6
+    },
+    {
+      "content": "用「奖学金」「奖学金评定」「评奖评优」「奖助学金」「评优」这几个关键词都检索过了，目前**没有查到相关通知**，也就是说学校公告里还没有奖学金评定的通知发出来。\n\n另外提醒一下：今天是 2026-09-21，才刚开学第 4 周（第 1 学期），离期末还早呢，不用太着急～ 奖学金评定一般安排在学年结束前后，可以先留意公告。需要我帮你顺便查查本学期的课表、考勤或其他通知吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1705,
+      "completion_tokens": 114,
+      "latency_ms": 1841.0
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "1f9c66644cdda0d7",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_r0wGn6HbjLjmQy9behYp4282",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本人上学期（2025-2026 学年第二学期）的考勤情况\", \"steps\": [\"get_attendance\"]}"
+        }
+      ],
+      "reasoning": "User asks about last semester's attendance. Today 2026-09-21, current academic year 2026-2027 term 1. Last semester = 2025-2026 学年 第2学期. So year \"2025\", term \"2\".\n\nMake plan then call get_attendance.",
+      "prompt_tokens": 1261,
+      "completion_tokens": 143,
+      "latency_ms": 1475.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_JXcOwy2SEZkCIE6gnK1H2889",
+          "name": "get_attendance",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1423,
+      "completion_tokens": 57,
+      "latency_ms": 912.6
+    },
+    {
+      "content": "上学期（2025-2026 学年第二学期）你没有缺勤 ✅\n\n| 课程 | 应到/记录次数 | 正常 | 迟到 | 早退 | 缺勤 | 请假 |\n|---|---|---|---|---|---|---|\n| 数据结构 (SE204) | 16 | 16 | 0 | 0 | 0 | 0 |\n| 数据库原理 (SE306) | 15 | 14 | 0 | 0 | 0 | 1 |\n\n两门课缺勤都是 0 次，数据库原理有 1 次请假记录。需要看其他学期的话也可以告诉我。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1672,
+      "completion_tokens": 133,
+      "latency_ms": 1639.8
+    }
+  ]
+}

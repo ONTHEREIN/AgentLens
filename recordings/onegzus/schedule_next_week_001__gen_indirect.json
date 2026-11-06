@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "5efa097aab897d51",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_xl74HgLbLkoowxWqfmP90487",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询下周三（第 5 教学周）的课表安排\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "The user wants next week's Wednesday teaching arrangement. Today is 2026-09-21, Monday, week 4. Next week is week 5. So get_schedule with week=5.\n\nI should call make_plan first, then get_schedule(week=5).",
+      "prompt_tokens": 1262,
+      "completion_tokens": 133,
+      "latency_ms": 1251.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_Almn9MT0jMK9SDmEakQq9873",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 5}"
+        }
+      ],
+      "reasoning": "Today is week 4 Monday, next week is week 5.",
+      "prompt_tokens": 1414,
+      "completion_tokens": 53,
+      "latency_ms": 594.4
+    },
+    {
+      "content": "下周三（第 5 教学周，2026-09-30）你有两门课：\n\n| 节次 | 课程 | 教师 | 教室 |\n|---|---|---|---|\n| 第 1-2 节 | 大学英语（四） | 王老师 | A1-108 |\n| 第 7-8 节 | 数据库原理 | 赵老师 | A3-302 |\n\n除此之外，周三没有其他安排。需要我再看其他安排，比如考试或考勤吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1868,
+      "completion_tokens": 109,
+      "latency_ms": 1196.4
+    }
+  ]
+}

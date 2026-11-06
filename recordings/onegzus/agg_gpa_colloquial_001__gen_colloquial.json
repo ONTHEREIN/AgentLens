@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "6b4ca980d2d00330",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_wbHYDDpT7d2rTV3t6dgX6156",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想算“上学期”的 GPA，即 2025-2026 学年春季学期（term 2）的成绩，需要先查该学期成绩再核算 GPA\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks for last semester's GPA. Today is 2026-09-21, current academic year 2026-2027 semester 1. Last semester = 2025-2026 semester 2 (spring). I need to call get_grades with year \"2025\", term \"2\".\n\nWait — GPA calculation: the tool returns grades, may include GPA. Let me plan and call.\n\nNote: I should compute GPA myself from data if credits/grades given. Let's first plan then call.",
+      "prompt_tokens": 1259,
+      "completion_tokens": 200,
+      "latency_ms": 1596.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_SB0VZIKd3UfHjqUcpG0Z8928",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1478,
+      "completion_tokens": 56,
+      "latency_ms": 1225.3
+    },
+    {
+      "content": "上学期指 **2025-2026 学年春季学期（2025-2026-2）**，成绩如下：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n**加权 GPA = (2×4.0 + 4×3.7 + 2×3.7 + 3×4.0 + 3×3.3) ÷ 14 = 52.1 ÷ 14 ≈ 3.72**\n\n补充：这 5 门课共 14 学分，全部通过，且成绩状态正常；加权平均分为 **88.64**。如果要算的是别的学期，例如 2025-2026 秋季，或想查本学期，跟我说一声就行～",
+      "tool_calls": [],
+      "reasoning": "Compute weighted GPA:\n软件工程导论 2 × 4.0 = 8.0\n数据结构 4 × 3.7 = 14.8\n大学英语（四） 2 × 3.7 = 7.4\n数据库原理 3 × 4.0 = 12.0\n操作系统 3 × 3.3 = 9.9\nSum = 8+14.8+7.4+12+9.9 = 52.1\nCredits = 2+4+2+3+3 = 14\nGPA = 52.1/14 = 3.7214... ≈ 3.72\n\nAlso weighted avg score: (92*2 + 89*4 + 88*2 + 90*3 + 85*3)/14 = (184+356+176+270+255)=1241/14=88.64",
+      "prompt_tokens": 1824,
+      "completion_tokens": 435,
+      "latency_ms": 2588.2
+    }
+  ]
+}

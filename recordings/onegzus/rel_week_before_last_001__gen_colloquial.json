@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "9beef288e2edd874",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_93T8aaeM3CzXfJNaWxoe4811",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道上上周五（第 2 周周五）有什么课\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "今天是 2026-09-21，第 4 周星期一。上上周五 = 第 2 周的周五。需要查第 2 周课表。\n\n先 make_plan。",
+      "prompt_tokens": 1260,
+      "completion_tokens": 117,
+      "latency_ms": 928.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_S7cbMt1e2gG1y4Mtl7x76795",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 2}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1396,
+      "completion_tokens": 39,
+      "latency_ms": 860.2
+    },
+    {
+      "content": "今天是第 4 周周一，所以“上上周五”是**第 2 周周五（9 月 11 日）**，那天的课只有一节：\n\n| 课程 | 老师 | 地点 | 节次 |\n|---|---|---|---|\n| 体育（网球） | 何老师 | 体育馆 2 号场 | 第 5-6 节 |\n\n那天上午和下午前半段都没课，第 5-6 节去体育馆打网球就行～",
+      "tool_calls": [],
+      "reasoning": "上上周五 = 第 2 周周五（2026-09-11）。周五的课：体育（网球），何老师，体育馆 2 号场，第 5-6 节。",
+      "prompt_tokens": 1836,
+      "completion_tokens": 152,
+      "latency_ms": 1494.1
+    }
+  ]
+}

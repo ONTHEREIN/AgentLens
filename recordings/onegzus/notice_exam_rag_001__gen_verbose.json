@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "780749feef643afc",
+  "replies": [
+    {
+      "content": "我先了解一下你的需求，然后同时查考试安排和通知。",
+      "tool_calls": [
+        {
+          "id": "call_00_LLmKTeMtnMJEpcL9Uxzj5157",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道本学期期末考试安排是否已发布通知，并了解自己的考试安排\", \"steps\": [\"get_exams\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user asks about final exam arrangements — whether there's a notice. I should plan: search_notices with keyword \"期末考试\" and get_exams for current semester.\n\nLet me make plan then call both (independent).",
+      "prompt_tokens": 1267,
+      "completion_tokens": 135,
+      "latency_ms": 1110.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_Wm1uQNIsgBiUOsxBdGKo0054",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_6iwKCx1nwc9L0luNdKQZ7056",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"期末考试\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1421,
+      "completion_tokens": 85,
+      "latency_ms": 878.3
+    },
+    {
+      "content": "有的，通知已经发了 ✅\n\n**相关通知**\n- 《关于期末考试安排的说明》（教务通知，2026-09-12）：考试安排已更新，请及时查看\n- 《2026 年秋季学期课程提醒》（2026-09-18）：请关注近期课程安排和考试时间\n\n**你本人的期末考试安排（2026-2027 学年第 1 学期）**\n\n| 课程 | 日期 | 时间 | 考场 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n目前系统里只查到这两门考试，可能后续还会陆续更新，建议临近时再确认一下。复习辛苦了，注意别熬太晚～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1786,
+      "completion_tokens": 210,
+      "latency_ms": 1531.6
+    }
+  ]
+}
