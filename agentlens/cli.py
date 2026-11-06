@@ -6,6 +6,7 @@
     python -m agentlens show results/<run_id>    # 回看某次运行
     python -m agentlens schema                   # 导出 trace 的 JSON Schema
     python -m agentlens inject cases/onegzus/    # 由真实录制生成故障注入用例（给裁判和归因打分）
+    python -m agentlens generate cases/onegzus/  # LLM 保义改写黄金用例，期望沿用（离线联网一次）
 """
 
 from __future__ import annotations
@@ -173,6 +174,46 @@ def cmd_inject(args: argparse.Namespace, console: Console) -> int:
     return 0
 
 
+def cmd_generate(args: argparse.Namespace, console: Console) -> int:
+    from concurrent.futures import ThreadPoolExecutor
+
+    import yaml
+
+    from .generate import generate
+    from .judge.llm import JudgeConfig
+
+    config = JudgeConfig.load()
+    if config is None:
+        console.print("[red]未配置生成模型[/red]：需要 .env.judge 或 AGENTLENS_JUDGE_* 环境变量")
+        return 2
+    try:
+        bases = [c for c in load_cases(Path(args.path)) if c.source == "golden" and c.inject is None]
+    except CaseError as exc:
+        console.print(f"[red]用例校验失败[/red] {exc}")
+        return 2
+
+    out_dir = Path(args.out)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    # 已生成过的基准跳过：生成物是提交进仓库的资产，重跑不应悄悄换掉它们
+    todo = [c for c in bases if args.force or not any(out_dir.glob(f"{c.id}__gen_*.yaml"))]
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        results = list(pool.map(lambda c: generate(c, config), todo))
+
+    written, rejected = 0, []
+    for docs, why in results:
+        rejected += why
+        for doc in docs:
+            (out_dir / f"{doc['id']}.yaml").write_text(
+                yaml.safe_dump(doc, allow_unicode=True, sort_keys=False), encoding="utf-8",
+            )
+            written += 1
+    load_cases(out_dir)
+    console.print(f"[green]生成[/green] {written} 条改写用例（{len(todo)} 条基准）→ {out_dir}")
+    for line in rejected:
+        console.print(f"  [yellow]拒收[/yellow] {line}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="agentlens", description="AgentLens · 智能体分层归因体检中心")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -209,6 +250,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_inj.add_argument("path", nargs="?", default=str(DEFAULT_CASES / "onegzus"))
     p_inj.add_argument("--out", default=str(DEFAULT_CASES / "calibration"))
     p_inj.set_defaults(func=cmd_inject)
+
+    p_gen = sub.add_parser("generate", help="LLM 保义改写黄金用例生成新用例（期望沿用基准）")
+    p_gen.add_argument("path", nargs="?", default=str(DEFAULT_CASES / "onegzus"))
+    p_gen.add_argument("--out", default=str(DEFAULT_CASES / "generated"))
+    p_gen.add_argument("--force", action="store_true", help="已生成过的基准也重新生成")
+    p_gen.set_defaults(func=cmd_generate)
     return parser
 
 
