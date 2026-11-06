@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "9e8e459938a178ba",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_5MXqzahpB0hpJD19mGE21999",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上学期（2025-2026学年第2学期）的考勤统计，看是否有缺勤记录\", \"steps\": [\"get_attendance\"]}"
+        }
+      ],
+      "reasoning": "User asks about last semester's attendance. Today is 2026-09-21, current academic year 2026-2027 term 1. Last semester = 2025-2026 term 2 (spring). So year \"2025\", term \"2\".\n\nNeed plan first.",
+      "prompt_tokens": 1257,
+      "completion_tokens": 144,
+      "latency_ms": 1262.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_qgWnfLGcK2I8ey7A9tRM3453",
+          "name": "get_attendance",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1420,
+      "completion_tokens": 57,
+      "latency_ms": 734.3
+    }
+  ]
+}

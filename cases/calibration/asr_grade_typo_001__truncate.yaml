@@ -1,0 +1,28 @@
+id: asr_grade_typo_001__truncate
+title: '[注入 L0·truncate] 语音识别错字：「成积」'
+dimension: boundary_exception
+tags:
+- onegzus
+- asr_noise
+- calibration
+- op:truncate
+input:
+  messages:
+  - content: 我上学期的成积怎么样
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: mutated
+inject:
+  base: asr_grade_typo_001
+  op: truncate
+  layer: L0
+  detail: 删除最终回答，回放在最后一轮耗尽

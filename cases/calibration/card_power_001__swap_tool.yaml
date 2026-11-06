@@ -1,0 +1,26 @@
+id: card_power_001__swap_tool
+title: '[注入 L2·swap_tool] 宿舍剩余电量'
+dimension: tool_use
+tags:
+- onegzus
+- smoke
+- ecard
+- calibration
+- op:swap_tool
+input:
+  messages:
+  - content: 宿舍还剩多少电
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '68.4'
+source: mutated
+inject:
+  base: card_power_001
+  op: swap_tool
+  layer: L2
+  detail: get_card_balance → get_schedule（计划同步替换）

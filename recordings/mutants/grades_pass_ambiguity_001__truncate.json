@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "623074c33767fc9c",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_0qVNVx7Id4KYp10SrkBy8090",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上学期（2025-2026学年春季学期）各门课程成绩，判断是否全部通过\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户问上学期课程是否通过。今天是2026-09-21，当前学年2026-2027第1学期。上学期是2025-2026学年第2学期，即 year=\"2025\", term=\"2\"。\n\n先make_plan，然后get_grades。",
+      "prompt_tokens": 1262,
+      "completion_tokens": 140,
+      "latency_ms": 1373.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_9HKbRQPodomuCgdE8pwW9430",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1421,
+      "completion_tokens": 56,
+      "latency_ms": 644.2
+    }
+  ]
+}

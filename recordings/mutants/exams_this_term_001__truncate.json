@@ -1,0 +1,35 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "2a7fd883697477a7",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_xamIGIIzoqb7lR050xtI8257",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期（2026-2027 学年第 1 学期）的期末考试安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks about exam arrangements for this semester. Current semester is 2026-2027 fall, year \"2026\", term \"1\".\n\nNeed to make plan and call get_exams with year 2026, term 1.",
+      "prompt_tokens": 1258,
+      "completion_tokens": 127,
+      "latency_ms": 1373.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_XLQADfSqLBPWcn5mCGLU1547",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1404,
+      "completion_tokens": 56,
+      "latency_ms": 931.3
+    }
+  ]
+}

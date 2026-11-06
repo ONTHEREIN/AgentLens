@@ -1,0 +1,26 @@
+id: notice_exam_rag_001__drop_plan
+title: '[注入 L1·drop_plan] 检索期末考试相关通知'
+dimension: rag_retrieval
+tags:
+- onegzus
+- rag
+- calibration
+- op:drop_plan
+input:
+  messages:
+  - content: 期末考试安排有发通知吗
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 期末考试安排
+source: mutated
+inject:
+  base: notice_exam_rag_001
+  op: drop_plan
+  layer: L1
+  detail: 删除 make_plan 调用，执行照旧

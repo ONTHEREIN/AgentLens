@@ -1,0 +1,26 @@
+id: notice_exam_rag_001__plan_drift
+title: '[注入 L1·plan_drift] 检索期末考试相关通知'
+dimension: rag_retrieval
+tags:
+- onegzus
+- rag
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 期末考试安排有发通知吗
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 期末考试安排
+source: mutated
+inject:
+  base: notice_exam_rag_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['search_notices', 'get_exams'] → ['get_grades']，实际调用不变

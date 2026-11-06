@@ -1,0 +1,33 @@
+id: agg_total_credit_001__drop_plan
+title: '[注入 L1·drop_plan] 聚合计算：上学期总学分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- calibration
+- op:drop_plan
+input:
+  messages:
+  - content: 我上学期一共拿了多少学分
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '14'
+source: mutated
+inject:
+  base: agg_total_credit_001
+  op: drop_plan
+  layer: L1
+  detail: 删除 make_plan 调用，执行照旧

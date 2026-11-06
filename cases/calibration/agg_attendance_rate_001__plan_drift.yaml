@@ -1,0 +1,32 @@
+id: agg_attendance_rate_001__plan_drift
+title: '[注入 L1·plan_drift] 聚合计算：上学期整体出勤率'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 我上学期的整体出勤率是多少
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_attendance
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  rubric: 两门课合计正常出勤 30 次、请假 1 次、总计 31 次；出勤率口径需说明（含请假为 30/31≈96.8%，不计请假为 100%），给出的数值须与所述口径一致
+source: mutated
+inject:
+  base: agg_attendance_rate_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['get_attendance'] → ['get_grades']，实际调用不变

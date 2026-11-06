@@ -1,0 +1,30 @@
+id: asr_schedule_typo_001__answer_tamper
+title: '[注入 L4·answer_tamper] 语音识别错字：「有什么客」'
+dimension: boundary_exception
+difficulty: medium
+tags:
+- onegzus
+- asr_noise
+- relative_time
+- calibration
+- op:answer_tamper
+input:
+  messages:
+  - content: 下周三有什么客
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 5
+  refusal: false
+  answer_contains:
+  - 数据库原理
+source: mutated
+inject:
+  base: asr_schedule_typo_001
+  op: answer_tamper
+  layer: L4
+  detail: 最终回答中 ['数据库原理'] 被改写

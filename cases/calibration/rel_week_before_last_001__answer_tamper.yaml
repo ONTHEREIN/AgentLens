@@ -1,0 +1,30 @@
+id: rel_week_before_last_001__answer_tamper
+title: '[注入 L4·answer_tamper] 「上上周五」换算教学周'
+dimension: tool_use
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- relative_time
+- calibration
+- op:answer_tamper
+input:
+  messages:
+  - content: 上上周五有什么课
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 2
+  refusal: false
+  answer_contains:
+  - 体育
+source: mutated
+inject:
+  base: rel_week_before_last_001
+  op: answer_tamper
+  layer: L4
+  detail: 最终回答中 ['体育'] 被改写

@@ -1,0 +1,30 @@
+id: year_only_001__bad_arg
+title: '[注入 L3·bad_arg] 「2024 年的成绩」学年口径歧义且无数据'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- param_filling
+- ambiguity
+- no_answer
+- calibration
+- op:bad_arg
+input:
+  messages:
+  - content: 帮我查下 2024 年的成绩
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+  refusal: false
+  answer_not_contains:
+  - 软件工程导论
+  rubric: 自然年 2024 横跨两个学年；数据只有 2025-2026-2 学期，回答不应把该学期成绩当成 2024 年的
+source: mutated
+inject:
+  base: year_only_001
+  op: bad_arg
+  layer: L3
+  detail: get_grades.year → '2024-2025'（不符合 schema）
