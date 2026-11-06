@@ -53,10 +53,13 @@ class OneGzusAdapter(BaseAdapter):
             if key in case.input.options:
                 payload[key] = case.input.options[key]
 
-        if case.inject is not None and self.record:
-            return _blocked("故障注入用例只能回放：重录会用真实回复覆盖掉注入的变异")
+        # 录制变异用例（source=mutated）的 LLM 回复是改写过的，只能回放；
+        # 数据面故障用例（fixtures.faults）是真实模型面对故障数据的真实录制，照常录
+        mutant = case.inject is not None and case.source == "mutated"
+        if mutant and self.record:
+            return _blocked("录制变异用例只能回放：重录会用真实回复覆盖掉注入的变异")
         mode = "record" if self.record else "replay"
-        replay_file = (MUTANT_RECORDINGS if case.inject is not None else RECORDINGS) / f"{case.id}.json"
+        replay_file = (MUTANT_RECORDINGS if mutant else RECORDINGS) / f"{case.id}.json"
         python = self.api_dir / ".venv" / "bin" / "python"
         cmd = [str(python), "-m", "app.agent.cli", "--mode", mode, "--replay-file", str(replay_file)]
         try:
