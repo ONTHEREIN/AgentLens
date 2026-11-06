@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -221,7 +222,55 @@ def run_detail(run_dir: Path, cases: dict[str, Case]) -> dict[str, Any]:
             "trace": trace,
             "trace_key": trace_key(trace),
         })
-    return {"summary": summary, "heatmap": heatmap(rows), "rows": rows}
+    calib = calibration([(r["case"]["inject"], r["trace"]) for r in rows if r["case"] and r["case"].get("inject")])
+    return {"summary": summary, "heatmap": heatmap(rows), "rows": rows, "calibration": calib}
+
+
+# ---------------------------------------------------------------- calibration
+
+
+def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float] | None:
+    """二项比例的 Wilson 95% 置信区间（百分比）；小样本、比例贴近 0/100% 时比正态近似可靠。"""
+    if n == 0:
+        return None
+    p = k / n
+    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
+    return round(max(0.0, centre - half) * 100, 1), round(min(1.0, centre + half) * 100, 1)
+
+
+def _rate(k: int, n: int) -> dict[str, Any]:
+    return {"k": k, "n": n, "rate": round(k / n * 100, 1) if n else None, "ci": wilson(k, n)}
+
+
+def calibration(pairs: list[tuple[dict[str, Any], dict[str, Any]]]) -> dict[str, Any] | None:
+    """故障注入用例的两个分数：检出率 = 判定为 fail 的比例；归因准确率 = 检出样本中归因层 == 注入层。
+
+    pairs 是 (case.inject, trace)。没有注入用例时返回 None。
+    """
+    if not pairs:
+        return None
+    groups: dict[tuple[str, str], list[tuple[bool, bool]]] = {}
+    for inject, trace in pairs:
+        killed = trace["verdict"]["rule"] == "fail"
+        groups.setdefault((inject["layer"], inject["op"]), []).append(
+            (killed, killed and trace.get("layer") == inject["layer"]),
+        )
+    by_op = []
+    for (layer, op), marks in sorted(groups.items()):
+        killed = sum(k for k, _ in marks)
+        by_op.append({
+            "layer": layer, "op": op,
+            "detected": _rate(killed, len(marks)),
+            "attributed": _rate(sum(a for _, a in marks), killed),
+        })
+    flat = [m for marks in groups.values() for m in marks]
+    killed = sum(k for k, _ in flat)
+    return {
+        "detected": _rate(killed, len(flat)),
+        "attributed": _rate(sum(a for _, a in flat), killed),
+        "by_op": by_op,
+    }
 
 
 # ---------------------------------------------------------------- compare

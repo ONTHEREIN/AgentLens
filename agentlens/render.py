@@ -152,3 +152,29 @@ def print_summary(console: Console, pairs: list[tuple[Case, Trace]], run_id: str
     )
     console.print(f"[dim]缺陷分布（维度×根因的纵向切片）：{layer_line}[/dim]")
     console.print(f"[dim]复现：python -m agentlens run cases/ --out results/[/dim]")
+    print_calibration(console, pairs)
+
+
+def print_calibration(console: Console, pairs: list[tuple[Case, Trace]]) -> None:
+    """有故障注入用例时，追加裁判检出率与归因准确率（这批失败是注入的，不是被测对象的缺陷）。"""
+    from .audit import calibration
+
+    calib = calibration([(c.inject.model_dump(), t.dump()) for c, t in pairs if c.inject is not None])
+    if calib is None:
+        return
+
+    def fmt(r: dict) -> str:
+        if not r["n"]:
+            return "—"
+        lo, hi = r["ci"]
+        return f"{r['k']}/{r['n']} = {r['rate']}%  [dim](95% CI {lo}–{hi})[/dim]"
+
+    table = Table(title="故障注入校准（注入的失败，不计入被测对象缺陷）", box=box.SIMPLE_HEAD, title_justify="left")
+    table.add_column("注入层")
+    table.add_column("算子")
+    table.add_column("检出率（判定为 fail）")
+    table.add_column("归因准确率（层 = 注入层）")
+    for row in calib["by_op"]:
+        table.add_row(row["layer"], row["op"], fmt(row["detected"]), fmt(row["attributed"]))
+    table.add_row("[bold]合计[/bold]", "", fmt(calib["detected"]), fmt(calib["attributed"]))
+    console.print(table)
