@@ -1,0 +1,27 @@
+id: attendance_current_empty_001__truncate
+title: '[注入 L0·truncate] 本学期暂无考勤数据时不能断言「全勤」'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- empty_observation
+- faithfulness
+- calibration
+- op:truncate
+input:
+  messages:
+  - content: 我这学期考勤怎么样，是不是全勤
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_attendance
+  refusal: false
+  rubric: 观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论
+source: mutated
+inject:
+  base: attendance_current_empty_001
+  op: truncate
+  layer: L0
+  detail: 删除最终回答，回放在最后一轮耗尽

@@ -1,0 +1,31 @@
+id: grades_last_term_001__drop_plan
+title: '[注入 L1·drop_plan] 「上学期成绩」需要从当前日期推出学年学期'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- smoke
+- onegzus
+- param_filling
+- academic_period
+- calibration
+- op:drop_plan
+input:
+  messages:
+  - content: 我上学期成绩怎么样
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: mutated
+inject:
+  base: grades_last_term_001
+  op: drop_plan
+  layer: L1
+  detail: 删除 make_plan 调用，执行照旧

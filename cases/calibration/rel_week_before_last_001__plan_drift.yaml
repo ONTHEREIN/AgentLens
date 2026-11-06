@@ -1,0 +1,30 @@
+id: rel_week_before_last_001__plan_drift
+title: '[注入 L1·plan_drift] 「上上周五」换算教学周'
+dimension: tool_use
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- relative_time
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 上上周五有什么课
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 2
+  refusal: false
+  answer_contains:
+  - 体育
+source: mutated
+inject:
+  base: rel_week_before_last_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['get_schedule'] → ['get_grades']，实际调用不变

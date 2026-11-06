@@ -1,0 +1,26 @@
+id: notice_exam_rag_001__bad_arg
+title: '[注入 L3·bad_arg] 检索期末考试相关通知'
+dimension: rag_retrieval
+tags:
+- onegzus
+- rag
+- calibration
+- op:bad_arg
+input:
+  messages:
+  - content: 期末考试安排有发通知吗
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 期末考试安排
+source: mutated
+inject:
+  base: notice_exam_rag_001
+  op: bad_arg
+  layer: L3
+  detail: get_exams.year → '2026-2027'（不符合 schema）

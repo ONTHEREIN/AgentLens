@@ -1,0 +1,31 @@
+id: grades_last_term_001__plan_drift
+title: '[注入 L1·plan_drift] 「上学期成绩」需要从当前日期推出学年学期'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- smoke
+- onegzus
+- param_filling
+- academic_period
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 我上学期成绩怎么样
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: mutated
+inject:
+  base: grades_last_term_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['get_grades'] → ['get_exams']，实际调用不变

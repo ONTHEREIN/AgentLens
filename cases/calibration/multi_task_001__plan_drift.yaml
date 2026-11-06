@@ -1,0 +1,29 @@
+id: multi_task_001__plan_drift
+title: '[注入 L1·plan_drift] 一句话里两个任务：考试安排 + 电费'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- multi_tool
+- planning
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 帮我看看这学期的考试安排，再看看宿舍电费还够不够
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '68.4'
+source: mutated
+inject:
+  base: multi_task_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['get_exams', 'get_card_balance'] → ['get_grades']，实际调用不变

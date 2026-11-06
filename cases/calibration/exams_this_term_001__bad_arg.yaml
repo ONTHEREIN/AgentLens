@@ -1,0 +1,27 @@
+id: exams_this_term_001__bad_arg
+title: '[注入 L3·bad_arg] 本学期期末考试安排'
+dimension: functional_accuracy
+tags:
+- onegzus
+- exams
+- calibration
+- op:bad_arg
+input:
+  messages:
+  - content: 这学期期末考试都安排在什么时候
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - 数据库原理
+  - 操作系统
+source: mutated
+inject:
+  base: exams_this_term_001
+  op: bad_arg
+  layer: L3
+  detail: get_exams.year → '2026-2027'（不符合 schema）

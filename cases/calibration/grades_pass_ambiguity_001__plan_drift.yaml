@@ -1,0 +1,29 @@
+id: grades_pass_ambiguity_001__plan_drift
+title: '[注入 L1·plan_drift] 句子里带「课」但问的是「过没过」（课表/成绩歧义）'
+dimension: tool_use
+difficulty: medium
+tags:
+- onegzus
+- ambiguity
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 我上学期那几门课最后都过了吗
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: mutated
+inject:
+  base: grades_pass_ambiguity_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['get_grades'] → ['get_exams']，实际调用不变

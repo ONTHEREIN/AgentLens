@@ -1,0 +1,34 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "c845be751d3ac262",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_r3HcGxJ8InO66n5BO4QP0447",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_ZSpzLsclA53OWrE86hTJ7833",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1422,
+      "completion_tokens": 70,
+      "latency_ms": 683.4
+    },
+    {
+      "content": "**本学期考试安排（2026-2027 学年第 1 学期）**\n\n| 课程 | 学分 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|---|\n| 数据库原理 | 3 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 3 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n这两门都是期末考试，目前只查到这两门。\n\n**宿舍水电余额（演示宿舍 A1-101，数据更新于 9-19 08:00）**\n- 电费：68.4 度（低于 30 度才会提醒，目前够用）\n- 冷水：9.6 吨（低于 5 吨才会提醒）\n- 热水：42.80 元（低于 10 元才会提醒）\n\n三项余额都高于提醒阈值，暂时不用担心。不过电费是宿舍最容易用完的，建议之后留意一下，降到 30 度以下就要及时充值了。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1869,
+      "completion_tokens": 244,
+      "latency_ms": 1641.9
+    }
+  ]
+}

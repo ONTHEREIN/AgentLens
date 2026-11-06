@@ -1,0 +1,30 @@
+id: attendance_last_term_001__plan_drift
+title: '[注入 L1·plan_drift] 上学期考勤（需要推断学年学期）'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- academic_period
+- calibration
+- op:plan_drift
+input:
+  messages:
+  - content: 我上学期有没有缺勤
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_attendance
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: mutated
+inject:
+  base: attendance_last_term_001
+  op: plan_drift
+  layer: L1
+  detail: 计划步骤 ['get_attendance'] → ['get_grades']，实际调用不变

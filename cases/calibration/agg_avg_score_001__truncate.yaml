@@ -1,0 +1,33 @@
+id: agg_avg_score_001__truncate
+title: '[注入 L0·truncate] 聚合计算：上学期学分加权平均分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- calibration
+- op:truncate
+input:
+  messages:
+  - content: 上学期按学分加权的平均分是多少
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '88.6'
+source: mutated
+inject:
+  base: agg_avg_score_001
+  op: truncate
+  layer: L0
+  detail: 删除最终回答，回放在最后一轮耗尽
