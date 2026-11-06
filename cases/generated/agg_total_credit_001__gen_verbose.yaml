@@ -1,0 +1,29 @@
+id: agg_total_credit_001__gen_verbose
+title: '[改写·verbose] 聚合计算：上学期总学分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近快期末了突然想起来看看之前的成绩，对了，我上学期一共拿了多少学分？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '14'
+note: 由 agg_total_credit_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期一共拿了多少学分
+source: llm

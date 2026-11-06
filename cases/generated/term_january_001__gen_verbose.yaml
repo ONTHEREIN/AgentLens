@@ -1,0 +1,27 @@
+id: term_january_001__gen_verbose
+title: '[改写·verbose] 1 月份仍属秋季学期，「上学期」是上一学年春季'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- param_filling
+- academic_period
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近在家待着好无聊啊，突然想起来看看分数，我上学期成绩怎么样？
+  options:
+    today: '2027-01-10'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: llm
+note: 由 term_january_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期成绩怎么样

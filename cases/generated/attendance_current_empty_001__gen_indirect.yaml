@@ -1,0 +1,23 @@
+id: attendance_current_empty_001__gen_indirect
+title: '[改写·indirect] 本学期暂无考勤数据时不能断言「全勤」'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- empty_observation
+- faithfulness
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 帮我查下我这学期的上课签到记录，看看有没有缺过课？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_attendance
+  refusal: false
+  rubric: 观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论
+note: 由 attendance_current_empty_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我这学期考勤怎么样，是不是全勤
+source: llm

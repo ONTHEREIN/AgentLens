@@ -1,0 +1,25 @@
+id: multi_task_001__gen_asr
+title: '[改写·asr] 一句话里两个任务：考试安排 + 电费'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- multi_tool
+- planning
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 帮我看看这雪期的考是安排再看看宿舍电废还够不够
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '68.4'
+source: llm
+note: 由 multi_task_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：帮我看看这学期的考试安排，再看看宿舍电费还够不够

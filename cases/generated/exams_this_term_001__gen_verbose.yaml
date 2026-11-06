@@ -1,0 +1,23 @@
+id: exams_this_term_001__gen_verbose
+title: '[改写·verbose] 本学期期末考试安排'
+dimension: functional_accuracy
+tags:
+- onegzus
+- exams
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近复习得头都大了，感觉时间完全不够用啊。对了，这学期期末考试都安排在什么时候？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - 数据库原理
+  - 操作系统
+source: llm
+note: 由 exams_this_term_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：这学期期末考试都安排在什么时候

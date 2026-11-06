@@ -1,0 +1,25 @@
+id: grades_pass_ambiguity_001__gen_indirect
+title: '[改写·indirect] 句子里带「课」但问的是「过没过」（课表/成绩歧义）'
+dimension: tool_use
+difficulty: medium
+tags:
+- onegzus
+- ambiguity
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 帮我查一下，上学期的那几门课我有没有全部及格
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+note: 由 grades_pass_ambiguity_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期那几门课最后都过了吗
+source: llm

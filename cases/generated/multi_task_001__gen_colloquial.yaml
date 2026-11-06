@@ -1,0 +1,25 @@
+id: multi_task_001__gen_colloquial
+title: '[改写·colloquial] 一句话里两个任务：考试安排 + 电费'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- multi_tool
+- planning
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 哎，帮我瞅瞅这学期的考试安排呗，顺便看下宿舍电费还够不够哈。
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '68.4'
+source: llm
+note: 由 multi_task_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：帮我看看这学期的考试安排，再看看宿舍电费还够不够

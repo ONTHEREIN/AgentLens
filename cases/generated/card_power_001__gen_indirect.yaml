@@ -1,0 +1,22 @@
+id: card_power_001__gen_indirect
+title: '[改写·indirect] 宿舍剩余电量'
+dimension: tool_use
+tags:
+- onegzus
+- smoke
+- ecard
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 咱们寝室的用电结余还有几度？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '68.4'
+source: llm
+note: 由 card_power_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：宿舍还剩多少电

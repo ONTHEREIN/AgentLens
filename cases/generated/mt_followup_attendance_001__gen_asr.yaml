@@ -1,0 +1,29 @@
+id: mt_followup_attendance_001__gen_asr
+title: '[改写·asr] 多轮：「那考勤呢」要沿用上一轮的学期'
+dimension: multi_turn
+difficulty: medium
+tags:
+- onegzus
+- context_carryover
+- academic_period
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 我上学期成绩怎么样
+  - role: assistant
+    content: 上学期（2025-2026 学年第 2 学期）你 5 门课全部通过，加权平均绩点约 3.72。
+  - content: 那上学期我的靠勤咋样
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_attendance
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+source: llm
+note: 由 mt_followup_attendance_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：那考勤呢

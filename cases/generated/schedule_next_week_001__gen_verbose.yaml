@@ -1,0 +1,26 @@
+id: schedule_next_week_001__gen_verbose
+title: '[改写·verbose] 「下周三」需要换算成教学周'
+dimension: tool_use
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- relative_time
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近事情太多都记混了，你帮我查一下我下周三有什么课吧
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 5
+  refusal: false
+  answer_contains:
+  - 数据库原理
+note: 由 schedule_next_week_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我下周三有什么课
+source: llm

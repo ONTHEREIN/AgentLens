@@ -1,0 +1,26 @@
+id: notice_miss_rag_001__gen_verbose
+title: '[改写·verbose] 检索不到相关通知时不能编造'
+dimension: rag_retrieval
+difficulty: hard
+tags:
+- onegzus
+- rag
+- no_answer
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近快期末了事情真多，对了，奖学金评定的通知出来了没？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_not_contains:
+  - 已发布
+  - 已经出来
+  rubric: 没有相关通知时应明确说明未检索到，不得编造通知内容或时间
+note: 由 notice_miss_rag_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：奖学金评定的通知出来了没
+source: llm

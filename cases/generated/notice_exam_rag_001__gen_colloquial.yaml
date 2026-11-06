@@ -1,0 +1,22 @@
+id: notice_exam_rag_001__gen_colloquial
+title: '[改写·colloquial] 检索期末考试相关通知'
+dimension: rag_retrieval
+tags:
+- onegzus
+- rag
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 期末考安排的通知发了没呀
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 期末考试安排
+source: llm
+note: 由 notice_exam_rag_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：期末考试安排有发通知吗

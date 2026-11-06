@@ -1,0 +1,27 @@
+id: year_only_001__gen_verbose
+title: '[改写·verbose] 「2024 年的成绩」学年口径歧义且无数据'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- param_filling
+- ambiguity
+- no_answer
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 今天天气真不错，帮我查下2024年的成绩
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+  refusal: false
+  answer_not_contains:
+  - 软件工程导论
+  rubric: 自然年 2024 横跨两个学年；数据只有 2025-2026-2 学期，回答不应把该学期成绩当成 2024 年的
+note: 由 year_only_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：帮我查下 2024
+  年的成绩
+source: llm

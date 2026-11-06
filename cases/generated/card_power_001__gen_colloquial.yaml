@@ -1,0 +1,22 @@
+id: card_power_001__gen_colloquial
+title: '[改写·colloquial] 宿舍剩余电量'
+dimension: tool_use
+tags:
+- onegzus
+- smoke
+- ecard
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 咱宿舍还有多少电呀？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '68.4'
+source: llm
+note: 由 card_power_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：宿舍还剩多少电

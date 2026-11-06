@@ -1,0 +1,29 @@
+id: agg_avg_score_001__gen_indirect
+title: '[改写·indirect] 聚合计算：上学期学分加权平均分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 帮我算一下上个学期根据课程权重得出的综合得分是多少？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '88.6'
+note: 由 agg_avg_score_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上学期按学分加权的平均分是多少
+source: llm

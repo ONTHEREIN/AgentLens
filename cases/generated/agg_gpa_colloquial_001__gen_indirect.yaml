@@ -1,0 +1,29 @@
+id: agg_gpa_colloquial_001__gen_indirect
+title: '[改写·indirect] 聚合计算：口语化问 GPA'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 我上学期的平均学分绩点是多少
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '3.72'
+note: 由 agg_gpa_colloquial_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：帮我算一下上学期的GPA
+source: llm

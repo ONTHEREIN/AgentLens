@@ -1,0 +1,26 @@
+id: attendance_last_term_001__gen_indirect
+title: '[改写·indirect] 上学期考勤（需要推断学年学期）'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- academic_period
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 帮我查下本人上学期有没有旷课记录？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_attendance
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+note: 由 attendance_last_term_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期有没有缺勤
+source: llm

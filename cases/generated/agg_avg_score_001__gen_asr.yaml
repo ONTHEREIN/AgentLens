@@ -1,0 +1,29 @@
+id: agg_avg_score_001__gen_asr
+title: '[改写·asr] 聚合计算：上学期学分加权平均分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- aggregation
+- D-001
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 上学期按学芬家权的平军分是多少
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '88.6'
+note: 由 agg_avg_score_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上学期按学分加权的平均分是多少
+source: llm

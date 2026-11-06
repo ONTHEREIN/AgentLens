@@ -1,0 +1,31 @@
+id: term_march_empty_001__gen_asr
+title: '[改写·asr] 春季学期问「上学期」，该学期无成绩时不能拿更早学期顶替'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- param_filling
+- academic_period
+- no_answer
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 我上雪期成绩杂样
+  options:
+    today: '2027-03-05'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2026'
+      term:
+        equals: '1'
+  refusal: false
+  answer_not_contains:
+  - 软件工程导论
+  rubric: 上学期查无成绩时应如实说明，不得把 2025-2026 学年第 2 学期的成绩当作「上学期」
+note: 由 term_march_empty_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期成绩怎么样
+source: llm

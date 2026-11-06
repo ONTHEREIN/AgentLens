@@ -1,0 +1,27 @@
+id: grades_last_term_001__gen_asr
+title: '[改写·asr] 「上学期成绩」需要从当前日期推出学年学期'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- smoke
+- onegzus
+- param_filling
+- academic_period
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 我上学期成绩宰样
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+note: 由 grades_last_term_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期成绩怎么样
+source: llm

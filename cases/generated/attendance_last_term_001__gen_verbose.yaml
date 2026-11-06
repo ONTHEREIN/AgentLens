@@ -1,0 +1,26 @@
+id: attendance_last_term_001__gen_verbose
+title: '[改写·verbose] 上学期考勤（需要推断学年学期）'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- academic_period
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 刚打完球回来，突然想起来个事，我上学期有没有缺勤？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_attendance
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+note: 由 attendance_last_term_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期有没有缺勤
+source: llm

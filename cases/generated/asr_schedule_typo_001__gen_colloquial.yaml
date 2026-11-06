@@ -1,0 +1,26 @@
+id: asr_schedule_typo_001__gen_colloquial
+title: '[改写·colloquial] 语音识别错字：「有什么客」'
+dimension: boundary_exception
+difficulty: medium
+tags:
+- onegzus
+- asr_noise
+- relative_time
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 哎，下周三都有啥课来着？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 5
+  refusal: false
+  answer_contains:
+  - 数据库原理
+source: llm
+note: 由 asr_schedule_typo_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：下周三有什么客

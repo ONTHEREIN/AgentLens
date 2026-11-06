@@ -1,0 +1,26 @@
+id: rel_week_before_last_001__gen_verbose
+title: '[改写·verbose] 「上上周五」换算教学周'
+dimension: tool_use
+difficulty: medium
+tags:
+- onegzus
+- param_filling
+- relative_time
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近事情太多都记混了，上上周五有什么课？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 2
+  refusal: false
+  answer_contains:
+  - 体育
+source: llm
+note: 由 rel_week_before_last_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上上周五有什么课

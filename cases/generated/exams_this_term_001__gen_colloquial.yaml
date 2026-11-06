@@ -1,0 +1,23 @@
+id: exams_this_term_001__gen_colloquial
+title: '[改写·colloquial] 本学期期末考试安排'
+dimension: functional_accuracy
+tags:
+- onegzus
+- exams
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 咱这学期期末考试都啥时候考啊？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - 数据库原理
+  - 操作系统
+source: llm
+note: 由 exams_this_term_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：这学期期末考试都安排在什么时候
