@@ -370,6 +370,21 @@
   margin-top: 14px;
 }
 
+/* ---- 故障注入校准 */
+
+.calib-kpis {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.calib-kpis .kpi small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
 /* ---- 人工复核卡片 */
 
 .review-card textarea {

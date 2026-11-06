@@ -70,6 +70,16 @@ SUITES: dict[str, dict] = {
         "dir": ROOT / "cases" / "onegzus",
         "adapter": lambda: OneGzusAdapter(record=False),
     },
+    "faults": {
+        "label": "软帮手 · 数据面故障注入",
+        "dir": ROOT / "cases" / "faults",
+        "adapter": lambda: OneGzusAdapter(record=False),
+    },
+    "calibration": {
+        "label": "归因校准 · 录制变异（只回放）",
+        "dir": ROOT / "cases" / "calibration",
+        "adapter": lambda: OneGzusAdapter(record=False),
+    },
     "seed": {
         "label": "CampusCopilot 桩对象（种子用例）",
         "dir": ROOT / "cases",

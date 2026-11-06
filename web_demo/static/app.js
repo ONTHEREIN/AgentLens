@@ -620,6 +620,42 @@
       </article>`;
   }
 
+  function rateCell(r) {
+    if (!r.n) return '<span class="muted">—</span>';
+    const [lo, hi] = r.ci;
+    return `<b>${r.k}/${r.n}</b> = ${r.rate.toFixed(1)}%<div class="muted small">95% CI ${lo}–${hi}</div>`;
+  }
+
+  // 故障注入用例的失败是注入的：这里给的是 AgentLens 自己的分数，不是被测对象的缺陷
+  function calibrationHtml() {
+    const c = state.detail.calibration;
+    if (!c) return "";
+    const rows = c.by_op.map((r) => `
+      <tr>
+        <td><span class="tag">${escapeHtml(r.layer)}</span> ${escapeHtml(layerName(r.layer))}</td>
+        <td class="mono">${escapeHtml(r.op)}</td>
+        <td class="num">${rateCell(r.detected)}</td>
+        <td class="num">${rateCell(r.attributed)}</td>
+      </tr>`).join("");
+    return `
+      <section class="panel calib-panel">
+        <div class="panel-bar">
+          <h2>故障注入校准 <span class="muted small">根因已知的注入样本：裁判能否发现、归因能否归对层</span></h2>
+        </div>
+        <div class="calib-kpis">
+          <div class="kpi"><span>检出率（判定为 fail）</span><strong>${c.detected.rate == null ? "—" : c.detected.rate.toFixed(1) + "%"}</strong><small class="muted">${c.detected.k}/${c.detected.n}${c.detected.ci ? ` · CI ${c.detected.ci[0]}–${c.detected.ci[1]}` : ""}</small></div>
+          <div class="kpi"><span>归因准确率（层 = 注入层）</span><strong>${c.attributed.rate == null ? "—" : c.attributed.rate.toFixed(1) + "%"}</strong><small class="muted">${c.attributed.k}/${c.attributed.n}${c.attributed.ci ? ` · CI ${c.attributed.ci[0]}–${c.attributed.ci[1]}` : ""}</small></div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>注入层</th><th>算子</th><th class="num">检出率</th><th class="num">归因准确率</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <p class="case-note">这批失败由注入产生，不计入被测对象缺陷。录制变异的算子与归因分支一一对应，高分只说明决策顺序自洽；归因在真实缺陷上的准确率以人工复核 κ 为准。</p>
+      </section>`;
+  }
+
   function renderRun() {
     const d = state.detail;
     const s = d.summary;
@@ -645,6 +681,8 @@
         <div class="kpi"><span>跳过</span><strong>${s.skip}</strong></div>
         <div class="kpi"><span>人工复核</span><strong>${progress.done}<small> / ${progress.need}</small></strong></div>
       </section>
+
+      ${calibrationHtml()}
 
       <section class="panel">
         <div class="panel-bar">
