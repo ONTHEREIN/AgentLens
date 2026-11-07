@@ -70,6 +70,11 @@ SUITES: dict[str, dict] = {
         "dir": ROOT / "cases" / "onegzus",
         "adapter": lambda: OneGzusAdapter(record=False),
     },
+    "generated": {
+        "label": "软帮手 · LLM 保义改写（只回放）",
+        "dir": ROOT / "cases" / "generated",
+        "adapter": lambda: OneGzusAdapter(record=False),
+    },
     "faults": {
         "label": "软帮手 · 数据面故障注入",
         "dir": ROOT / "cases" / "faults",
