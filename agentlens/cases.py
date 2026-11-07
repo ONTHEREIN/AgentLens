@@ -87,6 +87,19 @@ class CaseInput(BaseModel):
         return "\n".join(m.content for m in self.messages if m.role == "user")
 
 
+class Budget(BaseModel):
+    """性能预算（performance 维度）：端到端耗时、token 用量、工具调用次数的上限，写了的都要满足。
+
+    回放时耗时取录制里的模型耗时 + 数据源耗时（虚拟时钟），同一份录制每次结果一致。
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    latency_ms: float | None = Field(default=None, gt=0)
+    tokens: int | None = Field(default=None, gt=0)
+    tool_calls: int | None = Field(default=None, ge=0)
+
+
 class Expect(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -100,6 +113,7 @@ class Expect(BaseModel):
     answer_contains: list[str] = Field(default_factory=list)
     answer_not_contains: list[str] = Field(default_factory=list)
     rubric: str | None = None              # 留给 LLM 裁判（M2）
+    budget: Budget | None = None           # 性能预算
 
 
 class Injection(BaseModel):
