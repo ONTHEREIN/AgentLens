@@ -1,0 +1,83 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "grades_pass_ambiguity_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近降温了好多啊我都快冻感冒了，对了，我上学期那几门课最后都过了吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      }
+    ],
+    "answer": "都过了 ✅。上学期（2025-2026 学年第 2 学期）你一共 5 门课，全部及格，成绩如下：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n并且，所有成绩的状态都正常，没有补考或重修记录，最高分是软件工程导论 92 分。\n\n天气确实转凉了，记得加件外套、别熬夜，多喝热水～ 需要我再帮你看看这学期的课表或考试安排吗？",
+    "rubric": null
+  }
+}

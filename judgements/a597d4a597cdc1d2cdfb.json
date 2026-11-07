@@ -1,0 +1,61 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "schedule_next_week_001__swap_tool",
+  "verdict": {
+    "faithful": false,
+    "score": 1,
+    "issues": [
+      {
+        "claim": "下周三（2026-09-30，第 5 周周三）你有两节课：\n\n| 时间 | 课程 | 教师 | 地点 |\n|---|---|---|---|\n| 第 1-2 节 | 大学英语（四） | 王老师 | A1-108 |\n| 第 7-8 节 | 数据库原理 | 赵老师 | A3-302 |",
+        "problem": "观测数据中仅包含期末考试信息（get_exams），未提供日常课程表信息。回答中关于下周三的课程名称、教师、上课时间、地点等事实均无法在观测数据中找到，属于无中生有。",
+        "span": "s3"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我下周三有什么课"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "下周三（2026-09-30，第 5 周周三）你有两节课：\n\n| 时间 | 课程 | 教师 | 地点 |\n|---|---|---|---|\n| 第 1-2 节 | 大学英语（四） | 王老师 | A1-108 |\n| 第 7-8 节 | 数据库原理 | 赵老师 | A3-302 |\n\n两门课都从第 1 周持续到第 16 周，因此第 5 周正常上课。",
+    "rubric": null
+  }
+}

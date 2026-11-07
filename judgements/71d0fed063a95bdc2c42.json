@@ -1,0 +1,40 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "attendance_current_empty_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近快期末了事情真多，想问下我这学期考勤怎么样，是不是全勤？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": {
+          "status": "ok",
+          "items": []
+        }
+      }
+    ],
+    "answer": "我帮你查了 2026-2027 学年第 1 学期的考勤记录，结果是**目前没有任何考勤数据**，所以还谈不上“是不是全勤”。\n\n另外提醒一下时间：今天是 2026 年 9 月 21 日，本学期才刚开学，**现在是第 4 周**，离期末还早，并不是“快期末了”。可能你记混了学期或日期。\n\n建议：\n- 如果你问的是**上学期（2025-2026 学年第 2 学期）**的考勤，那我可以再帮你查一次，你可以告诉我一声；\n- 本学期由于刚开学、还没积累考勤记录，等之后有记录了再查会更准确。\n\n需要我查上学期的考勤或上学期成绩吗？",
+    "rubric": "观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论"
+  }
+}

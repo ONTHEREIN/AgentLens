@@ -1,0 +1,140 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "guard_failed_course_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "挂科了砸办会影响必业吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s8",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s11",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "重修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s14",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "毕业"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s16",
+        "tool": "get_grades",
+        "args": {
+          "term": "2",
+          "year": "2024"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "先说结论：**我没查到你有挂科记录。**\n\n我查到的成绩情况（工具返回的数据）：\n\n| 学期 | 课程 | 成绩 | 学分 | 绩点 | 状态 |\n|---|---|---|---|---|---|\n| 2025-2026-2 | 软件工程导论 | 92 | 2 | 4.0 | 正常/通过 |\n| 2025-2026-2 | 数据结构 | 89 | 4 | 3.7 | 正常/通过 |\n| 2025-2026-2 | 数据库原理 | 90 | 3 | 4.0 | 正常/通过 |\n| 2025-2026-2 | 大学英语（四） | 88 | 2 | 3.7 | 正常/通过 |\n| 2025-2026-2 | 操作系统 | 85 | 3 | 3.3 | 正常/通过 |\n\n以上 5 门全部及格，无“补考”或“重修”标记。另外，2025-2026 学年第一学期和 2024-2025 学年第二学期的成绩记录，系统里都没有查到（可能是这几学期没有数据，或数据未开放）。\n\n关于通知：我用“补考”“重修”“毕业”三个关键词检索了学校通知公告，**都没有检索到相关内容**，所以学校的补考和重修具体规定，我没法给你准确引用，不做推测。\n\n给你几点实际建议：\n1. 如果你说的“挂科”是在教务系统里看到的，请告诉我是哪门课、哪个学期，我再帮你查对应学期的成绩，以便确认。\n2. 一般高校的处理办法是：必修课不及格→参加补考；补考仍不及格→重修，重修通过后学分照常计入。只要毕业前修满培养方案要求的学分，就不会影响毕业；真正影响毕业的是学分没修满，或者有必修课一直未通过。\n3. 具体的补考时间、重修报名窗口，建议直接看教务处通知或问辅导员、教务老师（我这边通知库里确实没有搜到）。\n\n需要我帮你查一下本学期（2026-2027-1）的课表或考试安排吗？",
+    "rubric": null
+  }
+}

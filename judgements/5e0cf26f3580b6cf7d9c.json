@@ -1,0 +1,106 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "asr_schedule_typo_001__gen_verbose",
+  "verdict": {
+    "faithful": false,
+    "score": 4,
+    "issues": [
+      {
+        "claim": "本周（第4周）周三你有两门课",
+        "problem": "用户询问的是‘下周三’（即第5周）的课表，而材料中当前周次为第4周。助手错误地回答了‘本周（第4周）’的课表，周次推断与用户意图不匹配。",
+        "span": "s3"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近事情好多都没顾上看日历，想问下周三有什么课？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_schedule",
+        "args": {
+          "week": 4
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 7,
+        "data": [
+          {
+            "name": "软件工程导论",
+            "teacher": "林老师",
+            "classroom": "A3-201",
+            "weekday": 1,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "高等数学（下）",
+            "teacher": "周老师",
+            "classroom": "B2-305",
+            "weekday": 1,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据结构",
+            "teacher": "陈老师",
+            "classroom": "实训楼 204",
+            "weekday": 2,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "大学英语（四）",
+            "teacher": "王老师",
+            "classroom": "A1-108",
+            "weekday": 3,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据库原理",
+            "teacher": "赵老师",
+            "classroom": "A3-302",
+            "weekday": 3,
+            "startSection": 7,
+            "endSection": 8,
+            "weeks": "1-16"
+          },
+          {
+            "name": "操作系统",
+            "teacher": "黄老师",
+            "classroom": "B1-204",
+            "weekday": 4,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "体育（网球）",
+            "teacher": "何老师",
+            "classroom": "体育馆 2 号场",
+            "weekday": 5,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          }
+        ]
+      }
+    ],
+    "answer": "本周（第4周）周三你有两门课：\n\n| 时间 | 课程 | 老师 | 地点 |\n|---|---|---|---|\n| 第1-2节 | 大学英语（四） | 王老师 | A1-108 |\n| 第7-8节 | 数据库原理 | 赵老师 | A3-302 |\n\n另外，本周你周三的其他时间没有课，周三的课都安排在第1-2节和第7-8节，两门课都在1-16周的课程范围内。",
+    "rubric": null
+  }
+}

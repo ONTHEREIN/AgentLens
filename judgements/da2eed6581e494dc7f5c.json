@@ -1,0 +1,100 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "rel_week_before_last_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近事情太多都记混了，上上周五有什么课？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_schedule",
+        "args": {
+          "week": 2
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 7,
+        "data": [
+          {
+            "name": "软件工程导论",
+            "teacher": "林老师",
+            "classroom": "A3-201",
+            "weekday": 1,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "高等数学（下）",
+            "teacher": "周老师",
+            "classroom": "B2-305",
+            "weekday": 1,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据结构",
+            "teacher": "陈老师",
+            "classroom": "实训楼 204",
+            "weekday": 2,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "大学英语（四）",
+            "teacher": "王老师",
+            "classroom": "A1-108",
+            "weekday": 3,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据库原理",
+            "teacher": "赵老师",
+            "classroom": "A3-302",
+            "weekday": 3,
+            "startSection": 7,
+            "endSection": 8,
+            "weeks": "1-16"
+          },
+          {
+            "name": "操作系统",
+            "teacher": "黄老师",
+            "classroom": "B1-204",
+            "weekday": 4,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "体育（网球）",
+            "teacher": "何老师",
+            "classroom": "体育馆 2 号场",
+            "weekday": 5,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          }
+        ]
+      }
+    ],
+    "answer": "今天是第 4 周星期一，上上周是第 2 周；第 2 周周五，也就是 9 月 11 日，你的课只有一门：\n\n- **体育（网球）**：何老师，第 5-6 节，体育馆 2 号场\n\n那天上午没有课，只有下午第 5-6 节这一门。",
+    "rubric": null
+  }
+}

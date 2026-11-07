@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "card_power_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍还省多少垫"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "演示宿舍 A1-101 目前的余额如下，数据更新于 2026-09-19 08:00：\n\n- 电费：**68.4 度**（低电量提醒阈值 30 度，目前充足）\n- 冷水：**9.6 吨**（阈值 5 吨）\n- 热水：**42.80 元**（阈值 10 元）\n\n三项余额都高于提醒阈值；如需充值，可留意宿舍公告或后勤缴费渠道。",
+    "rubric": null
+  }
+}

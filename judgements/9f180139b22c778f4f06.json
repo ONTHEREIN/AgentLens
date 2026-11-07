@@ -1,0 +1,55 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "term_march_empty_001__swap_tool",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2027-03-05",
+    "current_term": "2026-2027-2",
+    "week": 1,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我上学期成绩怎么样"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "我查了 2026-2027 学年第 1 学期（也就是你说的上学期）的成绩，但系统里目前没有查到任何课程成绩记录。\n\n可能的原因：\n- 上学期成绩还没录入或尚未发布；\n- 学期归属有误（成绩可能记在其他学期）。\n\n如果你觉得应该有成绩，可以告诉我具体是哪门课或哪个学年学期，我再帮你查；也可以问问教务或辅导员成绩是否已发布。",
+    "rubric": "上学期查无成绩时应如实说明，不得把 2025-2026 学年第 2 学期的成绩当作「上学期」"
+  }
+}

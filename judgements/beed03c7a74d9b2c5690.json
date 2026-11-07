@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_miss_rag_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "奖学金评定的通知出了没呀？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "评奖评优"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我查了一下，用「奖学金」和「评奖评优」两个关键词检索学校通知公告，目前都没有查到相关结果，也就是说**奖学金评定的通知暂时还没有发布**（或尚未上线到公告系统）。\n\n建议：\n- 关注学院/辅导员的通知群，评定通知通常由学院先行下发；\n- 过几天我可以再帮你查一次，或者你换个关键词（比如具体奖项名称、助学金）让我检索。",
+    "rubric": "没有相关通知时应明确说明未检索到，不得编造通知内容或时间"
+  }
+}

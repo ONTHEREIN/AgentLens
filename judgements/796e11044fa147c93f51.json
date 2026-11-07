@@ -1,0 +1,61 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "rel_week_before_last_001__swap_tool",
+  "verdict": {
+    "faithful": false,
+    "score": 1,
+    "issues": [
+      {
+        "claim": "第 2 周周五（9 月 11 日）你只有一门课：\n\n- **体育（网球）** | 何老师 | 体育馆 2 号场 | 第 5-6 节\n\n其余时间没有课。",
+        "problem": "观测数据中仅包含期末考试信息（get_exams），未提供任何课程表数据，回答中关于“体育（网球）”等课程的具体信息在观测中完全找不到，属于无中生有的幻觉。",
+        "span": "s3"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "上上周五有什么课"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "第 2 周周五（9 月 11 日）你只有一门课：\n\n- **体育（网球）** | 何老师 | 体育馆 2 号场 | 第 5-6 节\n\n其余时间没有课。",
+    "rubric": null
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "attendance_current_empty_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我这学其烤琴怎么样是不是全琴"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": {
+          "status": "ok",
+          "items": []
+        }
+      }
+    ],
+    "answer": "你大概是问“我这学期考勤怎么样、是不是全勤”吧？\n\n我查了 2026-2027 学年第 1 学期（当前学期）的考勤记录，结果是：**暂无任何考勤记录**（返回的数据为空）。\n\n可能的原因有：\n- 本学期刚开学第 4 周，任课老师还没录入考勤数据；\n- 有些课不考勤，或者数据还没同步到系统。\n\n所以目前既不能说你是全勤，也不能说有缺勤。建议等老师录入后再查一次；如果你担心某门课，也可以直接找任课老师或辅导员确认。\n\n需要我再帮你看看本周课表，或者期末/期中考试安排吗？",
+    "rubric": "观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "card_power_001__swap_tool",
+  "verdict": {
+    "faithful": false,
+    "score": 1,
+    "issues": [
+      {
+        "claim": "你的宿舍（演示宿舍 A1-101）电费余额为 **68.4 度**",
+        "problem": "观测数据中未包含宿舍电费余额信息，助手给出了无依据的确定性结论。",
+        "span": ""
+      },
+      {
+        "claim": "冷水余额：9.6 吨",
+        "problem": "观测数据中未包含冷水余额信息，属于无依据的幻觉。",
+        "span": ""
+      },
+      {
+        "claim": "热水余额：42.80 元",
+        "problem": "观测数据中未包含热水余额信息，属于无依据的幻觉。",
+        "span": ""
+      },
+      {
+        "claim": "以上数据更新于 2026-09-19 08:00。",
+        "problem": "观测数据中未包含数据更新时间信息，属于无依据的幻觉。",
+        "span": ""
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍还剩多少电"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_schedule",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 7,
+        "data": [
+          {
+            "name": "软件工程导论",
+            "teacher": "林老师",
+            "classroom": "A3-201",
+            "weekday": 1,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "高等数学（下）",
+            "teacher": "周老师",
+            "classroom": "B2-305",
+            "weekday": 1,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据结构",
+            "teacher": "陈老师",
+            "classroom": "实训楼 204",
+            "weekday": 2,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "大学英语（四）",
+            "teacher": "王老师",
+            "classroom": "A1-108",
+            "weekday": 3,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据库原理",
+            "teacher": "赵老师",
+            "classroom": "A3-302",
+            "weekday": 3,
+            "startSection": 7,
+            "endSection": 8,
+            "weeks": "1-16"
+          },
+          {
+            "name": "操作系统",
+            "teacher": "黄老师",
+            "classroom": "B1-204",
+            "weekday": 4,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "体育（网球）",
+            "teacher": "何老师",
+            "classroom": "体育馆 2 号场",
+            "weekday": 5,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          }
+        ]
+      }
+    ],
+    "answer": "你的宿舍（演示宿舍 A1-101）电费余额为 **68.4 度**，高于 30 度的低电提醒线，暂时不用担心。\n\n另外供你参考：\n- 冷水余额：9.6 吨\n- 热水余额：42.80 元\n\n以上数据更新于 2026-09-19 08:00。",
+    "rubric": null
+  }
+}

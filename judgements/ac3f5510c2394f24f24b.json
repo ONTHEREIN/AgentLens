@@ -1,0 +1,75 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "agg_attendance_rate_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 4,
+    "issues": [
+      {
+        "claim": "整体出勤率：30 / 31 ≈ 96.8%",
+        "problem": "未说明不计请假时的出勤率口径（100%），未完全满足 rubric 中关于说明两种出勤率口径的额外要求。",
+        "span": "s3"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近快期末了突然想起来看看之前的考勤情况，请问我上学期的整体出勤率是多少？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": {
+          "status": "ok",
+          "items": [
+            {
+              "courseId": "demo-data-structures",
+              "courseName": "数据结构",
+              "courseCode": "SE204",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 16,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 0,
+              "total": 16,
+              "records": []
+            },
+            {
+              "courseId": "demo-database",
+              "courseName": "数据库原理",
+              "courseCode": "SE306",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 14,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 1,
+              "total": 15,
+              "records": []
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "已查到，按今天（2026-09-21，本学期第 4 周）往前推，「上学期」即 **2025-2026 学年第二学期**，你的考勤情况如下：\n\n| 课程 | 正常 | 迟到 | 早退 | 旷课 | 请假 | 总次数 |\n|---|---|---|---|---|---|---|\n| 数据结构（SE204） | 16 | 0 | 0 | 0 | 0 | 16 |\n| 数据库原理（SE306） | 14 | 0 | 0 | 0 | 1 | 15 |\n\n**整体出勤率：30 / 31 ≈ 96.8%**\n- 无迟到、无早退、无旷课，唯一一次未正常出勤是数据库原理的 1 次请假。\n- 两门课都保持了良好的出勤状态。\n\n小提示：今天是新学期第 4 周，如果你说的「上学期」其实是指刚过去的暑假学期或某个特定学期，告诉我，我可以再查。",
+    "rubric": "两门课合计正常出勤 30 次、请假 1 次、总计 31 次；出勤率口径需说明（含请假为 30/31≈96.8%，不计请假为 100%），给出的数值须与所述口径一致"
+  }
+}

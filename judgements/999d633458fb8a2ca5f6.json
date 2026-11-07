@@ -1,0 +1,89 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "grades_last_term_001__gen_verbose",
+  "verdict": {
+    "faithful": false,
+    "score": 4,
+    "issues": [
+      {
+        "claim": "加权平均分大约 88.8 分",
+        "problem": "加权平均分计算错误。总学分为14，加权总分为1241，加权平均分应为1241/14≈88.64分（88.8分为算术平均分）。",
+        "span": "s3"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近放假在家好无聊啊，突然想起来看看分数，我上学期成绩怎么样？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      }
+    ],
+    "answer": "你上学期（2025-2026 学年第 2 学期）成绩如下：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n5 门课全部及格，成绩状态均为“正常”。软件工程导论和数据库原理都拿到 4.0 绩点，最低的是操作系统 85 分（3.3）。加权平均分大约 88.8 分，整体表现不错 👍\n\n需要的话，我也可以帮你查这学期的课表、考勤记录或考试安排，或者查一下宿舍水电余额。",
+    "rubric": null
+  }
+}

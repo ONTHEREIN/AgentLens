@@ -1,0 +1,83 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "agg_gpa_colloquial_001__drop_plan",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "帮我算一下上学期的GPA"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s2",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      }
+    ],
+    "answer": "上学期（2025-2026 学年第二学期）的成绩如下：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n**按学分加权计算：**\n- 总学分：2+4+2+3+3 = 14\n- 学分×绩点合计：8.0+14.8+7.4+12.0+9.9 = 52.1\n- **GPA = 52.1 ÷ 14 ≈ 3.72**\n\n（如果不按学分加权，只把各门绩点做算术平均，则是 3.74；学校通常采用学分加权算法，所以 3.72 更有参考意义。5 门课全部及格，成绩状态均为正常。）",
+    "rubric": null
+  }
+}

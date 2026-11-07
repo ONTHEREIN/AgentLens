@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_miss_rag_001__drop_plan",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "奖学金评定的通知出来了没"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s6",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金评定"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s9",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "评奖评优"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我查了学校通知，用「奖学金」「奖学金评定」「评奖评优」这几个关键词都没有检索到相关通知，目前系统里还没有奖学金评定的公告。\n\n建议你：\n- 过几天再来问一次，或者留意学院群、辅导员通知（评定通知常先在学院层面下发）；\n- 如果你想了解自己上学期的成绩情况，为评定做准备，我可以帮你查成绩和考勤记录，需要的话告诉我。",
+    "rubric": "没有相关通知时应明确说明未检索到，不得编造通知内容或时间"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "agg_attendance_rate_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "帮我查一下自己上个学期总体的上课签到比例具体数值"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": {
+          "status": "ok",
+          "items": [
+            {
+              "courseId": "demo-data-structures",
+              "courseName": "数据结构",
+              "courseCode": "SE204",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 16,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 0,
+              "total": 16,
+              "records": []
+            },
+            {
+              "courseId": "demo-database",
+              "courseName": "数据库原理",
+              "courseCode": "SE306",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 14,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 1,
+              "total": 15,
+              "records": []
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "我查到了你上个学期（2025-2026 学年第 2 学期）的考勤统计：\n\n**总体**\n- 应出勤总次数：31 次\n- 正常签到：30 次\n- 缺勤：0 次，迟到 0 次，早退 0 次\n- 请假：1 次\n- **签到比例：30 / 31 ≈ 96.8%**（除请假外没有任何缺勤）\n\n**分课程**\n| 课程 | 正常签到 | 请假 | 应出勤总计 | 签到比例 |\n|---|---|---|---|---|\n| 数据结构（SE204） | 16 | 0 | 16 | 100% |\n| 数据库原理（SE306） | 14 | 1 | 15 | 93.3% |\n\n唯一一次未签到，是数据库原理课上的 1 次请假，并非旷课。",
+    "rubric": "两门课合计正常出勤 30 次、请假 1 次、总计 31 次；出勤率口径需说明（含请假为 30/31≈96.8%，不计请假为 100%），给出的数值须与所述口径一致"
+  }
+}

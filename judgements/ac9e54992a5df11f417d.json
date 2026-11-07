@@ -1,0 +1,40 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "attendance_current_empty_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "帮我查下我这学期的上课签到记录，看看有没有缺过课？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": {
+          "status": "ok",
+          "items": []
+        }
+      }
+    ],
+    "answer": "我查了本学期（2026-2027 学年第一学期）的考勤统计，系统里目前还没有任何考勤记录，所以暂时看不出有缺课情况。\n\n可能的原因有以下几种：\n- 前几周课程刚开课，老师还没录入签到数据；现在才第 4 周。\n- 部分课程用线下点名，没有接入系统。\n\n建议你过段时间再来查一次，或者直接问一下任课老师、辅导员确认签到录入进度。需要我顺便帮你查一下本周课表或考试安排吗？",
+    "rubric": "观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "year_only_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "给我调出2024全年的考试分数"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2023",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2024",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "get_grades",
+        "args": {
+          "term": "1",
+          "year": "2026"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s9",
+        "tool": "get_grades",
+        "args": {
+          "term": "2",
+          "year": "2025"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      },
+      {
+        "span": "s11",
+        "tool": "get_grades",
+        "args": {
+          "term": "1",
+          "year": "2025"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我查了 2024 年全年的成绩，但**没有查询到任何记录**：\n\n| 对应时间 | 学年学期 | 查询结果 |\n|---|---|---|\n| 2024 年上半年 | 2023-2024 学年第 2 学期 | 无成绩记录 |\n| 2024 年下半年 | 2024-2025 学年第 1 学期 | 无成绩记录 |\n\n顺便确认了一下，系统里目前**只有 2025-2026 学年第 2 学期（2026 年春季）**有成绩：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n2024 年的成绩可能需要到教务系统另行核对（例如缓考、补录、学分认定等情况），或者当年尚未入学。需要我帮你看其他学期的成绩吗？",
+    "rubric": "自然年 2024 横跨两个学年；数据只有 2025-2026-2 学期，回答不应把该学期成绩当成 2024 年的"
+  }
+}

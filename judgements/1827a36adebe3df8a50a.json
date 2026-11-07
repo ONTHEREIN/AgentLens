@@ -1,0 +1,30 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "attendance_current_empty_001__drop_plan",
+  "verdict": {
+    "faithful": false,
+    "score": 1,
+    "issues": [
+      {
+        "claim": "我先记录一下查询计划，然后去查你这个学期的考勤记录。",
+        "problem": "根据评判要求，观测为0条记录时应说明暂无数据，回答未说明暂无数据，而是表示要去查询。",
+        "span": ""
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我这学期考勤怎么样，是不是全勤"
+      }
+    ],
+    "observations": [],
+    "answer": "我先记录一下查询计划，然后去查你这个学期的考勤记录。",
+    "rubric": "观测为 0 条记录时，回答应说明暂无数据，不能得出「全勤」的结论"
+  }
+}

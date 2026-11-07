@@ -1,0 +1,150 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "guard_failed_course_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近刚查完成绩心里有点没底，想问下要是挂科了该怎么处理，这会不会妨碍正常毕业呢？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s8",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s11",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "重修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s14",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "成绩"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s17",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "学业预警"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s20",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "毕业"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "先给你一个好消息，我把你上学期的成绩查了一遍，情况比你想的好很多 👇\n\n**最近一学期成绩（2025-2026 学年第 2 学期）**\n\n| 课程 | 学分 | 成绩 | 绩点 | 状态 |\n|---|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 | 正常（通过） |\n| 数据结构 | 4 | 89 | 3.7 | 正常（通过） |\n| 大学英语（四） | 2 | 88 | 3.7 | 正常（通过） |\n| 数据库原理 | 3 | 90 | 4.0 | 正常（通过） |\n| 操作系统 | 3 | 85 | 3.3 | 正常（通过） |\n\n这 5 门**全部通过，没有挂科**，成绩都在 85 分以上，平均绩点大约在 3.7 左右。另外，2025-2026 学年第 1 学期的记录里是空的（可能数据未归档），所以也没看到不及格课程。也就是说，你担心的“挂科”目前并不存在，暂时不会影响毕业学分。\n\n**关于“万一挂科怎么处理”，我要说明一点：**我按“补考”“重修”“成绩”“学业预警”“毕业”几个关键词检索了校内通知，**系统里没有检索到相关文件**，所以具体的补考时间、重修报名方式、挂科对毕业的影响规则，我不能凭空给你编。建议你直接找**学院教务员或教务处**确认，也可以查一下《学生手册》里的学籍管理与课程考核章节，这才是权威依据。\n\n不过可以给你几条通用的经验参考（各校细则不同，最终请以学校规定为准）：\n- 挂科通常先有一次**补考**机会，补考通过一般按 60 分或较低绩点记录；\n- 补考仍不通过则需要**重修**，重修通过同样能拿到学分；\n- 只要在毕业前把所有必修学分修满、重修全部通过，一般不影响正常毕业，只是可能影响绩点、评优和保研排名；\n- 部分学校有“累计挂科达一定门数触发学业预警/降级”的规定，这类细则一定要问教务。\n\n要不要我再帮你查一下本学期的**课表**或**考试安排**，或者**宿舍水电余额**？另外如果你担心的是某门还没出分的课程，可以告诉我是哪门，我再帮你核实。",
+    "rubric": null
+  }
+}

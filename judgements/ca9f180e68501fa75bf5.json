@@ -1,0 +1,95 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "multi_task_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "哎，帮我瞅瞅这学期的考试安排呗，顺便看下宿舍电费还够不够哈。"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      },
+      {
+        "span": "s5",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "都查到啦～\n\n**📝 本学期考试安排（2026-2027 学年第 1 学期）**\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 类型 |\n|---|---|---|---|---|---|\n| 数据库原理（3 学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 号 | 期末考试 |\n| 操作系统（3 学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 号 | 期末考试 |\n\n**⚡ 宿舍余额（演示宿舍 A1-101，更新于 09-19）**\n- 电费：**68.4 度**（低于 30 度会提醒，目前充足 ✅）\n- 冷水：9.6 吨（充足）\n- 热水：42.80 元（充足）\n\n两场考试都在 12 月下旬，中间隔了 4 天，复习时间安排得开。电费也够用，暂时不用充～",
+    "rubric": null
+  }
+}
