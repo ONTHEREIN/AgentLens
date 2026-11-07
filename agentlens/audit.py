@@ -319,9 +319,115 @@ def compare_runs(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
     return {
         "a": a["summary"],
         "b": b["summary"],
+        "gate": gate([r["trace"] for r in a["rows"]], [r["trace"] for r in b["rows"]]),
         "items": items,
         "changed": len(changed),
         "counts": dict(Counter(c for i in changed for c in i["changes"])),
+    }
+
+
+GATE_STATES: dict[str, str] = {
+    "regressed": "新增失败",
+    "fixed": "已修复",
+    "relayered": "仍失败·换层",
+    "still_failing": "仍失败",
+    "still_passing": "仍通过",
+    "added": "新增用例",
+    "removed": "移除用例",
+}
+
+
+def mcnemar(fixed: int, regressed: int) -> float:
+    """配对样本的精确 McNemar 检验（双侧 p 值）：只看判定翻转的用例，检验「修好的」与「改坏的」是否对称。"""
+    n = fixed + regressed
+    if n == 0:
+        return 1.0
+    tail = sum(math.comb(n, i) for i in range(min(fixed, regressed) + 1)) / 2**n
+    return round(min(1.0, 2 * tail), 4)
+
+
+def percentile(values: list[float], q: float) -> float | None:
+    """最近秩分位数：样本少时不插值，报出来的值一定是某条 trace 的真实耗时。"""
+    if not values:
+        return None
+    ordered = sorted(values)
+    return ordered[max(0, math.ceil(q * len(ordered)) - 1)]
+
+
+def _perf(traces: list[dict[str, Any]]) -> dict[str, Any]:
+    lat = [t["latency_ms"] for t in traces if t["status"] == "ok"]
+    tok = [t["tokens"]["prompt"] + t["tokens"]["completion"] for t in traces if t["status"] == "ok"]
+    return {
+        "p50_ms": percentile(lat, 0.5),
+        "p90_ms": percentile(lat, 0.9),
+        "tokens_mean": round(sum(tok) / len(tok)) if tok else None,
+    }
+
+
+def gate(
+    base: list[dict[str, Any]],
+    cur: list[dict[str, Any]],
+    *,
+    max_regressions: int = 0,
+    latency_tolerance: float = 0.2,
+) -> dict[str, Any]:
+    """基线门禁：按用例对齐（各取首条 trace），给每条用例一个修复状态，再判这次能不能放行。
+
+    放行条件：新增失败不超过 max_regressions，且共同用例的 p90 耗时涨幅不超过 latency_tolerance。
+    只比两侧都有的用例；新增 / 移除的用例单列，不进门禁结论，也不进 McNemar。
+    """
+
+    def index(traces: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+        out: dict[str, dict[str, Any]] = {}
+        for t in traces:
+            out.setdefault(t["case_id"], t)
+        return out
+
+    left, right = index(base), index(cur)
+    items = []
+    for case_id in sorted(set(left) | set(right)):
+        a, b = left.get(case_id), right.get(case_id)
+        if a is None or b is None:
+            state = "added" if a is None else "removed"
+        else:
+            va, vb = a["verdict"]["rule"], b["verdict"]["rule"]
+            if va == "skip" or vb == "skip":
+                continue
+            if va == "pass":
+                state = "still_passing" if vb == "pass" else "regressed"
+            elif vb == "pass":
+                state = "fixed"
+            else:
+                state = "still_failing" if a.get("layer") == b.get("layer") else "relayered"
+        items.append({
+            "case_id": case_id,
+            "state": state,
+            "base": None if a is None else {"verdict": a["verdict"]["rule"], "layer": a.get("layer")},
+            "cur": None if b is None else {"verdict": b["verdict"]["rule"], "layer": b.get("layer")},
+        })
+
+    counts = Counter(i["state"] for i in items)
+    common = [c for c in left if c in right]
+    perf_a = _perf([left[c] for c in common])
+    perf_b = _perf([right[c] for c in common])
+    p90_ratio = (
+        round(perf_b["p90_ms"] / perf_a["p90_ms"] - 1, 3)
+        if perf_a["p90_ms"] and perf_b["p90_ms"] is not None else None
+    )
+
+    reasons = []
+    if counts["regressed"] > max_regressions:
+        reasons.append(f"新增失败 {counts['regressed']} 条（允许 {max_regressions} 条）")
+    if p90_ratio is not None and p90_ratio > latency_tolerance:
+        reasons.append(f"p90 耗时上涨 {p90_ratio:.0%}（允许 {latency_tolerance:.0%}）")
+    return {
+        "passed": not reasons,
+        "reasons": reasons,
+        "counts": {k: counts.get(k, 0) for k in GATE_STATES},
+        "common": len(common),
+        "mcnemar_p": mcnemar(counts["fixed"], counts["regressed"]),
+        "perf": {"base": perf_a, "cur": perf_b, "p90_change": p90_ratio},
+        "items": items,
     }
 
 
