@@ -810,6 +810,34 @@
     return `<td>${side.llm ? "忠实" : '<span class="fail-text">不忠实</span>'}${side.llm_score ? ` <span class="muted small">${side.llm_score}/5</span>` : ""}</td>`;
   }
 
+  const GATE_STATES = {
+    regressed: "新增失败", fixed: "已修复", relayered: "仍失败·换层", still_failing: "仍失败",
+    still_passing: "仍通过", added: "新增用例", removed: "移除用例",
+  };
+
+  // 把 A 当基线、B 当本次：门禁结论与命令行 `agentlens compare A B` 完全一致（同一个 audit.gate）
+  function gateHtml(g) {
+    const n = g.counts;
+    const ms = (v) => (v == null ? "—" : `${Math.round(v)}ms`);
+    const change = g.perf.p90_change == null ? "" : ` <small>${g.perf.p90_change >= 0 ? "+" : ""}${(g.perf.p90_change * 100).toFixed(0)}%</small>`;
+    return `
+      <section class="panel gate-panel ${g.passed ? "is-pass" : "is-fail"}">
+        <div class="panel-bar">
+          <h2>基线门禁：<span class="${g.passed ? "pass-text" : "fail-text"}">${g.passed ? "放行" : "拦截"}</span>
+            <span class="muted small">A 为基线、B 为本次；只比两侧都有的 ${g.common} 条用例</span></h2>
+        </div>
+        ${g.reasons.length ? `<p class="fail-text">${g.reasons.map(escapeHtml).join("；")}</p>` : ""}
+        <div class="gate-kpis">
+          <div class="kpi"><span>新增失败</span><strong class="${n.regressed ? "fail-text" : ""}">${n.regressed}</strong></div>
+          <div class="kpi"><span>已修复</span><strong class="${n.fixed ? "pass-text" : ""}">${n.fixed}</strong></div>
+          <div class="kpi"><span>仍失败</span><strong>${n.still_failing + n.relayered}</strong><small class="muted">其中换层 ${n.relayered}</small></div>
+          <div class="kpi"><span>McNemar p</span><strong>${g.mcnemar_p}</strong><small class="muted">${g.mcnemar_p < 0.05 ? "变化显著" : "不足以说明不是偶然"}</small></div>
+          <div class="kpi"><span>p90 耗时</span><strong>${ms(g.perf.cur.p90_ms)}${change}</strong><small class="muted">基线 ${ms(g.perf.base.p90_ms)}</small></div>
+        </div>
+        ${n.added || n.removed ? `<p class="case-note">另有新增用例 ${n.added} 条、移除用例 ${n.removed} 条，不计入门禁结论。</p>` : ""}
+      </section>`;
+  }
+
   function renderCompare() {
     const c = state.compare;
     const items = state.compareOnlyChanged ? c.items.filter((i) => i.changes.length) : c.items;
@@ -822,13 +850,20 @@
         <strong>${s.score.toFixed(1)}</strong>
       </div>`;
     const delta = (c.b.score - c.a.score).toFixed(1);
+    const stateOf = Object.fromEntries(c.gate.items.map((g) => [g.case_id, g.state]));
+    const stateTag = (id) => {
+      const st = stateOf[id];
+      if (!st || st === "still_passing") return "";
+      const cls = st === "regressed" ? "bad" : st === "fixed" ? "ok" : "warn";
+      return `<span class="tag ${cls}">${GATE_STATES[st]}</span> `;
+    };
     const rows = items.map((i) => `
       <tr class="${i.changes.length ? "is-changed" : ""}">
         <td class="mono">${i.b ? `<a href="#/run/${encodeURIComponent(c.b.run_id)}/${encodeURIComponent(i.case_id)}">${escapeHtml(i.case_id)}</a>` : escapeHtml(i.case_id)}</td>
         <td>${escapeHtml(dimensionLabel(i.dimension))}</td>
         ${sideCell(i.a, "verdict")}${sideCell(i.a, "layer")}${sideCell(i.a, "llm")}
         ${sideCell(i.b, "verdict")}${sideCell(i.b, "layer")}${sideCell(i.b, "llm")}
-        <td>${i.changes.map((x) => `<span class="tag warn">${escapeHtml(x)}</span>`).join(" ")}</td>
+        <td>${stateTag(i.case_id)}${i.changes.map((x) => `<span class="tag warn">${escapeHtml(x)}</span>`).join(" ")}</td>
       </tr>`).join("");
     view.innerHTML = `
       <section class="page-head">
@@ -843,6 +878,7 @@
         <div class="cmp-delta"><span>B − A</span><strong class="${delta >= 0 ? "pass-text" : "fail-text"}">${delta >= 0 ? "+" : ""}${delta}</strong><div>${chips}</div></div>
         ${head(c.b, "B")}
       </section>
+      ${gateHtml(c.gate)}
       <section class="panel">
         <div class="panel-bar">
           <h2>${c.changed} 条用例有变化 <span class="muted small">共 ${c.items.length} 条</span></h2>

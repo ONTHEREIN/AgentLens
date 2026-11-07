@@ -210,6 +210,11 @@
   background: var(--amber-soft);
 }
 
+.tag.bad {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
 /* ---- 运行详情 */
 
 .kpi-strip {
@@ -383,6 +388,28 @@
   display: block;
   margin-top: 2px;
   font-size: 12px;
+}
+
+.gate-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.gate-kpis .kpi small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+.gate-panel.is-fail {
+  border-color: var(--red);
+}
+
+@media (max-width: 720px) {
+  .gate-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ---- 人工复核卡片 */
