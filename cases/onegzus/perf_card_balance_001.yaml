@@ -1,0 +1,23 @@
+id: perf_card_balance_001
+title: 单数据源查询的性能预算：饭卡余额
+dimension: performance
+difficulty: easy
+source: golden
+tags: [onegzus, perf, "slo:single"]
+
+input:
+  messages:
+    - role: user
+      content: "饭卡里还有多少钱"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_card_balance
+  refusal: false
+  budget:
+    latency_ms: 8000
+    tokens: 8000
+    tool_calls: 2

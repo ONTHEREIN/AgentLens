@@ -1,0 +1,23 @@
+id: perf_notice_search_001
+title: 检索类查询的性能预算：找通知
+dimension: performance
+difficulty: easy
+source: golden
+tags: [onegzus, perf, rag, "slo:single"]
+
+input:
+  messages:
+    - role: user
+      content: "最近学校有什么通知"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_notices
+  refusal: false
+  budget:
+    latency_ms: 8000
+    tokens: 8000
+    tool_calls: 2

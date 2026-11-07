@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "396450602fd3c423",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_imXm9FMABzg637smA9KP8662",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周（第4周）的课表，说明今天（星期一）的课程\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问今天有什么课。今天是2026-09-21，第4周，星期一。调用 get_schedule week=4。先 make_plan。",
+      "prompt_tokens": 1255,
+      "completion_tokens": 110,
+      "latency_ms": 1204.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_bTAUL8cbXEICbFiCmSPD2364",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1384,
+      "completion_tokens": 39,
+      "latency_ms": 655.4
+    },
+    {
+      "content": "今天（9月21日，星期一，第4周）你有两门课：\n\n| 时间 | 课程 | 教师 | 地点 |\n|---|---|---|---|\n| 第 1-2 节 | 软件工程导论 | 林老师 | A3-201 |\n| 第 5-6 节 | 高等数学（下） | 周老师 | B2-305 |\n\n上午有课，下午的第 3-4 节和晚上没有安排。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1824,
+      "completion_tokens": 103,
+      "latency_ms": 1120.0
+    }
+  ]
+}

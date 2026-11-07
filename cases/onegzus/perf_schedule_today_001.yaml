@@ -1,0 +1,24 @@
+id: perf_schedule_today_001
+title: 单数据源查询的性能预算：今天的课
+dimension: performance
+difficulty: easy
+source: golden
+tags: [onegzus, perf, "slo:single"]
+
+input:
+  messages:
+    - role: user
+      content: "今天有什么课"
+  options:
+    today: "2026-09-21"
+
+# 预算按产品 SLO 定（单数据源查询：8 秒内答完、最多 2 次工具调用、8000 token），不按录制结果反推
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+  refusal: false
+  budget:
+    latency_ms: 8000
+    tokens: 8000
+    tool_calls: 2

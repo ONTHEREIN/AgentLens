@@ -1,0 +1,23 @@
+id: perf_capability_001
+title: 不需要查数据的问题不该调工具：能力介绍
+dimension: performance
+difficulty: easy
+source: golden
+tags: [onegzus, perf, "slo:chat"]
+
+input:
+  messages:
+    - role: user
+      content: "你好，你能帮我做什么"
+  options:
+    today: "2026-09-21"
+
+# 闲聊类 SLO：5 秒、0 次工具调用、4000 token
+expect:
+  mode: exact
+  tools: []
+  refusal: false
+  budget:
+    latency_ms: 5000
+    tokens: 4000
+    tool_calls: 0

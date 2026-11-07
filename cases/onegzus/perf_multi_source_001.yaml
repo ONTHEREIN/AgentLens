@@ -1,0 +1,27 @@
+id: perf_multi_source_001
+title: 一句话查三个数据源的性能预算
+dimension: performance
+difficulty: medium
+source: golden
+tags: [onegzus, perf, multi_tool, "slo:multi"]
+
+input:
+  messages:
+    - role: user
+      content: "帮我看下今天的课、饭卡余额，还有这学期的考试安排"
+  options:
+    today: "2026-09-21"
+
+# 多数据源查询的 SLO：15 秒、最多 4 次工具调用（3 个必要 + 1 次重试余量）、15000 token
+expect:
+  mode: contains
+  tools:
+    - name: get_schedule
+      optional: true
+    - name: get_card_balance
+    - name: get_exams
+  refusal: false
+  budget:
+    latency_ms: 15000
+    tokens: 15000
+    tool_calls: 4
