@@ -189,6 +189,32 @@ def _check_answer(case: Case, trace: Trace) -> CheckResult | None:
     return CheckResult(check="answer_text", passed=passed, reason=reason)
 
 
+def _check_budget(case: Case, trace: Trace) -> CheckResult | None:
+    """性能预算：超出任意一项即失败；证据指向耗时最长的 span，方便定位慢在哪一段。"""
+    budget = case.expect.budget
+    if budget is None:
+        return None
+    over: list[str] = []
+    if budget.latency_ms is not None and trace.latency_ms > budget.latency_ms:
+        over.append(f"耗时 {trace.latency_ms:.0f}ms > {budget.latency_ms:.0f}ms")
+    if budget.tokens is not None and trace.tokens.total > budget.tokens:
+        over.append(f"token {trace.tokens.total} > {budget.tokens}")
+    if budget.tool_calls is not None and len(trace.tool_calls) > budget.tool_calls:
+        over.append(f"工具调用 {len(trace.tool_calls)} 次 > {budget.tool_calls} 次")
+    slowest = max(trace.spans, key=lambda s: s.latency_ms, default=None)
+    return CheckResult(
+        check="budget",
+        passed=not over,
+        reason=(
+            f"在性能预算内（耗时 {trace.latency_ms:.0f}ms · token {trace.tokens.total} · "
+            f"工具调用 {len(trace.tool_calls)} 次）"
+            if not over
+            else "超出性能预算：" + "；".join(over)
+        ),
+        evidence=[slowest.span_id] if slowest and over else [],
+    )
+
+
 def judge(case: Case, trace: Trace) -> Verdict:
     """规则裁判：全绿才 pass。任何一条红都进归因流程。"""
     if trace.status == "blocked":
@@ -203,6 +229,7 @@ def judge(case: Case, trace: Trace) -> Verdict:
         _check_schema(trace),
         *(_check_args(trace, spec) for spec in case.expect.tools),
         _check_answer(case, trace),
+        _check_budget(case, trace),
     ):
         if maybe is not None:
             checks.append(maybe)
