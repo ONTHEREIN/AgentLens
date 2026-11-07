@@ -769,31 +769,42 @@ a.delta:hover {
 }
 
 .queue-grid {
-  grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
 }
 
 .queue-grid .case-list {
   max-height: calc(100vh - 230px);
+  overflow-x: hidden;
 }
 
-/* 复核队列：判定栏跟着滚动，复核表单始终在手边 */
-@container (min-width: 721px) {
-  .queue-grid .evidence-column,
-  .chat-layout .evidence-column {
-    position: sticky;
-    top: 0;
-    align-self: start;
-    max-height: 100vh;
-    overflow-y: auto;
-  }
+.case-item {
+  min-width: 0;
+}
+
+.case-item-top,
+.case-bottom {
+  min-width: 0;
+}
+
+.case-item-top .case-id {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.case-item-top .verdict-pill {
+  flex: none;
 }
 
 .case-bottom .layer-mini {
+  flex: none;
   white-space: nowrap;
 }
 
 .case-bottom .tag {
-  max-width: 100%;
+  flex: 0 1 auto;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -831,19 +842,34 @@ a.delta:hover {
   font-weight: 600;
 }
 
-/* 审计详情在窄容器里（会话、队列）把右侧判定栏折到下方 */
+/* 判定栏里的卡片不许被压扁 */
+.evidence-column > * {
+  flex-shrink: 0;
+}
+
+/* 审计详情放不下两栏时（窗口窄、或左侧还有清单）改成上下排；
+   复核队列把判定栏（复核表单在最上面）提到链路之前，不用滚到底才能标注 */
 .detail-panel {
   container-type: inline-size;
 }
 
-@container (max-width: 720px) {
+@container (max-width: 900px) {
   .detail-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .evidence-column {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    align-items: start;
     border-top: 1px solid var(--line);
     border-left: 0;
+  }
+
+  .queue-grid .evidence-column {
+    order: -1;
+    border-top: 0;
+    border-bottom: 1px solid var(--line);
   }
 }
 
@@ -857,6 +883,10 @@ a.delta:hover {
   .overview-split,
   .chat-layout {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .queue-grid {
+    grid-template-columns: 250px minmax(0, 1fr);
   }
 
   .transcript {
@@ -966,4 +996,15 @@ a.delta:hover {
   .side-nav a span {
     display: none;
   }
+}
+
+/* 列表与详情每次点选都会整块重绘：去掉入场动画，免得反复闪烁 */
+.case-item,
+.detail,
+.span-node {
+  animation: none;
+}
+
+.kpi-strip {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 }
