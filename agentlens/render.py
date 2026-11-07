@@ -178,3 +178,52 @@ def print_calibration(console: Console, pairs: list[tuple[Case, Trace]]) -> None
         table.add_row(row["layer"], row["op"], fmt(row["detected"]), fmt(row["attributed"]))
     table.add_row("[bold]合计[/bold]", "", fmt(calib["detected"]), fmt(calib["attributed"]))
     console.print(table)
+
+
+def print_gate(console: Console, result: dict, base_id: str, cur_id: str) -> None:
+    """基线门禁：每条用例的修复状态、McNemar 检验、p90 耗时变化，最后给出放行 / 拦截。"""
+    from .audit import GATE_STATES
+
+    counts = result["counts"]
+    style = {"regressed": "red", "fixed": "green", "relayered": "yellow"}
+    table = Table(title=f"基线门禁：{base_id} → {cur_id}", box=box.SIMPLE_HEAD, title_justify="left")
+    table.add_column("用例")
+    table.add_column("状态")
+    table.add_column("基线")
+    table.add_column("本次")
+
+    def side(s: dict | None) -> str:
+        if s is None:
+            return "—"
+        return s["verdict"].upper() + (f" {s['layer']}" if s["layer"] else "")
+
+    for item in result["items"]:
+        if item["state"] == "still_passing":
+            continue
+        color = style.get(item["state"], "dim")
+        table.add_row(item["case_id"], f"[{color}]{GATE_STATES[item['state']]}[/{color}]",
+                      side(item["base"]), side(item["cur"]))
+    if table.row_count:
+        console.print(table)
+
+    console.print(
+        "  " + " · ".join(f"{GATE_STATES[k]} {v}" for k, v in counts.items() if v)
+        + f"    共同用例 {result['common']} 条"
+    )
+    console.print(
+        f"  McNemar 精确检验 p = {result['mcnemar_p']}"
+        f"（已修复 {counts['fixed']} vs 新增失败 {counts['regressed']}；p < 0.05 才说明变化不是偶然）"
+    )
+    perf = result["perf"]
+    if perf["base"]["p90_ms"] is not None and perf["cur"]["p90_ms"] is not None:
+        change = perf["p90_change"]
+        console.print(
+            f"  耗时 p50 {perf['base']['p50_ms']:.0f} → {perf['cur']['p50_ms']:.0f}ms · "
+            f"p90 {perf['base']['p90_ms']:.0f} → {perf['cur']['p90_ms']:.0f}ms"
+            + (f"（{change:+.0%}）" if change is not None else "")
+            + f" · 平均 token {perf['base']['tokens_mean']} → {perf['cur']['tokens_mean']}"
+        )
+    if result["passed"]:
+        console.print("[bold green]门禁：放行[/bold green]")
+    else:
+        console.print("[bold red]门禁：拦截[/bold red]  " + "；".join(result["reasons"]))

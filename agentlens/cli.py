@@ -7,6 +7,8 @@
     python -m agentlens schema                   # 导出 trace 的 JSON Schema
     python -m agentlens inject cases/onegzus/    # 由真实录制生成故障注入用例（给裁判和归因打分）
     python -m agentlens generate cases/onegzus/  # LLM 保义改写黄金用例，期望沿用（离线联网一次）
+    python -m agentlens compare <基线> <本次>     # 基线门禁：新增失败或 p90 耗时超标则退出码 1
+    python -m agentlens run cases/ --baseline <run_id>   # 跑完直接对基线做门禁
 """
 
 from __future__ import annotations
@@ -23,7 +25,7 @@ from .adapters.campus_copilot import CampusCopilotAdapter
 from .adapters.onegzus import MUTANT_RECORDINGS, RECORDINGS, OneGzusAdapter
 from .cases import Case, CaseError, load_cases
 from .inject import mutant_case, mutate
-from .render import print_summary, print_trace
+from .render import print_gate, print_summary, print_trace
 from .runner import load_run, run
 from .schema import Trace
 
@@ -32,6 +34,24 @@ DEFAULT_CASES = ROOT / "cases"
 DEFAULT_OUT = ROOT / "results"
 
 ADAPTERS = {"campus_copilot": CampusCopilotAdapter, "onegzus": OneGzusAdapter}
+
+
+def _resolve_run(spec: str) -> Path | None:
+    target = Path(spec)
+    if not target.exists():
+        target = DEFAULT_OUT / spec
+    return target if target.exists() else None
+
+
+def _gate(args: argparse.Namespace, console: Console, base: Path, cur: Path) -> int:
+    from .audit import gate
+
+    result = gate(
+        load_run(base), load_run(cur),
+        max_regressions=args.max_regressions, latency_tolerance=args.latency_tolerance,
+    )
+    print_gate(console, result, base.name, cur.name)
+    return 0 if result["passed"] else 1
 
 
 def _filter(cases: list[Case], specs: list[str]) -> list[Case]:
@@ -96,16 +116,31 @@ def cmd_run(args: argparse.Namespace, console: Console) -> int:
         console.print(f"[yellow]LLM 裁判降级 {degraded} 条[/yellow]：无缓存且未配置 .env.judge，这些条目只有规则轨结论")
     console.print(f"[dim]落盘：{result.out_dir}/traces.jsonl · summary.json[/dim]")
 
+    if args.baseline:
+        base = _resolve_run(args.baseline)
+        if base is None:
+            console.print(f"[red]找不到基线运行[/red] {args.baseline}")
+            return 2
+        code = _gate(args, console, base, result.out_dir)
+        if code:
+            return code
     if args.strict and result.metrics()["fail"]:
         return 1
     return 0
 
 
+def cmd_compare(args: argparse.Namespace, console: Console) -> int:
+    base, cur = _resolve_run(args.base), _resolve_run(args.cur)
+    for spec, found in ((args.base, base), (args.cur, cur)):
+        if found is None:
+            console.print(f"[red]找不到运行记录[/red] {spec}")
+            return 2
+    return _gate(args, console, base, cur)
+
+
 def cmd_show(args: argparse.Namespace, console: Console) -> int:
-    target = Path(args.run)
-    if not target.exists():
-        target = DEFAULT_OUT / args.run
-    if not target.exists():
+    target = _resolve_run(args.run)
+    if target is None:
         console.print(f"[red]找不到运行记录[/red] {args.run}")
         return 2
 
@@ -214,6 +249,11 @@ def cmd_generate(args: argparse.Namespace, console: Console) -> int:
     return 0
 
 
+def _gate_args(p: argparse.ArgumentParser) -> None:
+    p.add_argument("--max-regressions", type=int, default=0, help="允许的新增失败条数（默认 0）")
+    p.add_argument("--latency-tolerance", type=float, default=0.2, help="允许的 p90 耗时涨幅（默认 0.2 = 20%%）")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="agentlens", description="AgentLens · 智能体分层归因体检中心")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -235,7 +275,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--llm-judge", action="store_true",
         help="追加 LLM 忠实度裁判（优先命中 judgements/ 缓存；未命中且未配置时标记降级）",
     )
+    p_run.add_argument("--baseline", default=None, metavar="RUN", help="跑完对这次基线做门禁（退出码 1 = 拦截）")
+    _gate_args(p_run)
     p_run.set_defaults(func=cmd_run)
+
+    p_cmp = sub.add_parser("compare", help="基线门禁：两次运行逐条对比修复状态，判定放行 / 拦截")
+    p_cmp.add_argument("base", help="基线 run_id 或路径")
+    p_cmp.add_argument("cur", help="本次 run_id 或路径")
+    _gate_args(p_cmp)
+    p_cmp.set_defaults(func=cmd_compare)
 
     p_show = sub.add_parser("show", help="回看某次运行")
     p_show.add_argument("run", help="run_id 或路径")
