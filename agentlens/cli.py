@@ -9,6 +9,7 @@
     python -m agentlens generate cases/onegzus/  # LLM 保义改写黄金用例，期望沿用（离线联网一次）
     python -m agentlens compare <基线> <本次>     # 基线门禁：新增失败或 p90 耗时超标则退出码 1
     python -m agentlens run cases/ --baseline <run_id>   # 跑完直接对基线做门禁
+    python -m agentlens report <run_id>          # 自包含 HTML 报告 → results/<run_id>/report.html
 """
 
 from __future__ import annotations
@@ -116,6 +117,12 @@ def cmd_run(args: argparse.Namespace, console: Console) -> int:
         console.print(f"[yellow]LLM 裁判降级 {degraded} 条[/yellow]：无缓存且未配置 .env.judge，这些条目只有规则轨结论")
     console.print(f"[dim]落盘：{result.out_dir}/traces.jsonl · summary.json[/dim]")
 
+    if args.html:
+        from .report import load_case_index, write_report
+
+        out = write_report(result.out_dir, load_case_index(DEFAULT_CASES),
+                           baseline=_resolve_run(args.baseline) if args.baseline else None)
+        console.print(f"[dim]报告：{out}[/dim]")
     if args.baseline:
         base = _resolve_run(args.baseline)
         if base is None:
@@ -136,6 +143,20 @@ def cmd_compare(args: argparse.Namespace, console: Console) -> int:
             console.print(f"[red]找不到运行记录[/red] {spec}")
             return 2
     return _gate(args, console, base, cur)
+
+
+def cmd_report(args: argparse.Namespace, console: Console) -> int:
+    from .report import load_case_index, write_report
+
+    run_dir = _resolve_run(args.run)
+    base = _resolve_run(args.baseline) if args.baseline else None
+    for spec, found in ((args.run, run_dir), (args.baseline, base)):
+        if spec and found is None:
+            console.print(f"[red]找不到运行记录[/red] {spec}")
+            return 2
+    out = write_report(run_dir, load_case_index(Path(args.cases)), Path(args.out) if args.out else None, base)
+    console.print(f"[green]已生成[/green] {out}")
+    return 0
 
 
 def cmd_show(args: argparse.Namespace, console: Console) -> int:
@@ -277,6 +298,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p_run.add_argument("--baseline", default=None, metavar="RUN", help="跑完对这次基线做门禁（退出码 1 = 拦截）")
     _gate_args(p_run)
+    p_run.add_argument("--html", action="store_true", help="跑完生成自包含 HTML 报告（results/<run_id>/report.html）")
     p_run.set_defaults(func=cmd_run)
 
     p_cmp = sub.add_parser("compare", help="基线门禁：两次运行逐条对比修复状态，判定放行 / 拦截")
@@ -284,6 +306,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_cmp.add_argument("cur", help="本次 run_id 或路径")
     _gate_args(p_cmp)
     p_cmp.set_defaults(func=cmd_compare)
+
+    p_rep = sub.add_parser("report", help="由 traces.jsonl 生成自包含 HTML 报告（断网可开）")
+    p_rep.add_argument("run", help="run_id 或路径")
+    p_rep.add_argument("--out", default=None, help="输出路径（默认 results/<run_id>/report.html）")
+    p_rep.add_argument("--baseline", default=None, metavar="RUN", help="附带对这次基线的门禁结论")
+    p_rep.add_argument("--cases", default=str(DEFAULT_CASES), help="用例根目录（取维度、标题、提问）")
+    p_rep.set_defaults(func=cmd_report)
 
     p_show = sub.add_parser("show", help="回看某次运行")
     p_show.add_argument("run", help="run_id 或路径")
