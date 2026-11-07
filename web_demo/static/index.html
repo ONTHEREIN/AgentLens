@@ -9,51 +9,75 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c6145'/%3E%3Ccircle cx='14' cy='14' r='6.5' stroke='%23dcec9b' stroke-width='2' fill='none'/%3E%3Cpath d='m19 19 6 6' stroke='%23dcec9b' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./audit.css">
+  <link rel="stylesheet" href="./shell.css">
 </head>
 <body>
-  <div class="page-noise" aria-hidden="true"></div>
   <div class="run-progress" id="runProgress" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <a class="brand" href="#/runs" aria-label="AgentLens 审计台首页">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32" fill="none">
-          <circle cx="14" cy="14" r="8.5" stroke="currentColor" stroke-width="2"/>
-          <path d="M20.5 20.5 27 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M10 14h8M14 10v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
-        </svg>
-      </span>
-      <span class="brand-copy">
-        <strong>AgentLens</strong>
-        <small>智能体审计台</small>
-      </span>
-    </a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="主导航">
+      <a class="brand" href="#/overview" aria-label="AgentLens 审计台首页">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="14" cy="14" r="8.5" stroke="currentColor" stroke-width="2"/>
+            <path d="M20.5 20.5 27 27" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 14h8M14 10v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".55"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>AgentLens</strong>
+          <small>智能体审计台</small>
+        </span>
+      </a>
 
-    <nav class="topnav" aria-label="页面导航">
-      <a href="#/runs" data-nav="runs">运行记录</a>
-      <a href="#/reviews" data-nav="reviews">人工复核</a>
-    </nav>
+      <nav class="side-nav">
+        <a href="#/overview" data-nav="overview">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+          <span>最新审计</span>
+        </a>
+        <p class="nav-group">数据</p>
+        <a href="#/chats" data-nav="chats">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3.5 5.5a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H9l-3.5 3v-3h0a2 2 0 0 1-2-2v-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span>线上对话</span>
+        </a>
+        <a href="#/runs" data-nav="runs">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4.5h12M4 10h12M4 15.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>审计结果</span>
+        </a>
+        <p class="nav-group">复核</p>
+        <a href="#/queue" data-nav="queue">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 4h12v12H4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m7 10 2 2 4-4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>待人工复核</span>
+          <b class="nav-badge" id="queueBadge" hidden></b>
+        </a>
+        <a href="#/reviews" data-nav="reviews">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 16V9M10 16V4M16 16v-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>复核一致性</span>
+        </a>
+      </nav>
 
-    <div class="top-actions">
-      <label class="reviewer-field">
-        <span>复核人</span>
-        <input id="reviewerInput" type="text" maxlength="40" placeholder="填写姓名" autocomplete="name">
-      </label>
-      <span class="offline-pill"><i></i> 本地回放</span>
+      <div class="side-foot">
+        <label class="reviewer-field">
+          <span>复核人</span>
+          <input id="reviewerInput" type="text" maxlength="40" placeholder="填写姓名" autocomplete="name">
+        </label>
+        <span class="offline-pill"><i></i> 本地回放 · 不调用被测模型</span>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <main id="view" class="view" aria-live="polite">
+        <div class="detail-placeholder">
+          <span class="loading-orbit" aria-hidden="true"></span>
+          <p>正在连接本地审计服务…</p>
+        </div>
+      </main>
+      <footer class="footer">
+        <span>AgentLens · 测链路，不是测答案</span>
+        <span>数据来自 results/、线上对话日志与 reviews/，页面上的数字全部现算</span>
+      </footer>
     </div>
-  </header>
-
-  <main id="view" class="view" aria-live="polite">
-    <div class="detail-placeholder">
-      <span class="loading-orbit" aria-hidden="true"></span>
-      <p>正在连接本地审计服务…</p>
-    </div>
-  </main>
-
-  <footer class="footer">
-    <span>AgentLens · 测链路，不是测答案</span>
-    <span>数据来自 results/ 与 reviews/ · 页面发起的运行一律回放，不调用被测模型</span>
-  </footer>
+  </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
