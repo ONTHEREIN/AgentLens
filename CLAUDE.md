@@ -22,6 +22,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 复核队列：每条用例只看最近一次运行；注入样本（`case.inject`）不进队列；入队原因见 `audit.QUEUE_REASONS`。
 - 线上对话：直接读软帮手聊天页的 trace 日志（`ONEGZUS_TRACE_DIR`，默认同级 `GZUS-PRO-agent/services/api/data/traces`），
   每天一个 `chat-<日期>` 运行；没有预设期望，只判执行状态 + LLM 忠实度，列表只读裁判缓存、打开详情才联网判定。
+- 软帮手对真实账号开放后，线上对话里 `meta.account == "real"` 的轮次含本人真实数据：
+  裁判缓存写 `judgements/local/`（已 gitignore），这类 trace 与缓存只留本地，不得提交、截图外传或写进材料。
 - 只读 `results/` 与 `reviews/labels.jsonl`。人工标注按 trace 内容指纹（不含计时字段）记账，回放复跑自动沿用；
   `reviews/` 是标注集（M2 的 Kappa 数据），要提交，不要当运行产物清理。
 - 页面发起的运行：`onegzus` 固定 `record=False`，永远不从页面调用被测模型。

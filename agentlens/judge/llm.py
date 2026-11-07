@@ -31,6 +31,8 @@ from ..schema import CheckResult, Trace
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE_DIR = ROOT / "judgements"
+# 真实账号线上对话的裁判材料含本人真实数据：单独缓存，已被 .gitignore 排除，不随仓库提交
+LOCAL_CACHE_DIR = CACHE_DIR / "local"
 ENV_FILE = ROOT / ".env.judge"
 PROMPT_VERSION = "faithfulness-v2"
 TIMEOUT_S = 180
@@ -131,11 +133,11 @@ def judge_faithfulness(
 
 
 def judge_evidence(
-    case_id: str, evidence: dict[str, Any], config: JudgeConfig | None,
+    case_id: str, evidence: dict[str, Any], config: JudgeConfig | None, *, cache_dir: Path = CACHE_DIR,
 ) -> tuple[CheckResult, int] | None:
     """按裁判材料判定（命中缓存即复用）；用例与线上对话共用这一入口。"""
     key = cache_key(evidence)
-    path = CACHE_DIR / f"{key}.json"
+    path = cache_dir / f"{key}.json"
 
     if path.exists():
         record = json.loads(path.read_text(encoding="utf-8"))
@@ -152,7 +154,7 @@ def judge_evidence(
             "verdict": verdict,
             "evidence": evidence,
         }
-        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        cache_dir.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     v = record["verdict"]

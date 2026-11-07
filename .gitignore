@@ -7,3 +7,6 @@ __pycache__/
 results/
 .workbuddy/
 .env*
+
+# 真实账号线上对话的 LLM 裁判缓存：含本人真实数据，只留本地
+judgements/local/

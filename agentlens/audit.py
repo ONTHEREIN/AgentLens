@@ -22,7 +22,7 @@ from pathlib import Path
 from typing import Any
 
 from .cases import Case
-from .judge.llm import JudgeConfig, applicable_to, evidence_for, judge_evidence
+from .judge.llm import CACHE_DIR, LOCAL_CACHE_DIR, JudgeConfig, applicable_to, evidence_for, judge_evidence
 from .judge.rules import _check_status
 from .runner import load_run
 from .schema import DIMENSIONS, LAYER_NAMES, Trace, Verdict
@@ -183,7 +183,7 @@ def judge_chat_trace(raw: dict[str, Any], config: JudgeConfig | None) -> dict[st
     llm_score, degraded = None, False
     if applicable_to(trace, has_rubric=False):
         evidence = evidence_for(trace, trace.meta.get("input") or [], None)
-        judged = judge_evidence(trace.case_id, evidence, config)
+        judged = judge_evidence(trace.case_id, evidence, config, cache_dir=_judge_cache(trace.meta))
         if judged is None:
             degraded = True
         else:
@@ -207,6 +207,15 @@ def judge_chat_trace(raw: dict[str, Any], config: JudgeConfig | None) -> dict[st
             )
             trace.layer_evidence = [e for e in failed.evidence if not e.startswith("judgement:")]
     return trace.dump()
+
+
+def is_real_account(meta: dict[str, Any]) -> bool:
+    """被测对象标注的真实账号对话（meta.account == "real"），含本人真实数据，只留本地。"""
+    return meta.get("account") == "real"
+
+
+def _judge_cache(meta: dict[str, Any]) -> Path:
+    return LOCAL_CACHE_DIR if is_real_account(meta) else CACHE_DIR
 
 
 def judged_chat_traces(file: Path, config: JudgeConfig | None, workers: int = 4) -> list[dict[str, Any]]:
@@ -262,6 +271,7 @@ def conversations(chat_dir: Path) -> list[dict[str, Any]]:
             "title": _last_user(first["meta"].get("input") or []),
             "last_answer": traces[-1].get("answer", "")[:120],
             "model": first.get("model", "unknown"),
+            "real_account": any(is_real_account(t["meta"]) for t in traces),
             "fail": sum(1 for t in traces if t["verdict"]["rule"] == "fail"),
             "unjudged": sum(1 for t in traces if t["verdict"].get("judge_degraded")),
             "layers": sorted({t["layer"] for t in traces if t.get("layer")}),
