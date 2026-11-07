@@ -57,15 +57,18 @@ SUITES: dict[str, dict] = {
         "dir": ROOT / "cases" / "generated",
         "adapter": lambda: OneGzusAdapter(record=False),
     },
+    # 注入集：失败是造出来的，页面上看检出率而不是可靠性分
     "faults": {
         "label": "软帮手 · 数据面故障注入",
         "dir": ROOT / "cases" / "faults",
         "adapter": lambda: OneGzusAdapter(record=False),
+        "injected": True,
     },
     "calibration": {
         "label": "归因校准 · 录制变异（只回放）",
         "dir": ROOT / "cases" / "calibration",
         "adapter": lambda: OneGzusAdapter(record=False),
+        "injected": True,
     },
     "seed": {
         "label": "CampusCopilot 桩对象（种子用例）",
@@ -87,7 +90,8 @@ def catalog_payload(suites: dict[str, list[Case]]) -> dict:
         "review_targets": audit.REVIEW_TARGETS,
         "judge_configured": JudgeConfig.load() is not None,
         "suites": [
-            {"id": sid, "label": SUITES[sid]["label"], "cases": len(cases)}
+            {"id": sid, "label": SUITES[sid]["label"], "cases": len(cases),
+             "injected": SUITES[sid].get("injected", False)}
             for sid, cases in suites.items()
         ],
     }
@@ -115,6 +119,7 @@ class AgentLensHTTPServer(ThreadingHTTPServer):
         super().__init__(address, AgentLensHandler)
         self.suites = suites
         self.case_index = {c.id: c for cases in suites.values() for c in cases}
+        self.suite_of = {c.id: sid for sid, cases in suites.items() for c in cases}
 
 
 class AgentLensHandler(BaseHTTPRequestHandler):
@@ -177,7 +182,18 @@ class AgentLensHandler(BaseHTTPRequestHandler):
         if chat is not None:
             return audit.chat_detail(chat, JudgeConfig.load())
         run_dir = self._run_dir(run_id)
-        return None if run_dir is None else audit.run_detail(run_dir, self.server.case_index)
+        return None if run_dir is None else audit.run_detail(run_dir, self.server.case_index, self.server.suite_of)
+
+    def _labels(self) -> dict[str, dict]:
+        return {
+            f"{key}|{target}": label
+            for (key, target), label in audit.latest_labels(audit.load_labels(LABELS_FILE)).items()
+        }
+
+    def _queue(self) -> dict:
+        return audit.review_queue(
+            RESULTS_DIR, CHAT_DIR, self.server.case_index, audit.load_labels(LABELS_FILE), self.server.suite_of,
+        )
 
     def _read_json_body(self) -> dict | None:
         try:
@@ -208,17 +224,43 @@ class AgentLensHandler(BaseHTTPRequestHandler):
         elif path == "/api/catalog":
             self._send_json(catalog_payload(self.server.suites))
         elif path == "/api/runs":
-            self._send_json({"runs": audit.list_runs(RESULTS_DIR, CHAT_DIR)})
+            self._send_json({"runs": audit.list_runs(RESULTS_DIR, CHAT_DIR, self.server.suite_of)})
         elif path.startswith("/api/runs/"):
             detail = self._detail(path.removeprefix("/api/runs/"))
             if detail is None:
                 self._send_error_json("运行不存在", 404)
                 return
-            detail["labels"] = {
-                f"{key}|{target}": label
-                for (key, target), label in audit.latest_labels(audit.load_labels(LABELS_FILE)).items()
-            }
+            detail["labels"] = self._labels()
             self._send_json(detail)
+        elif path == "/api/overview":
+            queue = self._queue()
+            self._send_json(audit.overview(
+                audit.list_runs(RESULTS_DIR, CHAT_DIR, self.server.suite_of), [*SUITES, "chat"], queue,
+                audit.agreement(audit.load_labels(LABELS_FILE)), len(audit.conversations(CHAT_DIR)),
+            ))
+        elif path == "/api/chats":
+            self._send_json({"conversations": audit.conversations(CHAT_DIR)})
+        elif path.startswith("/api/chats/"):
+            cid = path.removeprefix("/api/chats/")
+            detail = audit.conversation_detail(CHAT_DIR, cid, JudgeConfig.load()) if RUN_ID.match(cid) else None
+            if detail is None:
+                self._send_error_json("会话不存在", 404)
+                return
+            detail["labels"] = self._labels()
+            self._send_json(detail)
+        elif path == "/api/queue":
+            self._send_json(self._queue())
+        elif path == "/api/trace":
+            query = parse_qs(url.query)
+            run_id, case_id = ((query.get(k) or [""])[0] for k in ("run", "case"))
+            row = audit.trace_row(
+                RESULTS_DIR, CHAT_DIR, run_id, case_id, self.server.case_index, JudgeConfig.load(),
+            ) if RUN_ID.match(run_id) and case_id else None
+            if row is None:
+                self._send_error_json("trace 不存在：?run=<run_id>&case=<case_id>", 404)
+                return
+            row["labels"] = self._labels()
+            self._send_json(row)
         elif path == "/api/compare":
             query = parse_qs(url.query)
             details = [self._detail((query.get(k) or [""])[0]) for k in ("a", "b")]
