@@ -139,18 +139,21 @@ LLM 裁判（M2，尚未实现）只负责答案忠实度 / rubric 这类规则�
 
 ## 已知缺口（别在材料里当既有能力写）
 
-截至 2026-11-07（细节见 `docs/故障注入校准-2026-11-07.md`、`docs/用例生成与缺陷-2026-11-07.md`）：
+截至 2026-11-07（细节见 `docs/故障注入校准-2026-11-07.md`、`docs/用例生成与缺陷-2026-11-07.md`、
+`docs/性能断言与基线门禁-2026-11-07.md`）：
 
 - **已有**：软帮手真实 agent 的 record/replay（`adapters/onegzus.py`）、LLM 忠实度裁判（结论按哈希缓存）、
-  故障注入（`inject.py` 录制变异 + 软帮手 `FaultySource`）、LLM 保义改写生成器（`generate.py`）、审计台
-- 用例：测被测对象 159 条（人工 41 + 生成 118，自动生成 74.2%）+ 校准集 159 条；距 300 条目标仍有差距
+  故障注入（`inject.py` 录制变异 + 软帮手 `FaultySource`）、LLM 保义改写生成器（`generate.py`）、审计台、
+  性能预算断言（`expect.budget`）、基线门禁（`compare` / `run --baseline`，审计台运行对比页同一结论）
+- 用例：测被测对象 166 条（人工 48 + 生成 118，自动生成 71.1%）+ 校准集 159 条；距 300 条目标仍有差距
 - **归因在真实缺陷上的准确率未知**：校准集 100% 有循环论证成分（算子对着决策树分支设计），
   真实准确率只能靠人工复核 κ，目前标注仅 3 条
-- `performance` 维度没有断言；L6 没有注入通道（护栏是规则，不经 LLM 回复）
-- HTML 报告、compare/gate（基线门禁）**未实现**
+- L6 没有注入通道（护栏是规则，不经 LLM 回复）；性能预算只有 5 条用例 + 2 条变慢故障
+- 门禁还没拿真实修复验证过（修被测对象要 rein 拍板）；HTML 报告**未实现**
 
 ```bash
 python -m agentlens inject cases/onegzus/                       # 由真实录制生成校准用例 → cases/calibration/
 python -m agentlens generate cases/onegzus/                     # LLM 保义改写 → cases/generated/（需 .env.judge，离线联网一次）
 python -m agentlens run cases/calibration/ --adapter onegzus    # 输出「故障注入校准」表：检出率 / 归因准确率 / 95% CI
+python -m agentlens compare <基线> <本次>                        # 基线门禁：新增失败或 p90 耗时涨超 20% → 退出码 1
 ```
