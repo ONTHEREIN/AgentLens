@@ -45,24 +45,6 @@ CHAT_DIR = Path(os.environ.get(
 ))
 RUN_ID = re.compile(r"^[0-9A-Za-z_-]{1,64}$")
 
-DIMENSIONS = [
-    ("functional_accuracy", "功能准确性"),
-    ("tool_use", "工具调用"),
-    ("rag_retrieval", "RAG 检索质量"),
-    ("multi_turn", "多轮对话"),
-    ("adversarial_safety", "对抗性与安全"),
-    ("boundary_exception", "边界与异常"),
-    ("performance", "性能"),
-]
-SPAN_LABELS = {
-    "plan": "规划",
-    "tool_call": "工具调用",
-    "observation": "工具观测",
-    "retrieve": "知识检索",
-    "generate": "生成",
-    "guardrail": "护栏",
-}
-
 # 用例集：目录 + 被测对象。onegzus 在页面上只回放，绝不重新录制（录制会调用真实模型）
 SUITES: dict[str, dict] = {
     "onegzus": {
@@ -98,10 +80,10 @@ RUN_LOCK = threading.Lock()
 def catalog_payload(suites: dict[str, list[Case]]) -> dict:
     return {
         "app": "AgentLens 审计台",
-        "dimensions": [{"id": key, "label": label} for key, label in DIMENSIONS],
+        "dimensions": [{"id": key, "label": label} for key, label in audit.DIMENSION_LABELS.items()],
         "layers": LAYER_NAMES,
         "span_kinds": list(SPAN_KINDS),
-        "span_labels": SPAN_LABELS,
+        "span_labels": audit.SPAN_LABELS,
         "review_targets": audit.REVIEW_TARGETS,
         "judge_configured": JudgeConfig.load() is not None,
         "suites": [

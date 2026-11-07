@@ -22,7 +22,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 只读 `results/` 与 `reviews/labels.jsonl`。人工标注按 trace 内容指纹（不含计时字段）记账，回放复跑自动沿用；
   `reviews/` 是标注集（M2 的 Kappa 数据），要提交，不要当运行产物清理。
 - 页面发起的运行：`onegzus` 固定 `record=False`，永远不从页面调用被测模型。
-- `web_demo/server.py` 里另有一份维度中文名表 `DIMENSIONS`，`schema.py` 的维度若有变动需同步。
+- 维度 / span 的中文名表在 `agentlens/audit.py`（`DIMENSION_LABELS`，审计台与 HTML 报告共用），`schema.py` 的维度若有变动需同步；导入时有断言兜底。
 
 ## 注意
 

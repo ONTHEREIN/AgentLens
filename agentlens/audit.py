@@ -34,6 +34,26 @@ REVIEW_TARGETS: dict[str, str] = {
 }
 LAYER_VALUES = ["none", *LAYER_NAMES]
 
+# 维度与 span 的中文名：审计台与 HTML 报告共用；schema.py 的维度若有变动需同步
+DIMENSION_LABELS: dict[str, str] = {
+    "functional_accuracy": "功能准确性",
+    "tool_use": "工具调用",
+    "rag_retrieval": "RAG 检索质量",
+    "multi_turn": "多轮对话",
+    "adversarial_safety": "对抗性与安全",
+    "boundary_exception": "边界与异常",
+    "performance": "性能",
+}
+SPAN_LABELS: dict[str, str] = {
+    "plan": "规划",
+    "tool_call": "工具调用",
+    "observation": "工具观测",
+    "retrieve": "知识检索",
+    "generate": "生成",
+    "guardrail": "护栏",
+}
+assert tuple(DIMENSION_LABELS) == DIMENSIONS, "维度中文名表与 schema.DIMENSIONS 不一致"
+
 
 # ---------------------------------------------------------------- runs
 
