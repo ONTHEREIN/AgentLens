@@ -756,7 +756,7 @@
     const rows = list.map((c) => `
       <a class="conv-row" href="#/chat/${encodeURIComponent(c.conversation_id)}">
         <span class="conv-main">
-          <b>${escapeHtml(c.title ? clip(c.title, 60) : "（未记录用户输入）")}</b>
+          <b>${c.real_account ? '<span class="tag warn" title="真实账号的对话含本人真实数据，只留本地">真实账号</span> ' : ""}${escapeHtml(c.title ? clip(c.title, 60) : "（未记录用户输入）")}</b>
           <small>${escapeHtml(clip(c.last_answer.replace(/\s+/g, " "), 90))}</small>
         </span>
         <span class="conv-cell">${c.turns} 轮</span>
