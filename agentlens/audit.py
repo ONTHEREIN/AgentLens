@@ -374,7 +374,7 @@ def percentile(values: list[float], q: float) -> float | None:
     return ordered[max(0, math.ceil(q * len(ordered)) - 1)]
 
 
-def _perf(traces: list[dict[str, Any]]) -> dict[str, Any]:
+def perf_stats(traces: list[dict[str, Any]]) -> dict[str, Any]:
     lat = [t["latency_ms"] for t in traces if t["status"] == "ok"]
     tok = [t["tokens"]["prompt"] + t["tokens"]["completion"] for t in traces if t["status"] == "ok"]
     return {
@@ -428,10 +428,10 @@ def gate(
 
     counts = Counter(i["state"] for i in items)
     common = [c for c in left if c in right]
-    perf_a = _perf([left[c] for c in common])
-    perf_b = _perf([right[c] for c in common])
+    perf_a = perf_stats([left[c] for c in common])
+    perf_b = perf_stats([right[c] for c in common])
     p90_ratio = (
-        round(perf_b["p90_ms"] / perf_a["p90_ms"] - 1, 3)
+        round(perf_b["p90_ms"] / perf_a["p90_ms"] - 1, 3) + 0.0  # + 0.0 把 -0.0 规整成 0.0
         if perf_a["p90_ms"] and perf_b["p90_ms"] is not None else None
     )
 
