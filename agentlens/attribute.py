@@ -14,6 +14,9 @@
     4. L4  工具返回正常，但答案与观测矛盾
     5. L5  答案忠实于观测，但观测/召回本身是错的
            （L4 步若 LLM 裁判确认答案忠实、且期望内容不在观测里，提前归 L5：照实转述也答不对）
+       性能预算（答案无误、只有 budget 不过时，插在 5 之前）：
+           工具调用超次数 → L1 规划冗余；耗时超预算 → L0，理由里拆出数据源 / 模型各占多少；
+           只有 token 超预算 → L1
         -   都不匹配 → 未定层，落人工复核队列（诚实标注，不硬凑）
 
 > v0 未经校准，接口稳定、规则可迭代。M2 用 100 条人工标注集跑准确率。
@@ -141,6 +144,10 @@ def attribute(case: Case, trace: Trace) -> Attribution:
                 [o.span_id for o in trace.observations],
             )
 
+    # 性能预算：答案没问题、只是超预算。必须在 5 之前，否则带检索的用例会被误归知识源
+    if "budget" in failed and not answer_issue:
+        return _attribute_budget(case, trace)
+
     # 5 —— 知识与检索：答案忠实，但拿到的知识/数据本身就是错的
     if trace.retrieves:
         ret = trace.retrieves[0]
@@ -162,6 +169,40 @@ def attribute(case: Case, trace: Trace) -> Attribution:
 
     # 都不匹配 —— 不硬凑，进人工复核
     return Attribution("L1", f"未命中既定规则，需人工复核。失败项：{list(failed)}", [])
+
+
+def _attribute_budget(case: Case, trace: Trace) -> Attribution:
+    budget = case.expect.budget
+    assert budget is not None
+    calls = trace.tool_calls
+    if budget.tool_calls is not None and len(calls) > budget.tool_calls:
+        return Attribution(
+            "L1",
+            f"调用了 {len(calls)} 次工具（预算 {budget.tool_calls} 次）：{trace.tool_names}，规划冗余",
+            [*([trace.plan.span_id] if trace.plan else []), *[t.span_id for t in calls]],
+        )
+    data_spans = [*trace.observations, *trace.retrieves]
+    data_ms = sum(s.latency_ms for s in data_spans)
+    if budget.latency_ms is not None and trace.latency_ms > budget.latency_ms:
+        model_ms = max(trace.latency_ms - data_ms, 0)
+        slow = max(data_spans, key=lambda s: s.latency_ms, default=None)
+        where = (
+            f"数据源 {data_ms:.0f}ms（最慢 {slow.span_id}）"
+            if slow is not None and data_ms >= model_ms
+            else f"模型 {model_ms:.0f}ms"
+        )
+        return Attribution(
+            "L0",
+            f"端到端 {trace.latency_ms:.0f}ms 超出预算 {budget.latency_ms:.0f}ms，主要耗在{where}；"
+            f"数据源合计 {data_ms:.0f}ms / 模型合计 {model_ms:.0f}ms",
+            [slow.span_id] if slow is not None and data_ms >= model_ms else [],
+        )
+    return Attribution(
+        "L1",
+        f"工具调用次数在预算内，但 token {trace.tokens.total} 超出预算 {budget.tokens}："
+        f"推理轮次或上下文过长，需人工复核",
+        [trace.plan.span_id] if trace.plan else [],
+    )
 
 
 def _absent_from_observations(case: Case, trace: Trace) -> list[str]:
