@@ -1,0 +1,38 @@
+id: fault_grades_slow_001
+title: 成绩接口变慢 9 秒：性能预算必须报警，并归到环境层
+dimension: performance
+difficulty: medium
+source: golden
+tags: [onegzus, fault, perf, "fault:slow"]
+
+input:
+  messages:
+    - role: user
+      content: "我上学期成绩怎么样"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: grades
+          kind: slow
+          latency_ms: 9000
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  budget:
+    latency_ms: 8000
+
+# 数据面故障注入：数据照常返回，只是数据源慢。根因已知在环境（L0），不在 agent
+inject:
+  base: grades_last_term_001
+  op: "fault:slow"
+  layer: L0
+  detail: grades 叠加 9000ms 耗时

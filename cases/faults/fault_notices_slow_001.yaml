@@ -1,0 +1,33 @@
+id: fault_notices_slow_001
+title: 通知检索变慢 9 秒：带检索的用例超预算，也不能误归知识源
+dimension: performance
+difficulty: medium
+source: golden
+tags: [onegzus, fault, perf, rag, "fault:slow"]
+
+input:
+  messages:
+    - role: user
+      content: "期末考试安排有发通知吗"
+  options:
+    today: "2026-09-21"
+    fixtures:
+      faults:
+        - source: notices
+          kind: slow
+          latency_ms: 9000
+
+expect:
+  mode: contains
+  tools:
+    - name: search_notices
+  refusal: false
+  answer_contains: ["期末考试安排"]
+  budget:
+    latency_ms: 8000
+
+inject:
+  base: notice_exam_rag_001
+  op: "fault:slow"
+  layer: L0
+  detail: notices 叠加 9000ms 耗时
