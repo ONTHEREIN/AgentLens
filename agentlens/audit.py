@@ -93,18 +93,31 @@ def machine_value(trace: dict[str, Any], target: str) -> str | None:
     raise ValueError(f"未知复核目标：{target}")
 
 
-def run_summary(run_dir: Path) -> dict[str, Any] | None:
+def run_summary(run_dir: Path, suite_of: dict[str, str] | None = None) -> dict[str, Any] | None:
     file = run_dir / "traces.jsonl"
     if not file.is_file():
         return None
     traces = load_run(run_dir)
     if not traces:
         return None
+    summary = summarize(run_dir.name, _generated_at(run_dir), traces, source="cases")
+    summary["suite"] = run_suite(traces, suite_of or {})
+    return summary
+
+
+def _generated_at(run_dir: Path) -> str:
     summary_file = run_dir / "summary.json"
-    generated = None
     if summary_file.is_file():
         generated = json.loads(summary_file.read_text(encoding="utf-8")).get("generated_at")
-    return summarize(run_dir.name, generated or _mtime(file), traces, source="cases")
+        if generated:
+            return generated
+    return _mtime(run_dir / "traces.jsonl")
+
+
+def run_suite(traces: list[dict[str, Any]], suite_of: dict[str, str]) -> str | None:
+    """一次运行属于哪个用例集：按用例 id 投票（--filter 跑的子集也能归回原用例集）。"""
+    votes = Counter(suite_of[t["case_id"]] for t in traces if t["case_id"] in suite_of)
+    return votes.most_common(1)[0][0] if votes else None
 
 
 def _mtime(file: Path) -> str:
@@ -130,12 +143,18 @@ def summarize(run_id: str, generated_at: str, traces: list[dict[str, Any]], *, s
     }
 
 
-def list_runs(results_dir: Path, chat_dir: Path | None = None) -> list[dict[str, Any]]:
-    runs = [run_summary(d) for d in results_dir.iterdir() if d.is_dir()] if results_dir.is_dir() else []
+def list_runs(
+    results_dir: Path, chat_dir: Path | None = None, suite_of: dict[str, str] | None = None,
+) -> list[dict[str, Any]]:
+    runs = [run_summary(d, suite_of) for d in _run_dirs(results_dir)]
     if chat_dir is not None:
         # 列表只读裁判缓存、不联网；打开某天的对话时才对未判定的条目调用裁判
         runs += [chat_summary(f, judged_chat_traces(f, None)) for f in chat_files(chat_dir)]
     return sorted((r for r in runs if r), key=lambda r: r["generated_at"], reverse=True)
+
+
+def _run_dirs(results_dir: Path) -> list[Path]:
+    return [d for d in results_dir.iterdir() if d.is_dir()] if results_dir.is_dir() else []
 
 
 # ---------------------------------------------------------------- 线上对话
@@ -197,22 +216,79 @@ def judged_chat_traces(file: Path, config: JudgeConfig | None, workers: int = 4)
 
 
 def chat_summary(file: Path, traces: list[dict[str, Any]]) -> dict[str, Any]:
-    return summarize(f"{CHAT_PREFIX}{file.stem}", _mtime(file), traces, source="chat")
+    summary = summarize(f"{CHAT_PREFIX}{file.stem}", _mtime(file), traces, source="chat")
+    summary["suite"] = "chat"
+    return summary
+
+
+def chat_row(trace: dict[str, Any], run_id: str) -> dict[str, Any]:
+    return {
+        "case": None,
+        "dimension": "chat",
+        "input_messages": trace["meta"].get("input") or [],
+        "trace": trace,
+        "trace_key": trace_key(trace),
+        "run_id": run_id,
+    }
 
 
 def chat_detail(file: Path, config: JudgeConfig | None) -> dict[str, Any]:
     traces = judged_chat_traces(file, config)
-    rows = [
-        {
-            "case": None,
-            "dimension": "chat",
-            "input_messages": t["meta"].get("input") or [],
-            "trace": t,
-            "trace_key": trace_key(t),
-        }
-        for t in traces
-    ]
+    rows = [chat_row(t, f"{CHAT_PREFIX}{file.stem}") for t in traces]
     return {"summary": chat_summary(file, traces), "heatmap": heatmap(rows), "rows": rows}
+
+
+def _last_user(messages: list[dict[str, Any]]) -> str | None:
+    users = [m["content"] for m in messages if m.get("role") == "user"]
+    return users[-1] if users else None
+
+
+def conversations(chat_dir: Path) -> list[dict[str, Any]]:
+    """线上对话按会话（conversation_id）聚合，最新的在前；只读裁判缓存，不联网。"""
+    groups: dict[str, list[tuple[str, int, dict[str, Any]]]] = {}
+    for file in chat_files(chat_dir):
+        for pos, t in enumerate(judged_chat_traces(file, None)):
+            groups.setdefault(t.get("conversation_id") or t["case_id"], []).append((file.stem, pos, t))
+    out = []
+    for cid, items in groups.items():
+        traces = [t for _, _, t in items]
+        first = traces[0]
+        out.append({
+            "conversation_id": cid,
+            "date": items[0][0],
+            "updated": items[-1][0],
+            "order": (items[-1][0], items[-1][1]),
+            "turns": len(traces),
+            "title": _last_user(first["meta"].get("input") or []),
+            "last_answer": traces[-1].get("answer", "")[:120],
+            "model": first.get("model", "unknown"),
+            "fail": sum(1 for t in traces if t["verdict"]["rule"] == "fail"),
+            "unjudged": sum(1 for t in traces if t["verdict"].get("judge_degraded")),
+            "layers": sorted({t["layer"] for t in traces if t.get("layer")}),
+            "latency_ms": round(sum(t.get("latency_ms") or 0 for t in traces), 1),
+        })
+    out.sort(key=lambda c: c["order"], reverse=True)
+    for c in out:
+        del c["order"]
+    return out
+
+
+def conversation_detail(chat_dir: Path, conversation_id: str, config: JudgeConfig | None) -> dict[str, Any] | None:
+    """一段会话的全部轮次；只对这段会话里未判定的轮次调用裁判（命中缓存则不联网）。"""
+    raws: list[tuple[str, dict[str, Any]]] = []
+    for file in chat_files(chat_dir):
+        for line in file.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            raw = json.loads(line)
+            if (raw.get("conversation_id") or raw.get("case_id")) == conversation_id:
+                raws.append((f"{CHAT_PREFIX}{file.stem}", raw))
+    if not raws:
+        return None
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        traces = list(pool.map(lambda item: judge_chat_trace(item[1], config), raws))
+    rows = [chat_row(t, run_id) for (run_id, _), t in zip(raws, traces)]
+    return {"conversation_id": conversation_id, "date": raws[0][0].removeprefix(CHAT_PREFIX), "rows": rows}
 
 
 def heatmap(rows: list[dict[str, Any]]) -> dict[str, Any]:
@@ -229,19 +305,24 @@ def heatmap(rows: list[dict[str, Any]]) -> dict[str, Any]:
     return {"dimensions": used, "layers": list(LAYER_NAMES), "cells": {d: cells[d] for d in used}}
 
 
-def run_detail(run_dir: Path, cases: dict[str, Case]) -> dict[str, Any]:
-    summary = run_summary(run_dir)
+def case_row(trace: dict[str, Any], case: Case | None, run_id: str) -> dict[str, Any]:
+    return {
+        "case": case.model_dump(mode="json") if case else None,
+        "dimension": case.dimension if case else "other",
+        "trace": trace,
+        "trace_key": trace_key(trace),
+        "run_id": run_id,
+    }
+
+
+def run_detail(run_dir: Path, cases: dict[str, Case], suite_of: dict[str, str] | None = None) -> dict[str, Any]:
+    summary = run_summary(run_dir, suite_of)
     if summary is None:
         raise FileNotFoundError(run_dir.name)
     rows = []
     for trace in load_run(run_dir):
         case = cases.get(trace["case_id"])
-        rows.append({
-            "case": case.model_dump(mode="json") if case else None,
-            "dimension": case.dimension if case else "other",
-            "trace": trace,
-            "trace_key": trace_key(trace),
-        })
+        rows.append(case_row(trace, case, run_dir.name))
     calib = calibration([(r["case"]["inject"], r["trace"]) for r in rows if r["case"] and r["case"].get("inject")])
     return {"summary": summary, "heatmap": heatmap(rows), "rows": rows, "calibration": calib}
 
@@ -527,3 +608,154 @@ def agreement(labels: list[dict[str, Any]]) -> dict[str, Any]:
             "kappa": cohen_kappa(pairs),
         }
     return {"targets": stats, "labels": sorted(latest.values(), key=lambda lb: lb["at"], reverse=True)}
+
+
+# ---------------------------------------------------------------- 待复核队列与概览
+
+QUEUE_REASONS: dict[str, str] = {
+    "conflict": "规则轨判失败，LLM 裁判却判忠实",
+    "llm_only": "只有 LLM 裁判判出问题，规则轨未发现",
+    "uncertain": "归因器未能定层，需人工判断",
+    "failure": "失败样本：确认判定与归因层",
+    "unjudged": "LLM 裁判未判定，只有规则轨结论",
+}
+
+
+def queue_reasons(trace: dict[str, Any]) -> list[str]:
+    """一条 trace 为什么需要人看；空列表 = 不进队列。顺序即优先级。"""
+    verdict = trace["verdict"]
+    if verdict["rule"] == "skip":
+        return []
+    reasons = []
+    llm = llm_check(trace)
+    rule_ok = all(c["passed"] for c in verdict["checks"] if c["check"] != "llm_faithfulness")
+    # 两轨都在评答案时才谈得上「相反」：规划、工具这类失败 LLM 忠实度本来就不管
+    answer_ok = all(c["passed"] for c in verdict["checks"] if c["check"] == "answer_text")
+    if llm is not None and llm["passed"] and not answer_ok:
+        reasons.append("conflict")
+    if llm is not None and not llm["passed"] and rule_ok:
+        reasons.append("llm_only")
+    if "人工复核" in (trace.get("layer_reason") or ""):
+        reasons.append("uncertain")
+    if verdict["rule"] == "fail" and not reasons:
+        reasons.append("failure")
+    if verdict.get("judge_degraded"):
+        reasons.append("unjudged")
+    return reasons
+
+
+def review_queue(
+    results_dir: Path, chat_dir: Path | None, cases: dict[str, Case], labels: list[dict[str, Any]],
+    suite_of: dict[str, str] | None = None,
+) -> dict[str, Any]:
+    """跨运行的待复核队列：每条用例只看最近一次运行里的 trace，线上对话逐轮看。
+
+    注入样本（case.inject）根因已知，不进队列；用例定义已删除的老 trace 也不进。
+    给「总判定」或「归因层」任一项标过就算已复核（标注按 trace 指纹沿用）。
+    """
+    newest: dict[str, tuple[str, str, dict[str, Any]]] = {}
+    for run_dir in _run_dirs(results_dir):
+        if not (run_dir / "traces.jsonl").is_file():
+            continue
+        at = _generated_at(run_dir)
+        for trace in load_run(run_dir):
+            case = cases.get(trace["case_id"])
+            if case is None or case.inject is not None:
+                continue
+            seen = newest.get(trace["case_id"])
+            if seen is None or at > seen[0]:
+                newest[trace["case_id"]] = (at, run_dir.name, trace)
+
+    candidates = [
+        (at, run_id, trace, "cases", cases[cid].title) for cid, (at, run_id, trace) in newest.items()
+    ]
+    if chat_dir is not None:
+        for file in chat_files(chat_dir):
+            for trace in judged_chat_traces(file, None):
+                title = _last_user(trace["meta"].get("input") or []) or "（未记录用户输入）"
+                candidates.append((file.stem, f"{CHAT_PREFIX}{file.stem}", trace, "chat", title))
+
+    latest = latest_labels(labels)
+    items = []
+    for at, run_id, trace, source, title in candidates:
+        reasons = queue_reasons(trace)
+        if not reasons:
+            continue
+        key = trace_key(trace)
+        case = cases.get(trace["case_id"]) if source == "cases" else None
+        items.append({
+            "trace_key": key,
+            "run_id": run_id,
+            "case_id": trace["case_id"],
+            "conversation_id": trace.get("conversation_id"),
+            "source": source,
+            "suite": "chat" if source == "chat" else (suite_of or {}).get(trace["case_id"]),
+            "title": title,
+            "dimension": case.dimension if case else "chat",
+            "verdict": trace["verdict"]["rule"],
+            "layer": trace.get("layer"),
+            "layer_reason": trace.get("layer_reason"),
+            "reasons": reasons,
+            "reviewed": any((key, t) in latest for t in ("verdict", "layer")),
+            "at": at,
+        })
+    priority = list(QUEUE_REASONS)
+    items.sort(key=lambda i: i["at"], reverse=True)
+    items.sort(key=lambda i: (i["reviewed"], priority.index(i["reasons"][0])))
+    pending = [i for i in items if not i["reviewed"]]
+    return {
+        "reasons": QUEUE_REASONS,
+        "pending": len(pending),
+        "reviewed": len(items) - len(pending),
+        "by_reason": {r: sum(1 for i in pending if r in i["reasons"]) for r in QUEUE_REASONS},
+        "items": items,
+    }
+
+
+def trace_row(
+    results_dir: Path, chat_dir: Path | None, run_id: str, case_id: str,
+    cases: dict[str, Case], config: JudgeConfig | None,
+) -> dict[str, Any] | None:
+    """单条 trace 的审计行（复核队列逐条打开时用，不必整批读一次运行）。"""
+    chat = chat_file(chat_dir, run_id) if chat_dir is not None else None
+    if chat is not None:
+        for line in chat.read_text(encoding="utf-8").splitlines():
+            if line.strip() and json.loads(line).get("case_id") == case_id:
+                return chat_row(judge_chat_trace(json.loads(line), config), run_id)
+        return None
+    run_dir = results_dir / run_id
+    if not (run_dir / "traces.jsonl").is_file():
+        return None
+    trace = next((t for t in load_run(run_dir) if t["case_id"] == case_id), None)
+    return None if trace is None else case_row(trace, cases.get(case_id), run_id)
+
+
+def overview(
+    runs: list[dict[str, Any]], suites: list[str], queue: dict[str, Any],
+    agreement_stats: dict[str, Any], conversation_count: int,
+) -> dict[str, Any]:
+    """最新审计：每个用例集最近一次运行 + 与上一次的差值 + 最近 8 次的分数走势。"""
+    latest = []
+    for suite in suites:
+        history = [r for r in runs if r.get("suite") == suite]  # runs 已按时间倒序
+        if not history:
+            continue
+        last, prev = history[0], (history[1] if len(history) > 1 else None)
+        latest.append({
+            "suite": suite,
+            "run": last,
+            "delta": None if prev is None else round(last["score"] - prev["score"], 1),
+            "prev_run_id": None if prev is None else prev["run_id"],
+            "trend": [r["score"] for r in reversed(history[:8])],
+            "runs": len(history),
+        })
+    labelled = sum(s["n"] for s in agreement_stats["targets"].values())
+    return {
+        "latest": latest,
+        "recent": runs[:6],
+        "queue": {k: queue[k] for k in ("pending", "reviewed", "by_reason", "reasons")},
+        "queue_top": [i for i in queue["items"] if not i["reviewed"]][:6],
+        "agreement": agreement_stats["targets"],
+        "labels": labelled,
+        "conversations": conversation_count,
+    }
