@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "5f93a2df270a0885",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_iLGig0f69CQ3prdWdova8402",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询数据库原理课程的期末考试教室（先查当前学期考试安排，未找到再查上学期）\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "用户问数据库原理期末考试教室。需要查询考试安排。当前学期是2026-2027学年第1学期。但数据库原理可能是上个学期的课？先查当前学期考试安排。也许要先make_plan。\n\n可以查当前学期，如果没找到，再查2025-2026学年。先make_plan。",
+      "prompt_tokens": 1259,
+      "completion_tokens": 148,
+      "latency_ms": 1770.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_btWdx4NmxtRsI5LPDo8N6762",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1426,
+      "completion_tokens": 56,
+      "latency_ms": 949.3
+    },
+    {
+      "content": "数据库原理的期末考试教室是 A3-302。\n\n- 时间：2026-12-24（周四）09:00-11:00\n- 教室：A3-302，座位号 18\n\n考试时记得带好学生证和文具，提前到场。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1624,
+      "completion_tokens": 60,
+      "latency_ms": 999.7
+    }
+  ]
+}

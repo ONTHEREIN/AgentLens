@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "c58d6d4976510445",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_VemAS0NlGXiM0ZUVdky90516",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询宿舍水费（热水）余额\", \"steps\": [\"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "用户问热水还剩多少钱——宿舍水电余额。需要调用 get_card_balance。先 make_plan。",
+      "prompt_tokens": 1255,
+      "completion_tokens": 90,
+      "latency_ms": 1145.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_3XuQtPmkEDUK9GIJPtUS7541",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1364,
+      "completion_tokens": 24,
+      "latency_ms": 793.5
+    },
+    {
+      "content": "你的热水余额是 **42.80 元**（演示宿舍 A1-101）。\n\n顺便说一下其他余额情况：\n- 电费：68.4 度\n- 冷水：9.6 吨\n\n热水余额高于 10 元的低余额提醒线，暂时不用担心。数据更新于 2026-09-19 08:00。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1627,
+      "completion_tokens": 77,
+      "latency_ms": 922.9
+    }
+  ]
+}

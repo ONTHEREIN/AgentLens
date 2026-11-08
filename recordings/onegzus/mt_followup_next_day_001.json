@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "eea0f6277d780188",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ojtc3xoOWoyWTx3yflJJ4842",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询下周二（第5周星期二）的课表\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "The user asks about Tuesday of next week (week 5). I already have week 5 schedule from the previous call? Actually the previous turn I apparently called get_schedule with week 5 — but I don't have the tool result visible. I need to call tools now with make_plan first.\n\nLet me make a plan and call get_schedule for week 5.",
+      "prompt_tokens": 1307,
+      "completion_tokens": 148,
+      "latency_ms": 1488.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_G71hjkBVuOtQM8wBKq7K0249",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 5}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1474,
+      "completion_tokens": 39,
+      "latency_ms": 754.3
+    },
+    {
+      "content": "下周二（第 5 周星期二），你只有一门课：\n\n- **数据结构**：第 3-4 节，陈老师，地点为实训楼 204（第 1-16 周）\n\n其余时间没有安排课程。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1914,
+      "completion_tokens": 53,
+      "latency_ms": 1170.3
+    }
+  ]
+}

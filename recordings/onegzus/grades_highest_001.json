@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "d48225bd412216b3",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_Dng6tIvQz8Zu8FJDvuQM3499",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户 2025-2026 学年春季学期（上学期）的成绩，找出分数最高的课程\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks: last semester, which course had the highest score. Today 2026-09-21, current semester 2026-2027 term 1. Last semester = 2025-2026 term 2.\n\nCall make_plan, then get_grades with year 2025, term 2.",
+      "prompt_tokens": 1258,
+      "completion_tokens": 146,
+      "latency_ms": 1490.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_iyJZfSlUJeHa8sYZaL4Y6160",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1423,
+      "completion_tokens": 56,
+      "latency_ms": 1238.2
+    },
+    {
+      "content": "上学期（2025-2026 学年春季学期）你分数最高的课程是**软件工程导论，92 分**（2 学分，绩点 4.0）。\n\n各科成绩：软件工程导论 92 > 数据库原理 90 > 数据结构 89 > 大学英语（四）88 > 操作系统 85。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1769,
+      "completion_tokens": 75,
+      "latency_ms": 1316.9
+    }
+  ]
+}

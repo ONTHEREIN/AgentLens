@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "a3a3daeb2355b4f7",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_0gG1yQRnk8jZI0ZEEbpV0093",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询\\\"创新实践周\\\"的报名方式\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user asks how to sign up for \"创新实践周\" (Innovation Practice Week). I should search notices.\n\nFirst call make_plan.",
+      "prompt_tokens": 1257,
+      "completion_tokens": 98,
+      "latency_ms": 1335.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_izbL1T1wdrBfNl4YY5we8103",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"创新实践周\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1374,
+      "completion_tokens": 41,
+      "latency_ms": 984.8
+    },
+    {
+      "content": "我检索到一条相关通知：\n\n**《校园创新实践周报名开始》**\n- 发布单位：jwxt（教务系统）\n- 发布时间：2026-09-16\n- 分类：校园活动\n- 通知链接：https://demo.local/notices/activity\n- 内容摘要：欢迎同学报名参加创新实践活动。\n\n不过这条通知只提供了标题和摘要，**没有写明具体的报名入口、报名截止时间或操作步骤**。建议你打开上面的通知链接查看完整说明，或直接咨询班级辅导员或教务处。要我帮你再查一下其他关键词（如“实践周报名”“第二课堂”）吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1490,
+      "completion_tokens": 135,
+      "latency_ms": 1810.6
+    }
+  ]
+}

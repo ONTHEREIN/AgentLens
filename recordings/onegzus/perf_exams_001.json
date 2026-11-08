@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "639c82e467e5adc7",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_cYMRqr4TJNAjlmFZ1Mhf7812",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期（2026-2027 学年第 1 学期）的期末考试安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks when final exams are. Need to call make_plan then get_exams for current semester (2026-2027 学年 第1学期 → year \"2026\", term \"1\").\n\nAlso maybe schedule? Just exams.\n\nNote today is 2026-09-21, first semester week 4. Final exams would be at end of this semester. Let me call get_exams with year 2026 term 1.",
+      "prompt_tokens": 1254,
+      "completion_tokens": 170,
+      "latency_ms": 1503.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_aK4Nip78DS917aIttpMj6607",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1443,
+      "completion_tokens": 56,
+      "latency_ms": 616.6
+    },
+    {
+      "content": "本学期期末考试安排如下：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理（3 学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统（3 学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n目前系统里只有这两门课的期末考试安排；如果之后还有新增科目，建议临近考试时再查一次。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1641,
+      "completion_tokens": 125,
+      "latency_ms": 1404.2
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "90c013a57d38ae8d",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_gZx780ajmPtSIBEhYowQ6032",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想为明天（2026-09-22 周二，第4周）的课请假，我需要先查明天有哪些课，并了解学校请假规定；但我没有提交请假申请的工具，需要说明正确的办理方式\", \"steps\": [\"get_schedule\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user wants to request leave for tomorrow's classes. I can't actually submit a leave request — I don't have that tool. I should check tomorrow's schedule to tell them what classes they'd miss, and clarify that I can't submit leave requests; they need to go through the proper channel (辅导员/教务系统). Also maybe search notices for leave policy.\n\nPlan: get_schedule for week 4 (tomorrow = 2026-09-22 Tuesday, same week 4), and search_notices for \"请假\".\n\nLet me call make_plan first with steps get_schedule, search_notices.",
+      "prompt_tokens": 1259,
+      "completion_tokens": 237,
+      "latency_ms": 2126.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_sexXVMSakp8G37eGyZ6n0091",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        },
+        {
+          "id": "call_01_ET_ErXvnBUeKlRGB6ldkINv2719",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"请假\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1515,
+      "completion_tokens": 68,
+      "latency_ms": 911.7
+    },
+    {
+      "content": "先说明一下：我没有提交请假申请（或代为向老师请假）的权限，只能帮你查信息。请假需要你本人在教务系统/学工系统提交，或联系辅导员、任课老师办理。\n\n**明天（9月22日，周二，第4周）你只有一节课：**\n\n| 时间 | 课程 | 教师 | 地点 |\n|---|---|---|---|\n| 第3–4节 | 数据结构 | 陈老师 | 实训楼 204 |\n\n请假建议：\n1. 优先在请假系统提交申请（事由、时间：9月22日第3–4节），并等辅导员审批；\n2. 提前联系陈老师说明情况，或请同学转达，避免被记为旷课；\n3. 返校后及时销假或补交证明材料。\n\n另外，我在通知公告里按“请假”检索，没有找到相关文件，所以具体流程请以你们学院或辅导员的要求为准。如果需要，我也可以帮你查一下当前的考勤记录。",
+      "tool_calls": [],
+      "reasoning": "No leave notices found. I should tell them I can't submit leave requests; only provide info. Tomorrow is Tuesday (weekday 2): 数据结构 3-4节, 陈老师, 实训楼204.\n\nAlso, they may want to notify teachers. Provide guidance: 通过教务系统/辅导员请假, 找陈老师补假条, 注意考勤. Maybe also check attendance? Not necessary. Could mention I can't submit.\n\nKeep concise.",
+      "prompt_tokens": 1993,
+      "completion_tokens": 309,
+      "latency_ms": 2958.9
+    }
+  ]
+}

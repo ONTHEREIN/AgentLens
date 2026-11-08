@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "6c84394336a80fff",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_fqUbDXaD61u2RHlAH8M41092",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期课表中\\\"数据结构\\\"课程的授课教师\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问数据结构是哪位老师教的。需要查课表。先 make_plan。",
+      "prompt_tokens": 1257,
+      "completion_tokens": 87,
+      "latency_ms": 943.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_akAUEavoSkwitChtJsp52930",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1363,
+      "completion_tokens": 39,
+      "latency_ms": 908.6
+    },
+    {
+      "content": "数据结构由**陈老师**授课，上课时间是每周二第 3-4 节，地点在实训楼 204，第 1-16 周。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1803,
+      "completion_tokens": 36,
+      "latency_ms": 902.6
+    }
+  ]
+}

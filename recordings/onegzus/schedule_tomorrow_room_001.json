@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "e244af5d794323aa",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_UcxYIlVKrYMAeaCdSZFQ8593",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周课表，找出明天（周二，第4周）的课程及教室\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问明天的课在哪个教室。今天2026-09-21星期一，明天星期二，第4周。需要查本周课表。",
+      "prompt_tokens": 1257,
+      "completion_tokens": 107,
+      "latency_ms": 1190.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_otoxYbIJET3HkbgCsese3172",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1383,
+      "completion_tokens": 39,
+      "latency_ms": 883.7
+    },
+    {
+      "content": "明天（9月22日，周二）你只有一节课：\n\n- **数据结构**（陈老师），第 3-4 节，教室：**实训楼 204**\n\n（其余时间没有课。）",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1823,
+      "completion_tokens": 45,
+      "latency_ms": 992.5
+    }
+  ]
+}

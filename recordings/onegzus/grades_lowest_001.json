@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "11a8a29a42699dc3",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_DDtSyvdRYDhBW3qj48tj9761",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本人 2025-2026 学年春季学期（上学期）成绩，找出分数最低的课程\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "User asks: which course did I do worst in last semester. Today is 2026-09-21, current semester is 2026-2027 term 1. Last semester = 2025-2026 term 2.\n\nNeed make_plan then get_grades.",
+      "prompt_tokens": 1260,
+      "completion_tokens": 139,
+      "latency_ms": 1480.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_UJFGqrT9nul0bSnK3xuY9706",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1418,
+      "completion_tokens": 56,
+      "latency_ms": 819.7
+    },
+    {
+      "content": "上学期（2025-2026 学年春季学期）你一共修了 5 门课，其中成绩最低的是：\n\n**操作系统：85 分**（3 学分，绩点 3.3）\n\n其余各科成绩为：软件工程导论 92、数据库原理 90、数据结构 89、大学英语（四）88。全部课程均正常通过。",
+      "tool_calls": [],
+      "reasoning": "Lowest: 操作系统 85.",
+      "prompt_tokens": 1764,
+      "completion_tokens": 90,
+      "latency_ms": 996.0
+    }
+  ]
+}
