@@ -1,0 +1,49 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "param_freshman_term_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我第一学年秋季学期的各科分数能帮我调出来吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "term": "1",
+          "year": "2024"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我查了成绩系统，结果如下：\n\n- 2025-2026 学年 秋季学期（第 1 学期）：没有任何成绩记录\n- 2024-2025 学年 秋季学期（第 1 学期）：也没有成绩记录\n\n系统里查不到你第一学年秋季学期的科目分数，可能的原因有：\n1. 我对「第一学年」的年份理解有偏差——如果你的入学年份不是 2025 年，请告诉我具体学年，我再查；\n2. 该学期成绩还没录入或未公布；\n3. 成绩记录在春季学期，或挂在其他学期下。\n\n请确认一下你的入学年份（或直接说学年，比如 2023-2024），我再帮你精确查询。",
+    "rubric": "智能体不知道用户的入学年份，「大一上」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大一上"
+  }
+}

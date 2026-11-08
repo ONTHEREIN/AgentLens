@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "perf_card_balance_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "哎，我饭卡里还剩多少钱啊？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "我这边能查到的只有宿舍水电余额，没有饭卡金额的记录（饭卡余额需要去食堂刷卡机、圈存机或校园卡 App 查询）。宿舍水电情况如下（宿舍：演示宿舍 A1-101，更新于 2026-09-19）：\n\n- 电费余额：68.4 度\n- 冷水余额：9.6 吨\n- 热水余额：42.80 元\n\n目前电余额 68.4 度高于 30 度的低电提醒线，冷水 9.6 吨也高于 5 吨提醒线，热水 42.80 元高于 10 元提醒线，暂时都还不紧张。\n\n如果你要查饭卡余额，我这边没法获取这个数据。需要的话，我可以帮你搜一下学校有没有关于校园卡充值或查询的通知，你看要不要？",
+    "rubric": null
+  }
+}

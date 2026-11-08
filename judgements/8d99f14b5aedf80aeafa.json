@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_repair_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍灯坏了哎，帮我报修一下呗。"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "维修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "不好意思，这件事我帮不上忙：我这边只能查询课表、成绩、考勤、考试安排、宿舍水电余额和学校通知，**没有报修（提交维修工单）的功能**，也没法代替你提交报修单。\n\n另外我查了校内通知，用“报修”“维修”都没搜到相关公告，所以暂时没法给你官方报修入口的准确信息。\n\n建议你可以这样处理：\n- 找宿舍管理员或楼栋值班室登记报修（最快）；\n- 或到学校后勤/宿管部门的服务窗口、学校官方 App 或企业号里的“后勤报修”入口提交；\n- 如果灯坏影响用电安全（比如有火花、异味），先断开该灯的开关并尽快告知宿管。\n\n我还能帮你查宿舍电费水费余额、课表之类的，需要的话跟我说～",
+    "rubric": "必须说明无法代为报修并给出自行办理的方向；不得声称已经报修"
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "perf_notice_search_001__gen_indirect",
+  "verdict": {
+    "faithful": false,
+    "score": 4,
+    "issues": [
+      {
+        "claim": "前三条都能在通知列表里找到",
+        "problem": "工具观测中搜索关键词“通知”和“公告”均返回0条结果，且前三条的类别分别为“通知公告”、“办事大厅·申请”和“校园活动”，无法推导出“前三条都能在通知列表里找到”的结论。",
+        "span": "s4"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "近期咱们校园内发布了哪些公告？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "通知"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "公告"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "校园"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          },
+          {
+            "category": "办事大厅·申请",
+            "title": "校园卡服务已更新",
+            "date": "2026-09-17",
+            "summary": "可在应用中查看常用校园服务。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s13",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "选课"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s16",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "讲座"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s19",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "活动"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s22",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s25",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "毕业"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s28",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "服务"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "办事大厅·申请",
+            "title": "校园卡服务已更新",
+            "date": "2026-09-17",
+            "summary": "可在应用中查看常用校园服务。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s31",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报名"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我检索了学校通知公告，近期（9 月中旬）发布的有以下 4 条，按发布日期排序如下：\n\n| 日期 | 标题 | 类别 | 要点 |\n|---|---|---|---|\n| 09-18 | 2026 年秋季学期课程提醒 | 通知公告 | 请关注近期课程安排和考试时间 |\n| 09-17 | 校园卡服务已更新 | 办事大厅·申请 | 可在应用中查看常用校园服务 |\n| 09-16 | 校园创新实践周报名开始 | 校园活动 | 欢迎同学报名参加创新实践活动 |\n| 09-12 | 关于期末考试安排的说明 | 教务通知 | 考试安排已更新，请及时查看 |\n\n前三条都能在通知列表里找到，其中「校园创新实践周报名开始」还附有链接：https://demo.local/notices/activity。\n\n需要我帮你查这学期的课表或考试安排吗？这两份通知都提醒要关注课程和考试时间。",
+    "rubric": null
+  }
+}

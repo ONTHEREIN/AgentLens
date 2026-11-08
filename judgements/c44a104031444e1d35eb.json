@@ -1,0 +1,64 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_makeup_exam_miss_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "关于重新考试的具体计划，学校发布相关公告了吗？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "重新考试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我用“重新考试”“补考”两个关键词查了学校通知，结果如下：\n\n**检索到 2 条相关通知（均未专门说明重考或补考的具体计划）**\n1. 《2026 年秋季学期课程提醒》——2026-09-18，教务系统（jwxt）\n   摘要：请关注近期课程安排和考试时间。\n2. 《关于期末考试安排的说明》——2026-09-12，教务通知（jwxt）\n   摘要：考试安排已更新，请及时查看。\n   🔗 https://demo.local/notices/exam\n\n用关键词“补考”检索没有返回任何结果。\n\n也就是说，目前没有检索到专门针对“重新考试（补考）”具体安排的公告；这两条通知只进行了笼统提醒。如果你需要，我可以再帮你查一下本人的考试安排，或者换用其他关键词（如“缓考”“重修”）再检索一次。",
+    "rubric": "通知库里只有期末考试安排的说明，没有补考通知；不能把期末考试通知当成补考通知"
+  }
+}

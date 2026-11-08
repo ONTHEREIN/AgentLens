@@ -1,0 +1,73 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_card_days_left_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "照现在这么用，宿舍电还能撑几天"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      },
+      {
+        "span": "s6",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "电费"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "查到了你的宿舍用电情况：\n\n**宿舍电费余额：68.4 度**（演示宿舍 A1-101，数据更新时间 2026-09-19 08:00）\n\n不过要跟说明一下：系统只提供**当前余额**，没有提供历史用电量或日均用电数据，所以没法准确算出「还能撑几天」。我能补充的信息是：\n\n- 低电量提醒阈值是 **30 度**，余额低于 30 度时会在每天 08:00 提醒你；\n- 目前 68.4 度仍高于阈值，属于正常水平；\n- 学校通知里也搜不到相关电费公告。\n\n粗略参考（不是系统数据，只是估算）：如果宿舍日均用电 3–5 度，大约还能用 **14–23 天**；如果开空调、用电热水器较多，日均 8–10 度，大概只剩 **7–9 天**。你可以对照最近一次充值的金额和日期自己折算一下，或者去宿管/后勤系统看历史用电曲线会更准确。\n\n顺便一提，冷水还有 9.6 吨、热水 42.80 元，短期内都不紧张。",
+    "rubric": "余额工具只返回剩余 68.4 度，不含每日用电量；若给出天数，必须说明是按假设的日用量估算，不得冒充系统数据"
+  }
+}

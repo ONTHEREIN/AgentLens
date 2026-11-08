@@ -1,0 +1,45 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_activity_rag_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "创新实践周怎么报名"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "创新实践周"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我检索到一条相关通知：\n\n**《校园创新实践周报名开始》**\n- 发布单位：jwxt（教务系统）\n- 发布时间：2026-09-16\n- 分类：校园活动\n- 通知链接：https://demo.local/notices/activity\n- 内容摘要：欢迎同学报名参加创新实践活动。\n\n不过这条通知只提供了标题和摘要，**没有写明具体的报名入口、报名截止时间或操作步骤**。建议你打开上面的通知链接查看完整说明，或直接咨询班级辅导员或教务处。要我帮你再查一下其他关键词（如“实践周报名”“第二课堂”）吗？",
+    "rubric": "通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程"
+  }
+}

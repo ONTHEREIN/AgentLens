@@ -1,0 +1,75 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "param_grade_level_001__gen_asr",
+  "verdict": {
+    "faithful": false,
+    "score": 2,
+    "issues": [
+      {
+        "claim": "你大二下学期（2025-2026 学年第 2 学期）",
+        "problem": "智能体不知道用户的入学年份，无法直接推断「大二下」对应的学年。根据额外评判要求，不得把某个学年断言成用户的大二下，应先询问入学年份或明确说明假设。",
+        "span": "s3"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我大二下学期的考勤杂么样"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": {
+          "status": "ok",
+          "items": [
+            {
+              "courseId": "demo-data-structures",
+              "courseName": "数据结构",
+              "courseCode": "SE204",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 16,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 0,
+              "total": 16,
+              "records": []
+            },
+            {
+              "courseId": "demo-database",
+              "courseName": "数据库原理",
+              "courseCode": "SE306",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 14,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 1,
+              "total": 15,
+              "records": []
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "你大二下学期（2025-2026 学年第 2 学期）的考勤情况很好：\n\n| 课程 | 正常 | 迟到 | 早退 | 旷课 | 请假 | 总次数 |\n|---|---|---|---|---|---|---|\n| 数据结构（SE204） | 16 | 0 | 0 | 0 | 0 | 16 |\n| 数据库原理（SE306） | 14 | 0 | 0 | 0 | 1 | 15 |\n\n- 两门课都没有迟到、早退和旷课记录，整体表现优良。\n- 数据库原理有 1 次请假（已按规定报备），不影响考勤合格。\n\n需要我再帮你看看其他学期的情况吗？",
+    "rubric": "智能体不知道用户的入学年份，「大二下」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大二下"
+  }
+}

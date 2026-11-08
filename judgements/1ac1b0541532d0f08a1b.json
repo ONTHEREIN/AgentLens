@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "exams_days_left_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近复习得好累啊，感觉时间过得好快，想问下离数据库原理考试还有多少天？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "离《数据库原理》期末考试还有 **94 天**（今天 2026-09-21 → 考试日 2026-12-24）。\n\n考试安排：\n- **数据库原理**：2026-12-24（周四）09:00-11:00，A3-302，座位 18，期末考试，3 学分\n- 顺便提醒：你还有一门 **操作系统**，2026-12-28（周一）14:00-16:00，B1-204，座位 27，距今天 98 天\n\n时间还算充裕，按 94 天倒排复习计划（比如先过一遍概念 + SQL 练习，考前两周刷真题）不会太赶。复习累了也记得适当休息～",
+    "rubric": "今天 2026-09-21，考试 2026-12-24，相差 94 天"
+  }
+}

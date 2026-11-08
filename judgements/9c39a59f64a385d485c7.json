@@ -1,0 +1,95 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_future_grades_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "下学期的成绩出来了吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2026",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      }
+    ],
+    "answer": "查了一下，情况是这样：\n\n**2026-2027 学年第 2 学期（你说的“下学期”）** 还没开始，目前查不到任何成绩 —— 这个学期要在明年春季才上，成绩自然还没有。\n\n不过**最近的 2025-2026 学年第 2 学期**成绩已经全部出来了，共 5 门，都通过了：\n\n| 课程 | 成绩 | 学分 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 |\n| 数据结构 | 89 | 4 | 3.7 |\n| 大学英语（四） | 88 | 2 | 3.7 |\n| 数据库原理 | 90 | 3 | 4.0 |\n| 操作系统 | 85 | 3 | 3.3 |\n\n如果你其实是想问上一学期（2025-2026-2）的成绩，那就是上面这些；如果你指的是本学年秋季学期（当前学期）的成绩，那还没到考试周，也还没有成绩。需要我帮你查本学期课表或考试安排吗？",
+    "rubric": "下学期（2026-2027 学年第 2 学期）尚未开始，不可能有成绩；可以去查，但不得编造或挪用其他学期的分数"
+  }
+}

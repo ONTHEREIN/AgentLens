@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "perf_card_balance_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "帮我确认下我的就餐卡当前可用余额"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "我查了，但需要说明一点：**我这边查不到“就餐卡/饭卡”的余额**。\n\n可查询的“卡余额”实际上是指宿舍水电余额，刚查到的结果如下（演示宿舍 A1-101，数据更新于 2026-09-19 08:00）：\n\n| 项目 | 余额 |\n|---|---|\n| 电费 | 68.4 度 |\n| 冷水 | 9.6 吨 |\n| 热水 | 42.80 元 |\n\n电费 68.4 度与冷水的 9.6 吨都高于预警线（30 度、5 吨），因此暂时不用担心。\n\n就餐卡余额这类数据不在我能访问的范围内，建议通过学校一卡通 App、食堂圈存机或后勤服务大厅查询。如果你需要查询课表、成绩、考勤、考试安排或水电余额，我可以帮忙。",
+    "rubric": null
+  }
+}

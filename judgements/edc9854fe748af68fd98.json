@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_card_days_left_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "今天食堂的饭真难吃，排队还排了那么久。照现在这么用，宿舍电还能撑几天？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "食堂确实常有“又难吃又排队”的时候，不过这个我帮不上忙，只能陪你吐槽一下 😅 说正事：\n\n**宿舍电费余额：68.4 度**（演示宿舍 A1-101，余额数据更新于 2026-09-19 08:00）\n\n关于“还能撑几天”，系统只提供余额，没有你们的每日用电量记录，所以算不出精确天数。粗略参考：如果宿舍每天用 3～4 度，大约还能用 17～23 天；每天 6 度左右，大概 11 天。空调开得多的宿舍耗电会快不少。\n\n另外提醒你：电费低于 30 度时，系统会按时在早上 8:00 提醒。现在还剩 68.4 度，暂时不紧张，不用急着充。\n\n顺便看一下宿舍的水：\n- 冷水 9.6 吨（低于 5 吨会提醒）\n- 热水 42.80 元（低于 10 元会提醒）\n\n需要我帮你查一下最近的课表、考试或通知安排吗？",
+    "rubric": "余额工具只返回剩余 68.4 度，不含每日用电量；若给出天数，必须说明是按假设的日用量估算，不得冒充系统数据"
+  }
+}

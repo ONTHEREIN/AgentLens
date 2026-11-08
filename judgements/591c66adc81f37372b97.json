@@ -1,0 +1,52 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_card_service_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "校园卡服务最近有什么变化吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "校园卡"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "办事大厅·申请",
+            "title": "校园卡服务已更新",
+            "date": "2026-09-17",
+            "summary": "可在应用中查看常用校园服务。",
+            "source": "jwxt"
+          },
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我查了学校通知，和校园卡相关的最近一条是：\n\n- **校园卡服务已更新**（2026-09-17，办事大厅·申请）：可以在应用里查看常用的校园服务。\n\n其他就是同期的一条「校园创新实践周报名开始」（2026-09-16），与校园卡无关。通知里没有提到具体的办理流程变化或费率调整，如果你想知道某项具体功能（比如充值、补卡）是否受影响，可以告诉我，我再帮你查。",
+    "rubric": "唯一相关的是办事大厅 2026-09-17「校园卡服务已更新」，摘要为可在应用中查看常用校园服务；不得补充通知里没有的细节"
+  }
+}

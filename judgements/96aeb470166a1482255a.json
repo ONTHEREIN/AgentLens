@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_card_days_left_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "按咱现在这耗电速度，宿舍的电还能顶几天呀？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "查到了你的宿舍余额（演示宿舍 A1-101，截至 2026-09-19 08:00 更新）：\n\n- **电费余额：68.4 度**（低电提醒阈值是 30 度，目前还没到提醒线）\n- 冷水：9.6 吨\n- 热水：42.80 元\n\n关于“还能顶几天”：我这边只能查到当前余额，**查不到每日或历史用电记录**，所以算不出你们实际的耗电速度。只能作个参考估算：如果人均日均用电 3 度左右，68.4 度大约能用 20 来天；如果开空调、日均 5 度，就只剩 13 天左右。建议你留意一下，余额降到 30 度时，系统早上 8:00 会发低电提醒；提前充值会更稳妥些。\n\n另外，余额数据是两天前更新的，这期间可能已经有消耗，实际可用电量估计比 68.4 度少一些。",
+    "rubric": "余额工具只返回剩余 68.4 度，不含每日用电量；若给出天数，必须说明是按假设的日用量估算，不得冒充系统数据"
+  }
+}

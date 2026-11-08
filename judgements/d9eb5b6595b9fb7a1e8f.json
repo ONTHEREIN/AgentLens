@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_card_days_left_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "照现在这么用宿舍点还能撑几填"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "我查到你宿舍（演示宿舍 A1-101）的电费余额，但系统只能给出余额，查不到每天的用电量，所以没法直接算出“还能撑几天”。\n\n**当前余额**\n- 电费：**68.4 度**（数据更新于 2026-09-19 08:00）\n- 冷水：9.6 吨，热水：42.80 元（都还够用）\n\n**换算参考**\n- 学校设定的低电提醒线是 **30 度**，你现在还有 68.4 度，暂时没到提醒线。\n- 按常见宿舍用电估算：如果每天用 2 度，大约还能撑 **34 天**；每天用 3 度，约 **23 天**；每天用 4 度，约 **17 天**；每天用 5 度，约 **14 天**。\n\n**建议**：你可以先对比一下以往充值时的用电经验，估一下每天大约用几度，再套上面的换算。如果用电量或宿舍人数较多、开了空调，就按偏高值估算。余额降到 30 度左右时，记得及时充值；系统每天早上 8:00 也会发低额提醒。要不要我帮你查一下学校有没有电费充值或补贴相关的通知？",
+    "rubric": "余额工具只返回剩余 68.4 度，不含每日用电量；若给出天数，必须说明是按假设的日用量估算，不得冒充系统数据"
+  }
+}

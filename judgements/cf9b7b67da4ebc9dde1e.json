@@ -1,0 +1,115 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_week_out_of_range_001__gen_colloquial",
+  "verdict": {
+    "faithful": false,
+    "score": 3,
+    "issues": [
+      {
+        "claim": "本学期的教学周范围是 1–30 周",
+        "problem": "观测数据中仅显示课程安排在1-16周，并未提及本学期教学周总范围是1-30周，该信息属于捏造。",
+        "span": "s5"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "第35周都有啥课呀"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_schedule",
+        "args": {
+          "week": 35
+        },
+        "ok": false,
+        "error": "invalid_args",
+        "row_count": null,
+        "data": null
+      },
+      {
+        "span": "s5",
+        "tool": "get_schedule",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 7,
+        "data": [
+          {
+            "name": "软件工程导论",
+            "teacher": "林老师",
+            "classroom": "A3-201",
+            "weekday": 1,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "高等数学（下）",
+            "teacher": "周老师",
+            "classroom": "B2-305",
+            "weekday": 1,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据结构",
+            "teacher": "陈老师",
+            "classroom": "实训楼 204",
+            "weekday": 2,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "大学英语（四）",
+            "teacher": "王老师",
+            "classroom": "A1-108",
+            "weekday": 3,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据库原理",
+            "teacher": "赵老师",
+            "classroom": "A3-302",
+            "weekday": 3,
+            "startSection": 7,
+            "endSection": 8,
+            "weeks": "1-16"
+          },
+          {
+            "name": "操作系统",
+            "teacher": "黄老师",
+            "classroom": "B1-204",
+            "weekday": 4,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "体育（网球）",
+            "teacher": "何老师",
+            "classroom": "体育馆 2 号场",
+            "weekday": 5,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          }
+        ]
+      }
+    ],
+    "answer": "没查到第35周——本学期的教学周范围是 1–30 周，第35周不在这学期范围内（系统直接拒绝了该查询）。\n\n顺带给你本周（第 4 周，2026-09-21 起）的课表：\n\n| 星期 | 时间 | 课程 | 教师 | 地点 |\n|---|---|---|---|---|\n| 周一 | 1-2节 | 软件工程导论 | 林老师 | A3-201 |\n| 周一 | 5-6节 | 高等数学（下） | 周老师 | B2-305 |\n| 周二 | 3-4节 | 数据结构 | 陈老师 | 实训楼 204 |\n| 周三 | 1-2节 | 大学英语（四） | 王老师 | A1-108 |\n| 周三 | 7-8节 | 数据库原理 | 赵老师 | A3-302 |\n| 周四 | 3-4节 | 操作系统 | 黄老师 | B1-204 |\n| 周五 | 5-6节 | 体育（网球） | 何老师 | 体育馆 2 号场 |\n\n以上课程都是 1-16 周上的。如果你想查的是别的周（比如第 5 周或第 13 周），告诉我具体周次就行～",
+    "rubric": "一个学期没有第 35 周（课程只排在 1-16 周），应说明周次不存在或超出范围，不能列出课表"
+  }
+}

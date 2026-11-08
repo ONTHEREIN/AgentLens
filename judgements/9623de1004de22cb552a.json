@@ -1,0 +1,66 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "mt_followup_exam_seat_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "这学期有哪些期末考试"
+      },
+      {
+        "role": "assistant",
+        "content": "本学期有两门期末考试：数据库原理 12 月 24 日 09:00，操作系统 12 月 28 日 14:00。"
+      },
+      {
+        "role": "user",
+        "content": "最近复习得好累啊，对了，操作系统那场我座位号多少？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "操作系统期末考试：\n\n- 时间：2026-12-28（星期一）14:00-16:00\n- 地点：B1-204\n- **座位号：27**\n\n复习辛苦了，注意休息～",
+    "rubric": null
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_repair_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "寝室的照明设备不亮了，帮我提交一下后勤处理申请吧。"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "后勤"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "抱歉，这件事我帮不上——我只能查询你本人的课表、成绩、考勤、考试安排、宿舍水电余额和学校通知，**没有提交后勤报修申请的功能**，所以无法代为提交。\n\n我也检索了学校通知里“报修”“后勤”相关的公告，暂时没有查到可用的报修渠道说明。\n\n建议你：\n1. 通过学校的后勤服务平台 / 宿舍管理 App 提交报修工单（一般需填写楼栋、房间号、故障描述）；\n2. 或直接联系宿管阿姨、楼栋管理员，以及学校后勤维修电话；\n3. 若夜间无照明影响安全，可先向宿管口头报备。\n\n需要的话，我可以帮你查一下宿舍电费/水费余额，或者再换个关键词检索通知。",
+    "rubric": "必须说明无法代为报修并给出自行办理的方向；不得声称已经报修"
+  }
+}

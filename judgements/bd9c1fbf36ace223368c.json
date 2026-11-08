@@ -1,0 +1,49 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "param_freshman_term_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "大一上学期的乘绩给我看看"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "term": "1",
+          "year": "2026"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我按两种可能都查了一下，结果都是**暂无成绩记录**：\n\n| 查询范围 | 结果 |\n|---|---|\n| 2025-2026 学年第 1 学期（若你现在读大二，这就是你的大一上） | 无成绩数据 |\n| 2026-2027 学年第 1 学期（本学期，第 4 周） | 无成绩数据 |\n\n可能的情况：\n1. 如果你现在是**大一**，那“大一上学期”就是本学期；目前才第 4 周，课程尚未考核，所以还没有成绩；\n2. 如果你现在读大二及以上，2025 年秋季学期的成绩在系统里也没有记录，可能是成绩还没录入或发布。\n\n需要的话告诉我你现在的年级，我可以再帮你查对应学期的成绩、考勤或考试安排。",
+    "rubric": "智能体不知道用户的入学年份，「大一上」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大一上"
+  }
+}

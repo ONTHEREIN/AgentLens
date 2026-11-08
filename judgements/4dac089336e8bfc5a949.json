@@ -1,0 +1,80 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "perf_notice_search_001__gen_verbose",
+  "verdict": {
+    "faithful": false,
+    "score": 3,
+    "issues": [
+      {
+        "claim": "校园卡服务已更新：https://demo.local/notices/activity",
+        "problem": "观测数据中「校园卡服务已更新」并没有提供 url 字段，助手错误地将「校园创新实践周报名开始」的 url 张冠李戴给了它。",
+        "span": "s10"
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "今天天气真不错，我刚吃完饭，想问下最近学校有什么通知？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "通知"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "公告"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "校园"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          },
+          {
+            "category": "办事大厅·申请",
+            "title": "校园卡服务已更新",
+            "date": "2026-09-17",
+            "summary": "可在应用中查看常用校园服务。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "用「通知」「公告」这类泛词没有检索到结果，换成「校园」后找到 2 条，供你参考：\n\n| 日期 | 类别 | 标题 | 摘要 |\n|---|---|---|---|\n| 2026-09-17 | 办事大厅·申请 | 校园卡服务已更新 | 可在应用中查看常用校园服务 |\n| 2026-09-16 | 校园活动 | 校园创新实践周报名开始 | 欢迎同学报名参加创新实践活动 |\n\n- 校园卡服务已更新：https://demo.local/notices/activity\n- 校园创新实践周报名：https://demo.local/notices/activity\n\n以上是系统返回的全部内容（通知检索按关键词匹配，泛泛的关键词容易查不到）。如果你想看某一类消息，告诉我关键词就行，比如「选课」「考试」「奖学金」「宿舍」「活动」「缴费」等，我再帮你精确查一下。另外，如果需要，我也可以顺便查一下本周课表或考试安排。",
+    "rubric": null
+  }
+}

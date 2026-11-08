@@ -1,0 +1,45 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_activity_rag_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我想了解参与创新实践周的申请流程。"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "创新实践周"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我检索到的相关通知只有一条：\n\n**《校园创新实践周报名开始》**\n- 发布单位：教务系统（jwxt）\n- 发布日期：2026-09-16\n- 分类：校园活动\n- 摘要：欢迎同学报名参加创新实践活动。\n- 链接：https://demo.local/notices/activity\n\n需要说明的是，这条通知的摘要只有“欢迎同学报名参加创新实践活动”一句，**没有包含具体的申请流程、报名入口、截止时间或材料要求**等细节，我也无法凭推测补全。建议你：\n\n1. 打开上述通知原文链接查看完整内容；\n2. 如果原文也没写清流程，可直接咨询教务处（通知来源为教务系统）或你所在学院的教务老师。\n\n如果你想了解其他信息，比如本周课表、考勤或考试安排，也可以告诉我。",
+    "rubric": "通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程"
+  }
+}

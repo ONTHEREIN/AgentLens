@@ -1,0 +1,69 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "exams_days_left_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "距数据库原理结课测评的倒计时是几日？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "数据库原理"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s6",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "**距「数据库原理」结课（期末）测评还有 94 天。**\n\n| 项目 | 内容 |\n|---|---|\n| 课程 | 数据库原理（3 学分） |\n| 类型 | 期末考试 |\n| 日期 | 2026-12-24（星期四） |\n| 时间 | 09:00-11:00 |\n| 地点 | A3-302，座位号 18 |\n\n今天 2026-09-21（周一），9 月剩余 9 天、10 月 31 天、11 月 30 天、12 月 24 天，共 **94 天**。\n\n补充：学校通知里暂未检索到与「数据库原理」相关的公告，以上信息来自你的考试安排。另外，本学期你还有一门「操作系统」期末考试在 2026-12-28（星期一）14:00-16:00，地点 B1-204，座位 27。",
+    "rubric": "今天 2026-09-21，考试 2026-12-24，相差 94 天"
+  }
+}

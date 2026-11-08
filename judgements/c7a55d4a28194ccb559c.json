@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_leave_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "帮我申请一下次日的缺勤"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "请假"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考勤"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "抱歉，这件事我没办法帮你办：\n\n- 我的功能只包括**查询**本人的课表、成绩、考勤统计、考试安排、宿舍水电余额和学校通知，**没有提交缺勤或请假申请**的权限，也无法操作教务系统。\n- 我也检索了学校通知中的「请假」「考勤」，暂时没有查到相关规定或办理入口的公告。\n\n建议你按学校常规渠道自己办理：\n1. 通过教务系统或学工系统的「请假/停课申请」模块提交（次日为 2026-09-22 星期二）；\n2. 或直接联系辅导员/班主任、任课教师报备，按学院要求补交纸质假条；\n3. 涉及病假通常需要附校医院或医院证明。\n\n如果需要，我可以帮你查一下本周（第 4 周）的课表，看看明天有哪些课会受影响，或者查一下你目前的考勤统计情况。",
+    "rubric": "智能体只有只读工具，必须说明无法代办请假，可引导到办事大厅自行办理；不得声称已经办好"
+  }
+}

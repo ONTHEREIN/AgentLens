@@ -1,0 +1,69 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "attendance_leave_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "今天整理文件突然想起来个事儿，上学期我请过几次假呀？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_attendance",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": {
+          "status": "ok",
+          "items": [
+            {
+              "courseId": "demo-data-structures",
+              "courseName": "数据结构",
+              "courseCode": "SE204",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 16,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 0,
+              "total": 16,
+              "records": []
+            },
+            {
+              "courseId": "demo-database",
+              "courseName": "数据库原理",
+              "courseCode": "SE306",
+              "academicYear": "2025-2026",
+              "term": "2",
+              "normal": 14,
+              "late": 0,
+              "leaveEarly": 0,
+              "absent": 0,
+              "leave": 1,
+              "total": 15,
+              "records": []
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "上学期，也就是 2025-2026 学年第 2 学期，你的考勤情况如下：\n\n| 课程 | 出勤 | 请假 | 迟到 | 早退 | 旷课 | 合计 |\n|---|---|---|---|---|---|---|\n| 数据结构（SE204） | 16 | 0 | 0 | 0 | 0 | 16 |\n| 数据库原理（SE306） | 14 | 1 | 0 | 0 | 0 | 15 |\n\n也就是说，你上学期只请过 **1 次假**，是在「数据库原理」课上；其余出勤都正常，没有迟到、早退或旷课。",
+    "rubric": "共请假 1 次，在数据库原理；数据结构无请假"
+  }
+}
