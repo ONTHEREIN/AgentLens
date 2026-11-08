@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "5defb60d25dd3682",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_rdUxBnhFTFCrC4kLBVPM6501",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想确认「数据库原理」课程期末考试的具体场地安排\", \"steps\": [\"get_exams\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "User asks about 数据库原理 final exam location. Need get_exams, then maybe search_notices. Let me plan.\n\nFirst make_plan, then call get_exams (current semester 2026-2027 term 1) — but 期末 might be current semester's exam schedule. Let's call get_exams with year 2026 term 1. Possibly also search_notices for \"考试\".\n\nPlan steps: get_exams, maybe search_notices.",
+      "prompt_tokens": 1263,
+      "completion_tokens": 172,
+      "latency_ms": 1604.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_rRImmEoAKqoDRrRo4qFA0687",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_tnrUD7VEJTaU7khq9EGA7866",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"期末考试安排\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1454,
+      "completion_tokens": 86,
+      "latency_ms": 1101.7
+    },
+    {
+      "content": "「数据库原理」期末考试安排：\n\n- 日期：2026-12-24（星期四）\n- 时间：09:00-11:00\n- 地点：A3-302，座位号 18\n- 类型：期末考试，学分 3\n\n另外，教务通知里 9 月 12 日有一条《关于期末考试安排的说明》，提示安排已更新，建议你以教务系统实时信息为准。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1820,
+      "completion_tokens": 91,
+      "latency_ms": 1201.9
+    }
+  ]
+}

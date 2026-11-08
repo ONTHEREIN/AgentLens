@@ -1,0 +1,101 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "90e1bc18b52174a1",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_kmjShlywdMNeEKvSgmmf4551",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想了解学校最近的通知公告\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user asks about recent school notices. \"最进学校有什么痛知\" = \"最近学校有什么通知\" (typos). I should make a plan then search notices. But keyword needed — perhaps search with a generic keyword like \"通知\"? The tool requires a keyword. Let me plan and call search_notices with keyword \"通知\".\n\nMaybe I should ask what kind of notice? Better to just search broadly with \"通知\".",
+      "prompt_tokens": 1258,
+      "completion_tokens": 153,
+      "latency_ms": 1958.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_iJjIn3HhG2yHTxoZPBO95537",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"通知\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1430,
+      "completion_tokens": 39,
+      "latency_ms": 864.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_fPWRxJGlmLKU2ZDP9pXM0623",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"公告\"}"
+        },
+        {
+          "id": "call_01_FECEYVFSyvCjvRiXSRBM0121",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"教务\"}"
+        },
+        {
+          "id": "call_02_bgiFywSEHGzs8YIlzEVR1554",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试\"}"
+        },
+        {
+          "id": "call_03_nrnvCp0xSifTuDJhDX1T3691",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"选课\"}"
+        }
+      ],
+      "reasoning": "No results. Try other keywords: \"公告\", \"教务\", \"考试\", \"选课\". Let me call multiple in parallel.",
+      "prompt_tokens": 1482,
+      "completion_tokens": 154,
+      "latency_ms": 1366.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ghThudQg6rHyaqGV2t5X7091",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"课程\"}"
+        },
+        {
+          "id": "call_01_DKMj4zhG7zDpqQz9lhWL1382",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"成绩\"}"
+        },
+        {
+          "id": "call_02_ureeuzPPg9zlwFyyGItC7398",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"宿舍\"}"
+        },
+        {
+          "id": "call_03_i3m49xtCTStfbmsPrNof2040",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"活动\"}"
+        }
+      ],
+      "reasoning": "We got two notices from \"考试\" search. Let me try more keywords to see available notices: \"课表\", \"成绩\", \"考勤\", \"宿舍\", \"缴费\", \"奖助\", \"活动\", \"就业\", \"安全\". Maybe search a few more to give fuller answer.",
+      "prompt_tokens": 1805,
+      "completion_tokens": 186,
+      "latency_ms": 1323.7
+    },
+    {
+      "content": "用「通知」「公告」这类泛关键词没有检索到结果，我改用具体关键词检索，找到最近 3 条通知：\n\n1. **2026 年秋季学期课程提醒**（通知公告，2026-09-18）\n   请关注近期课程安排和考试时间。\n   https://demo.local/notices/semester\n\n2. **校园创新实践周报名开始**（校园活动，2026-09-16）\n   欢迎同学报名参加创新实践活动。\n   https://demo.local/notices/activity\n\n3. **关于期末考试安排的说明**（教务通知，2026-09-12）\n   考试安排已更新，请及时查看。\n   https://demo.local/notices/exam\n\n需要的话，我可以帮你查本学期课表或考试安排的具体内容。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 2160,
+      "completion_tokens": 169,
+      "latency_ms": 1311.6
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "852ae77a94ebd2ea",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_MnmDxJ0UuIuvKDr2enZK8985",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道「数据库原理」期末考试在哪个教室，需查询本人本学期的考试安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks about database principles final exam location. I should call make_plan then get_exams.\n\nCurrent semester: 2026-2027 学年第一学期, year \"2026\", term \"1\".\n\nWait, but \"期末考试\" for 数据库原理 — could be this semester's exam. Let's query current semester exams.\n\nAlso maybe they want words of encouragement. Let's plan.",
+      "prompt_tokens": 1273,
+      "completion_tokens": 158,
+      "latency_ms": 1464.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_u3MRn9S0K5iyDJGKMioY7806",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1450,
+      "completion_tokens": 56,
+      "latency_ms": 1153.1
+    },
+    {
+      "content": "查到你本学期的考试安排了：\n\n**数据库原理（期末考试）**\n- 时间：2026-12-24（周四）09:00-11:00\n- 地点：**A3-302**\n- 座位号：18\n- 学分：3\n\n另外你还有一门：操作系统，2026-12-28（周一）14:00-16:00，B1-204，座位 27。\n\n复习累了注意休息，两门考试间隔 4 天，可以先集中攻数据库原理，考完再突击操作系统。加油！需要我帮你看看这学期的课表或考勤情况吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1648,
+      "completion_tokens": 134,
+      "latency_ms": 1489.8
+    }
+  ]
+}

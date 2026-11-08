@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "3343569aaecc3837",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_MTbNeCt4XSp5CsFaHGIx8715",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户只是打招呼，确认助手是否在线，暂无具体查询需求\", \"steps\": []}"
+        }
+      ],
+      "reasoning": "The user just says \"在不在呀\" (are you there?). Need to make plan first? The instructions say first call make_plan. But no tools needed... I can write plan with empty steps.",
+      "prompt_tokens": 1255,
+      "completion_tokens": 110,
+      "latency_ms": 1117.3
+    },
+    {
+      "content": "在的呀 😊 我是软帮手，可以帮你查这些：\n\n- 本周/指定周次的课表\n- 各学期成绩\n- 考勤统计\n- 考试安排\n- 宿舍电费、水费余额\n- 学校通知公告（按关键词搜）\n\n今天是 2026 年 9 月 21 日（星期一），本学期第 4 周。想看点什么？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1384,
+      "completion_tokens": 90,
+      "latency_ms": 1446.8
+    }
+  ]
+}

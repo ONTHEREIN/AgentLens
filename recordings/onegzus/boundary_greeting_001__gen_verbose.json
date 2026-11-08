@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "b2e511b2ba46e425",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_yFzwfI7rvqISySEkFpPj6215",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户只是寒暄打招呼，询问我是否在线，没有具体的校园信息查询需求\", \"steps\": []}"
+        }
+      ],
+      "reasoning": "The user asks casually \"weather is nice today, are you available to talk now?\" This is small talk, no tool needed. But the system says first call make_plan before any tool. Since no tool needed, make_plan with empty steps.\n\nBut can I call make_plan? It says \"在调用任何工具之前\" — should call make_plan. Let's do it with empty steps.\n\nNote: I can't know weather — user said it. Don't fabricate.",
+      "prompt_tokens": 1261,
+      "completion_tokens": 172,
+      "latency_ms": 1719.7
+    },
+    {
+      "content": "方便呀，我在的，随时可以聊 😊\n\n我是「软帮手」，可以帮你查这些本人相关的信息：\n\n- 课表（任意教学周，比如这周是第 4 周）\n- 成绩（按学年、学期）\n- 考勤统计\n- 考试安排\n- 宿舍电费、水费余额\n- 学校通知公告（按关键词检索）\n\n需要查什么直接说就行～（天气我这边看不到数据，就不瞎猜啦，不过听你说不错，那挺好的）",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1452,
+      "completion_tokens": 112,
+      "latency_ms": 1318.0
+    }
+  ]
+}

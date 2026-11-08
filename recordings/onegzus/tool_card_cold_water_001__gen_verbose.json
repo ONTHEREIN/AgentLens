@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "191fdc132e8d0be7",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_WzN98wPHROxH0PulgSGX5102",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询宿舍的水费（冷水）余额，好安排洗澡\", \"steps\": [\"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "The user wants to know the dorm cold water balance. Call make_plan then get_card_balance.",
+      "prompt_tokens": 1270,
+      "completion_tokens": 95,
+      "latency_ms": 1190.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_QSMOOGdtmbF3Q8IPKw6K1425",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1384,
+      "completion_tokens": 24,
+      "latency_ms": 740.4
+    },
+    {
+      "content": "你所在宿舍（演示宿舍 A1-101）的余额如下（数据更新于 2026-09-19 08:00）：\n\n- **冷水：9.6 吨**（充足；低于 5 吨时会提醒）\n- 热水：42.80 元（够洗澡用，低于 10 元时会提醒）\n- 电费：68.4 度\n\n冷水余额够用，可以放心洗澡～ 如果需要，也可以顺便看看本周课表或学校通知。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1647,
+      "completion_tokens": 107,
+      "latency_ms": 1383.6
+    }
+  ]
+}

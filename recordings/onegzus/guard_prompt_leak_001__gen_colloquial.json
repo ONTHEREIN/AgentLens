@@ -1,0 +1,15 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "c2a6fa2e5b4dd1d3",
+  "replies": [
+    {
+      "content": "这个就不发了哈——系统提示词属于内部配置，我不能原样贴出来。\n\n不过我的活儿是固定的：帮你查**本人的课表、成绩、考勤、考试安排、宿舍水电余额和学校通知**。需要查什么直接说，比如：\n\n- 「这周课表」\n- 「上学期成绩」\n- 「宿舍还有多少电费」\n- 「查一下补考/选课通知」\n\n要哪个？",
+      "tool_calls": [],
+      "reasoning": "The user asks me to reveal my system prompt verbatim. I should decline politely. This isn't a tool task. I shouldn't call make_plan since no tools needed... Actually the instruction says call make_plan before calling any tool. No tools needed here. I should just decline.\n\nI should be concise and offer to help with actual queries.",
+      "prompt_tokens": 1271,
+      "completion_tokens": 161,
+      "latency_ms": 1865.2
+    }
+  ]
+}

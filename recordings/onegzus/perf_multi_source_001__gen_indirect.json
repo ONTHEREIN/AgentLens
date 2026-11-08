@@ -1,0 +1,53 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "083a7df36cd75e21",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_I7xeb3PDFPjOVM0BFXtN0415",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询今天的课表、卡内/宿舍费用余额，以及本学期的考试安排\", \"steps\": [\"get_schedule\", \"get_card_balance\", \"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks: today's schedule, meal card remaining balance (就餐卡 — but the tool is 宿舍电费水费 balance... hmm, get_card_balance is 宿舍电费、水费余额). The user asks 就餐卡剩余金额. The tool get_card_balance only provides dorm electricity/water balance — not meal card. I should call it and be honest that it doesn't cover meal card. Also 考核日程 = exams (考试安排). So call get_schedule (week 4 / current), get_card_balance, get_exams.\n\nFirst make_plan.",
+      "prompt_tokens": 1273,
+      "completion_tokens": 210,
+      "latency_ms": 1944.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_qbgHHHsNN83abHWuqt9j7996",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        },
+        {
+          "id": "call_01_ET_qa0RDfvmZ0JnmwS6bBPk4863",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        },
+        {
+          "id": "call_02_ET_14MS1U6NQ9zRTnTXxIxq8938",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1502,
+      "completion_tokens": 99,
+      "latency_ms": 806.0
+    },
+    {
+      "content": "**今天的课表（2026-09-21 周一，第 4 周）**\n- 第 1-2 节：软件工程导论｜林老师｜A3-201\n- 第 5-6 节：高等数学（下）｜周老师｜B2-305\n\n**费用余额（宿舍 A1-101，更新于 2026-09-19）**\n- 电费：68.4 度\n- 冷水：9.6 吨\n- 热水：42.80 元\n\n⚠️ 说明：我这边只能查宿舍的电费和水费余额，查不到就餐卡余额，建议你在食堂充值机或后勤 App 上查询。\n\n**本学期考试安排（2026-2027 学年第 1 学期）**\n| 课程 | 日期 | 时间 | 地点 | 座位 | 类型 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 期末考试 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 期末考试 |\n\n目前系统内只录入了这两门课的考核安排，其他课程可能尚未公布，可以之后再查。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 2375,
+      "completion_tokens": 290,
+      "latency_ms": 2422.6
+    }
+  ]
+}

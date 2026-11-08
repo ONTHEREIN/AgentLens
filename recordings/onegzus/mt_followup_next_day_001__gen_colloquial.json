@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "5c2a1408d284c565",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_K6j7ipTVqc82lKaKczlw1151",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询下周二（第5周）的课表\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "User asks about next Tuesday's classes — week 5. Need to call get_schedule with week 5. But I need make_plan first. Wait, previous turn: assistant answered without tool calls? It seems the transcript shows an answer. Now I should make_plan then get_schedule(5).\n\nActually per instructions, always call make_plan before tools.",
+      "prompt_tokens": 1312,
+      "completion_tokens": 145,
+      "latency_ms": 1756.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_6IQq2ebnijclOW5MY4lg1991",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 5}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1476,
+      "completion_tokens": 39,
+      "latency_ms": 896.9
+    },
+    {
+      "content": "下周二（第 5 周）你只有一节：\n\n- **数据结构**（3-4 节），陈老师，实训楼 204\n\n上午后两节上完就空下来了，其余时间没有课。",
+      "tool_calls": [],
+      "reasoning": "Tuesday (weekday 2) has 数据结构 3-4 节, 实训楼204, 陈老师.",
+      "prompt_tokens": 1916,
+      "completion_tokens": 74,
+      "latency_ms": 1431.5
+    }
+  ]
+}

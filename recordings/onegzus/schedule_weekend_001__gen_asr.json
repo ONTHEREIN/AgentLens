@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "ceb0c544cebcb290",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_4sUyMeaKteEq1eyHvxsp8481",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周（第4周）课表，看这周六（9月26日）是否有课\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "User asks: \"这周六有课吗\" - this Saturday (2026-09-26). Current week is week 4. So need schedule for week 4, then check Saturday.\n\nLet me plan and call get_schedule.",
+      "prompt_tokens": 1257,
+      "completion_tokens": 129,
+      "latency_ms": 1168.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_meI0ymUxW24JVyCDHALQ5903",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1405,
+      "completion_tokens": 39,
+      "latency_ms": 1060.3
+    },
+    {
+      "content": "这周六是 **2026年9月26日（第4周周六）**。根据你第4周的课表，本周只有周一至周五的课，**周六没有排课**，可以休息。\n\n补充：本周五第5-6节有体育课（网球，体育馆2号场），别忘了带装备。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1845,
+      "completion_tokens": 70,
+      "latency_ms": 1329.5
+    }
+  ]
+}

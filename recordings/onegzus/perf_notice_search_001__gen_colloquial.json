@@ -1,0 +1,63 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "0a793de20ce318fb",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_FP0n4ngVu8LQLfgtCNE28238",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想了解学校最近发布的通知公告\", \"steps\": [\"search_notices\"]}"
+        },
+        {
+          "id": "call_01_ml8jDBrSrAsyIh8pVote0786",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"通知\"}"
+        }
+      ],
+      "reasoning": "The user asks about recent school notices. I should make a plan and then call search_notices. But keyword is required — I don't have a keyword. I could use a generic keyword like \"通知\". Let me plan.\n\nMaybe search with \"通知\" to get recent notices. Could also do multiple searches? Keep it simple.",
+      "prompt_tokens": 1259,
+      "completion_tokens": 163,
+      "latency_ms": 1801.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_tXvZJNHqMyxtdtXFCLcL3561",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"选课\"}"
+        },
+        {
+          "id": "call_01_Gmi68x1aAwi5INitn9yK3999",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试\"}"
+        },
+        {
+          "id": "call_02_vwlLdFiH17fSRh5ELM2v9791",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"活动\"}"
+        },
+        {
+          "id": "call_03_8TezguJUkhAGBpLvB9o24834",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"报销\"}"
+        }
+      ],
+      "reasoning": "The keyword \"通知\" returned nothing. Try other keywords: \"讲座\", \"考试\", \"选课\", \"放假\"? Let's try a few in parallel.",
+      "prompt_tokens": 1450,
+      "completion_tokens": 160,
+      "latency_ms": 1208.7
+    },
+    {
+      "content": "我按关键词检索了一下，找到几条近期通知：\n\n| 日期 | 分类 | 标题 | 摘要 |\n|---|---|---|---|\n| 2026-09-18 | 通知公告 | 2026 年秋季学期课程提醒 | 请关注近期课程安排和考试时间 |\n| 2026-09-16 | 校园活动 | 校园创新实践周报名开始 | 欢迎同学报名参加创新实践活动 |\n| 2026-09-12 | 教务通知 | 关于期末考试安排的说明 | 考试安排已更新，请及时查看 |\n\n（从这些通知的来源来看，它们都来自教务系统 jwxt。）\n\n如果你需要，我可以帮你查看本学期的课表、考试安排或考勤情况，并对照上面的通知做核对。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1841,
+      "completion_tokens": 160,
+      "latency_ms": 1330.3
+    }
+  ]
+}

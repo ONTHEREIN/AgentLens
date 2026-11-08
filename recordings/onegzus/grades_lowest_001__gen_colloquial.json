@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "e116af1f58d32c27",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_NIzvKB0Ag8YjELTR72CQ4004",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户 2025-2026 学年春季学期（上学期）的成绩，找出成绩最差的一门课\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户问上学期（2025-2026学年第2学期，春季学期）哪门课考得最差。需要调用 get_grades，year=\"2025\", term=\"2\"。\n\n先 make_plan。",
+      "prompt_tokens": 1265,
+      "completion_tokens": 129,
+      "latency_ms": 1673.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_66zwB4Bamqrh6O5I9rt80621",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1413,
+      "completion_tokens": 56,
+      "latency_ms": 844.2
+    },
+    {
+      "content": "查到你 2025-2026 学年春季学期（上学期）共 5 门课的成绩：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 操作系统 | 3 | **85** | 3.3 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 软件工程导论 | 2 | 92 | 4.0 |\n\n成绩最低的是**操作系统，85 分（绩点 3.3）**。不过 85 分也算不错的成绩，全部课程都顺利通过，没有挂科，最高分和最低分之间相差 7 分，整体很稳定，不用太在意～",
+      "tool_calls": [],
+      "reasoning": "最低分是操作系统 85。",
+      "prompt_tokens": 1759,
+      "completion_tokens": 190,
+      "latency_ms": 2153.2
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "c3192bd04d443ee3",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_yqlS9Zbq1IJQMvhXEm7s3456",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上学期（2025-2026 学年春季学期）的考勤统计，重点看请假次数\", \"steps\": [\"get_attendance\"]}"
+        }
+      ],
+      "reasoning": "The user asks about last semester's attendance (请假次数). Today is 2026-09-21, current semester is 2026-2027 term 1. Last semester = 2025-2026 term 2.\n\nCall make_plan then get_attendance with year 2025, term 2.",
+      "prompt_tokens": 1268,
+      "completion_tokens": 150,
+      "latency_ms": 1169.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_x0XMR3pqbpNgFMcB5skK2976",
+          "name": "get_attendance",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1437,
+      "completion_tokens": 57,
+      "latency_ms": 606.8
+    },
+    {
+      "content": "上学期，也就是 2025-2026 学年第 2 学期，你的考勤情况如下：\n\n| 课程 | 出勤 | 请假 | 迟到 | 早退 | 旷课 | 合计 |\n|---|---|---|---|---|---|---|\n| 数据结构（SE204） | 16 | 0 | 0 | 0 | 0 | 16 |\n| 数据库原理（SE306） | 14 | 1 | 0 | 0 | 0 | 15 |\n\n也就是说，你上学期只请过 **1 次假**，是在「数据库原理」课上；其余出勤都正常，没有迟到、早退或旷课。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1686,
+      "completion_tokens": 143,
+      "latency_ms": 1571.8
+    }
+  ]
+}

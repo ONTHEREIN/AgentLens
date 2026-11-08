@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "75cceed770ed2ed6",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_eQFgx7bNR7NZ2JXLYYUl1097",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询操作系统考试的安排，包括考试座位号\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "User asks about operating systems exam seat number. Need to call make_plan then get_exams.",
+      "prompt_tokens": 1263,
+      "completion_tokens": 88,
+      "latency_ms": 1398.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_b7KczgaIoRTdVlyARZLd7179",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1370,
+      "completion_tokens": 56,
+      "latency_ms": 794.0
+    },
+    {
+      "content": "操作系统期末考试安排如下：\n\n- **课程**：操作系统（3 学分，期末考试）\n- **时间**：2026-12-28（星期一）14:00-16:00\n- **考场**：B1-204\n- **座位号**：**27 号**\n\n另外提醒一下，你还有一门数据库原理：2026-12-24（星期四）09:00-11:00，A3-302，座位 18 号。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1568,
+      "completion_tokens": 100,
+      "latency_ms": 1504.3
+    }
+  ]
+}

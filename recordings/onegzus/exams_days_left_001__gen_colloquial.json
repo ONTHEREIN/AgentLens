@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "01cb57ef3973b940",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_Lp5GqGvHpGPc2PEdJJuI8486",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期数据库原理的考试安排，并计算距离今天（2026-09-21）还有几天\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks: how many days until the database principles exam. I need to get exams for current term.\n\nLet me make plan then call get_exams.",
+      "prompt_tokens": 1265,
+      "completion_tokens": 113,
+      "latency_ms": 1465.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_4URlkVtydILp2nIivIgL6268",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1397,
+      "completion_tokens": 56,
+      "latency_ms": 1055.7
+    },
+    {
+      "content": "数据库原理的期末考试安排如下：\n\n- **日期**：2026-12-24（周四）09:00-11:00\n- **地点**：A3-302，座位号 18\n- **类型**：期末考试（3 学分）\n\n从今天（2026-09-21）算起，**还有 94 天**，大约 13 周半。可以早点开始复习啦～\n\n另外提醒一下，你本学期还有一科考试：**操作系统**，2026-12-28（周一）14:00-16:00，B1-204，座位 27，在数据库原理之后 4 天。",
+      "tool_calls": [],
+      "reasoning": "Today 2026-09-21. Exam 2026-12-24. Days: Sept remaining from 21 to 30 = 9 days (Sept 22 to Sept 30 = 9), October 31, November 30, December 24 = 9+31+30+24 = 94 days.\n\nCheck: Sept 21 + 94 days = Dec 24. Sept 21 → Sept 30 is 9 days. +31 Oct = 40 (Oct 31). +30 Nov = 70 (Nov 30). +24 = 94 (Dec 24). Yes 94 days.\n\nAlso there are 94 days ≈ 13 weeks 3 days. Fine.",
+      "prompt_tokens": 1595,
+      "completion_tokens": 288,
+      "latency_ms": 2123.1
+    }
+  ]
+}

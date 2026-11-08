@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "1eb209305a2d0f62",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_CECi3cHVrtJ5wnroEcpy6820",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周（第4周）课表，找出明天（周二）的课程及教室\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "The user asks: \"明天的课在哪个教室\" (which classroom tomorrow). Today is Monday 2026-09-21, week 4. Tomorrow is Tuesday of week 4. Need schedule for week 4.\n\nFirst make_plan, then get_schedule week 4.",
+      "prompt_tokens": 1258,
+      "completion_tokens": 137,
+      "latency_ms": 1584.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_V8G50WWJdkkBURR09i4u4977",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1414,
+      "completion_tokens": 39,
+      "latency_ms": 524.5
+    },
+    {
+      "content": "明天（周二，第4周）你只有一节课：\n\n- **数据结构**：第 3–4 节 → 教室 **实训楼 204**，陈老师\n\n本周课表里其他课都在周一、周三、周四、周五，周二没有别的安排。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1854,
+      "completion_tokens": 59,
+      "latency_ms": 1041.7
+    }
+  ]
+}

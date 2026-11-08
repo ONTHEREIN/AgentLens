@@ -1,0 +1,39 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "3484eea08700a324",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_kIk7f5u8t269KolIKA6k6189",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道校园卡（一卡通）服务最近有什么变化/新通知\", \"steps\": [\"search_notices\"]}"
+        },
+        {
+          "id": "call_01_SVAZk8koaYt5ZE8pBcrX4815",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"校园卡\"}"
+        },
+        {
+          "id": "call_02_AdYvWb7EnLQB7tNBm9jc5371",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"一卡通\"}"
+        }
+      ],
+      "reasoning": "The user asks about campus card service changes/notices. I should make a plan and search notices.\n\nNote: \"校园卡\" 服务 — search notices with keyword \"校园卡\". Also maybe \"一卡通\". Let me plan.\n\nAlso the user greeted with weather. The plan: search_notices with keyword. Maybe two searches: 校园卡 and 一卡通. But steps enum only lists tool names. I can list search_notices twice? Probably fine to list once, but I might call twice in parallel. Let's just plan steps: [\"search_notices\"] and call with two keywords in parallel.\n\nActually the plan steps list tool names in order; I can put \"search_notices\" twice.\n\nLet me do it.",
+      "prompt_tokens": 1267,
+      "completion_tokens": 284,
+      "latency_ms": 1930.0
+    },
+    {
+      "content": "天气确实很不错～关于校园卡，最近查到这两条相关通知：\n\n**校园卡服务已更新**（2026-09-17，办事大厅·申请）\n- 内容：可在应用中查看常用校园服务。\n\n另外，我在检索「一卡通」时没有查到相关通知。\n\n还有一条 9 月 16 日的「校园创新实践周报名开始」，和校园卡无关，但如果你想参加创新实践，可以一并留意一下。\n\n需要我帮你查一下宿舍水电余额（校园卡相关消费）或本周课表吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1699,
+      "completion_tokens": 115,
+      "latency_ms": 1431.6
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "e02d46b538f68b1b",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_yi7m96MwVI3CWEyLLMe56242",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想看最近学校的通知公告，先做一次通用关键词检索\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "User asks about recent school notices. No keyword given. I should make a plan and call search_notices. Keyword... maybe \"通知\" or empty? Keyword minLength 1. Let's use \"通知\" — hmm, searching \"通知\" may not be great. Perhaps I should ask for a topic, but I can also do a generic search. Let me plan: intent = 查看最近学校通知公告, steps = [\"search_notices\"]. But keyword needed. Use \"通知\" as generic. Maybe better to ask user about topic. But guidelines: answer based on tool data. I'll do a broad search with keyword \"通知\".\n\nActually maybe searching keyword \"近期\" won't work. Let's just try \"通知\".",
+      "prompt_tokens": 1267,
+      "completion_tokens": 222,
+      "latency_ms": 2344.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_yXWalihynJeQisOjIbEi5834",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"通知\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1508,
+      "completion_tokens": 39,
+      "latency_ms": 1008.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_DmZYCb8iwlhrjr9EI2lv5585",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"公告\"}"
+        },
+        {
+          "id": "call_01_Iobyj1SZae08gxtdY7wF8859",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"校园\"}"
+        }
+      ],
+      "reasoning": "Empty result. Try other keywords like \"校历\"? Better ask user for topic. Try \"公告\" maybe. Let's try a couple: \"公告\", \"活动\"? Keyword-only search returns nothing for \"通知\". I'll try \"考试\" or general topics? Better to ask user which topic. But I could try one more: \"教务\"? Let's try \"公告\" and \"校园\".",
+      "prompt_tokens": 1560,
+      "completion_tokens": 149,
+      "latency_ms": 1370.2
+    },
+    {
+      "content": "用「通知」「公告」这类泛词没有检索到结果，换成「校园」后找到 2 条，供你参考：\n\n| 日期 | 类别 | 标题 | 摘要 |\n|---|---|---|---|\n| 2026-09-17 | 办事大厅·申请 | 校园卡服务已更新 | 可在应用中查看常用校园服务 |\n| 2026-09-16 | 校园活动 | 校园创新实践周报名开始 | 欢迎同学报名参加创新实践活动 |\n\n- 校园卡服务已更新：https://demo.local/notices/activity\n- 校园创新实践周报名：https://demo.local/notices/activity\n\n以上是系统返回的全部内容（通知检索按关键词匹配，泛泛的关键词容易查不到）。如果你想看某一类消息，告诉我关键词就行，比如「选课」「考试」「奖学金」「宿舍」「活动」「缴费」等，我再帮你精确查一下。另外，如果需要，我也可以顺便查一下本周课表或考试安排。",
+      "tool_calls": [],
+      "reasoning": "Got two notices with keyword \"校园\". Maybe also search other topics like \"选课\"/\"考试\"/\"奖学金\"? Let me provide what we have and offer to search more by topic. Maybe do one more search e.g. \"活动\"? Already have 校园活动. I'll report and ask if they want a specific topic.\n\nCould also mention that generic \"通知\" search returned nothing. Provide results.",
+      "prompt_tokens": 1842,
+      "completion_tokens": 293,
+      "latency_ms": 2605.2
+    }
+  ]
+}

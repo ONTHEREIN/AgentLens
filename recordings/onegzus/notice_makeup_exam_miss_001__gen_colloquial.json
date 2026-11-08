@@ -1,0 +1,62 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "14f98fda709168db",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_dJAobvfWDLUoheH4FBTV4495",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道学校的补考安排通知是否已经发布，同时看看自己有没有补考安排。\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks whether the notice about supplementary exam (补考) arrangements has been published. I should search notices for \"补考\". Maybe also check exams. Let me make plan.\n\nSteps: search_notices with keyword 补考. Maybe also get_exams to see my exam arrangements. The question is \"补考安排的通知出了没呀？\" - primarily notice search. I could also check get_exams for current term。Let me do both? The plan requires listing steps. I'll do search_notices first, and maybe get_exams to check personal 补考 arrangement.\n\nI'll plan: search_notices(补考), get_exams (current term). They're independent, call in same block.",
+      "prompt_tokens": 1260,
+      "completion_tokens": 229,
+      "latency_ms": 2248.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_2UK77D6KYbviYfjd99ZV5784",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"补考\"}"
+        },
+        {
+          "id": "call_01_ET_5dWDKMQHHfEnRvJ7sjW42423",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1508,
+      "completion_tokens": 86,
+      "latency_ms": 984.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_BJ649zrLvlgX22SualK71547",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试\"}"
+        }
+      ],
+      "reasoning": "No 补考 notices found. Report. Maybe also try searching \"考试\" notice? Could be helpful. Let me search \"考试\" to see if there's a general exam notice. That's reasonable additional step.",
+      "prompt_tokens": 1745,
+      "completion_tokens": 83,
+      "latency_ms": 1320.9
+    },
+    {
+      "content": "已帮你查过了：\n\n**补考通知：目前还没有。** 用「补考」关键词检索学校通知公告，返回结果是空的，说明补考安排的通知还没发布。\n\n**你的考试安排**（2026-2027 学年第 1 学期，均为期末考试，不是补考）：\n- 数据库原理：2026-12-24（周四）09:00-11:00，A3-302，座位 18\n- 操作系统：2026-12-28（周一）14:00-16:00，B1-204，座位 27\n\n**相关通知**（但与补考无关）：\n- 《2026 年秋季学期课程提醒》（09-18 发布）：提醒关注近期课程安排和考试时间\n- 《关于期末考试安排的说明》（09-12 发布）：考试安排已更新，请及时查看\n\n建议过几天再查一次，或者留意教务系统（jwxt）的通知更新。需要我到时候再帮你查一下吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1970,
+      "completion_tokens": 213,
+      "latency_ms": 1993.6
+    }
+  ]
+}

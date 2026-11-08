@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "bb0f9737ebb4843e",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_JbJ9FC7RZdKvKGQnUEie6631",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询上学期（2025-2026 学年第 2 学期）成绩明细，确认数据结构课程的学分\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户问数据结构几个学分。之前查询成绩时工具返回数据里可能有学分信息，但我引用的回答里没有。我应该重新调用 get_grades 查询上学期的成绩，看是否返回学分。\n\n按工作方式：先 make_plan，再调用工具。",
+      "prompt_tokens": 1301,
+      "completion_tokens": 137,
+      "latency_ms": 1517.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_MggUF59DsU5awFACmsT45938",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1457,
+      "completion_tokens": 56,
+      "latency_ms": 1279.7
+    },
+    {
+      "content": "数据结构是 4 学分，成绩 89 分，绩点 3.7。\n\n顺便把上学期其他课学分也列一下：软件工程导论 2 学分、大学英语（四）2 学分、数据库原理 3 学分、操作系统 3 学分，合计 14 学分。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1803,
+      "completion_tokens": 68,
+      "latency_ms": 1158.3
+    }
+  ]
+}

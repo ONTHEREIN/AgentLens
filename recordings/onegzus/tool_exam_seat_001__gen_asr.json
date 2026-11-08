@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "1786533c2a8c207f",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_NaognP3lEgM26Wni7FoK4375",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道操作系统考试的座位号\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "User asks: \"操作系统考试我座几号\" — exam seat number. Need to check exam arrangement. Today is 2026-09-21, current semester 2026-2027 term 1. But operating systems exam... could be current semester. Let's query exams for current semester.\n\nFirst make_plan.",
+      "prompt_tokens": 1260,
+      "completion_tokens": 132,
+      "latency_ms": 1472.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_aBdC1qRIftzGL9ALMy3h7377",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1411,
+      "completion_tokens": 56,
+      "latency_ms": 1514.6
+    },
+    {
+      "content": "操作系统考试安排在 **2026-12-28（周一）14:00-16:00**，考场 **B1-204**，你的座位号是 **27 号**。\n\n（同场次提醒：数据库原理考试在 2026-12-24（周四）09:00-11:00，A3-302，座位 18 号。）",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1609,
+      "completion_tokens": 80,
+      "latency_ms": 957.6
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "36cf64141a091332",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_YoE6a1SlKsqhXXC8SnZh7626",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想问今天（周一）有什么课，需要查询本周课表\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "The user's message: \"今天有什摸可\" — seems truncated/typo. Probably \"今天有什么课\" (what classes today). \"什摸\" = \"什么\", \"可\" maybe truncated \"课\" (课 → 可?). Likely they meant \"今天有什么课\" — asking about today's schedule. So call make_plan then get_schedule with week 4 (current week).\n\nBut uncertain — maybe ask clarifying? The message is cut off. Best to interpret as schedule for today. I'll make plan and call get_schedule for week 4, and answer for Monday.\n\nLet me note ambiguity but give the schedule.",
+      "prompt_tokens": 1257,
+      "completion_tokens": 207,
+      "latency_ms": 1714.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_HRi56KVKCzXBxp63IIT12860",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1483,
+      "completion_tokens": 39,
+      "latency_ms": 636.5
+    },
+    {
+      "content": "你问的应该是“今天有什么课”？我按你说的，查了本周（第 4 周）的课表。今天是**星期一**，你有 2 门课：\n\n| 节次 | 课程 | 教师 | 教室 |\n|---|---|---|---|\n| 第 1-2 节 | 软件工程导论 | 林老师 | A3-201 |\n| 第 5-6 节 | 高等数学（下） | 周老师 | B2-305 |\n\n这两门课的上课周次都是第 1-16 周，本周都有。\n\n另外提醒你：你消息里的“今天有什么可”像是没发完。如果想查成绩、考勤、考试安排、宿舍水电余额或学校通知，请告诉我，我再帮你查。",
+      "tool_calls": [],
+      "reasoning": "Today is Monday (weekday 1). Two classes: 软件工程导论 1-2节 A3-201, 高等数学（下）5-6节 B2-305.\n\nAlso mention the message seems cut off; if they wanted something else (成绩/考勤/考试/余额/通知) let me know.",
+      "prompt_tokens": 1923,
+      "completion_tokens": 239,
+      "latency_ms": 2142.0
+    }
+  ]
+}

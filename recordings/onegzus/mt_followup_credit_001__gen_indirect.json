@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "b95cd94e1945ddba",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_sFi9kbdyiVqPpObJ07gc9435",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询数据结构这门课的学分\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "用户问数据结构要多少个学分。我需要查成绩或课表。成绩查询可能包含学分。让我先 make_plan。\n\n上学期是 2025-2026 学年第二学期（春季），year=2025, term=2。\n\n我需要调用 get_grades 看是否有学分信息。可能也查课表（当前学期）——但数据结构是上学期课程。先查成绩。",
+      "prompt_tokens": 1301,
+      "completion_tokens": 145,
+      "latency_ms": 1732.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_o8lFAnVDIzjhMI3l81by3284",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1465,
+      "completion_tokens": 56,
+      "latency_ms": 964.2
+    },
+    {
+      "content": "数据结构是 **4 学分**（2025-2026 学年第二学期，成绩 89 分，绩点 3.7）。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1811,
+      "completion_tokens": 32,
+      "latency_ms": 866.6
+    }
+  ]
+}

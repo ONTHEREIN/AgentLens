@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "bf1cc9aea4668567",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_tvWRYsd3bnaZUkRldmff6466",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周（第4周）周四上午是否有课\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "We need answer requires current week schedule, week 4. Must call make_plan first. Then get_schedule week 4. Need Chinese answer. Let's plan.",
+      "prompt_tokens": 1260,
+      "completion_tokens": 105,
+      "latency_ms": 1284.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_3ko2t7nTujemIq0K9kdF2517",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "Now call get_schedule week 4.",
+      "prompt_tokens": 1384,
+      "completion_tokens": 48,
+      "latency_ms": 800.2
+    },
+    {
+      "content": "有课。本周四上午第 3-4 节是**操作系统**，黄老师，地点在 **B1-204**。",
+      "tool_calls": [],
+      "reasoning": "We need answer. Thursday weekday 4 has 操作系统 sections 3-4. Is that morning? Likely sections 3-4 are morning. Need say yes, 3-4节, 黄老师, B1-204. Maybe \"上午第3-4节\". Avoid asserting exact time if not given. Could say 周四上午有课，操作系统，第3-4节. Good.",
+      "prompt_tokens": 1833,
+      "completion_tokens": 116,
+      "latency_ms": 1084.7
+    }
+  ]
+}

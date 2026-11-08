@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "34f8d6f0249f3187",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_Dnbd3FY207k8ysCDOall7140",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想了解“创新实践周”的参与/申请流程，属于学校通知类信息，需要检索相关通知公告。\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user asks about the application process for \"创新实践周\" (Innovation Practice Week). This is school notice info. I should make a plan then search notices.",
+      "prompt_tokens": 1261,
+      "completion_tokens": 118,
+      "latency_ms": 1721.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_UaC7MCeq4zZ4NGcECkxI4076",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"创新实践周\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1398,
+      "completion_tokens": 41,
+      "latency_ms": 667.2
+    },
+    {
+      "content": "我检索到的相关通知只有一条：\n\n**《校园创新实践周报名开始》**\n- 发布单位：教务系统（jwxt）\n- 发布日期：2026-09-16\n- 分类：校园活动\n- 摘要：欢迎同学报名参加创新实践活动。\n- 链接：https://demo.local/notices/activity\n\n需要说明的是，这条通知的摘要只有“欢迎同学报名参加创新实践活动”一句，**没有包含具体的申请流程、报名入口、截止时间或材料要求**等细节，我也无法凭推测补全。建议你：\n\n1. 打开上述通知原文链接查看完整内容；\n2. 如果原文也没写清流程，可直接咨询教务处（通知来源为教务系统）或你所在学院的教务老师。\n\n如果你想了解其他信息，比如本周课表、考勤或考试安排，也可以告诉我。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1514,
+      "completion_tokens": 179,
+      "latency_ms": 2107.4
+    }
+  ]
+}

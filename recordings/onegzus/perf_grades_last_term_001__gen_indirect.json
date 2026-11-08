@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "2099a54d24cdc86a",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_JzZJcypahpFf4zutgw5O3611",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户前一学期（2025-2026 学年春季学期）各科成绩\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "The user wants grades for the previous semester. Today is 2026-09-21, current academic year 2026-2027 term 1. Previous semester would be 2025-2026 term 2. So year \"2025\", term \"2\".\n\nFirst make_plan, then call get_grades.",
+      "prompt_tokens": 1263,
+      "completion_tokens": 144,
+      "latency_ms": 1222.7
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_fwaaLZY11bm5W1CbQMXI9792",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1426,
+      "completion_tokens": 56,
+      "latency_ms": 1155.4
+    },
+    {
+      "content": "你前一学期（2025-2026 学年春季学期）的成绩如下：\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n这 5 门课的成绩都正常，且全部及格，共 14 学分。加权平均分为 (92×2+89×4+88×2+90×3+85×3)/14 ≈ 88.8，加权平均绩点约 3.73。需要我帮你查本学期的课表或考试安排吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1772,
+      "completion_tokens": 192,
+      "latency_ms": 2004.5
+    }
+  ]
+}

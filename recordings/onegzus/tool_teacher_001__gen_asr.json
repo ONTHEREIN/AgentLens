@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "beec1019b7eeec2a",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_G9T7vBPwHXsahC2BfMkI7623",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道「数据结构」这门课的任课老师是谁\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问\"数据结构是哪位老师上的\"。需要查询课表。当前第4周。但数据结构可能是别的周。先查本周课表，如果没有，可能需要查其他周。\n\n先 make_plan，然后 get_schedule。",
+      "prompt_tokens": 1258,
+      "completion_tokens": 118,
+      "latency_ms": 1745.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_uEf4x5pPtjaZh52TXIYk0850",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1395,
+      "completion_tokens": 39,
+      "latency_ms": 926.5
+    },
+    {
+      "content": "「数据结构」这门课的老师是**陈老师**，上课时间是每周二第 3-4 节，地点在实训楼 204，第 1-16 周都有课。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1835,
+      "completion_tokens": 42,
+      "latency_ms": 761.9
+    }
+  ]
+}

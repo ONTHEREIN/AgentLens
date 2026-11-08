@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "90573f50e67ba489",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_jmZsnb1BLA19jaGjhyFs0755",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想请明天（周二）的假，需要先说明我没有请假提交权限，同时帮他查明天的课表，并检索学校请假相关通知，方便他按流程办理\", \"steps\": [\"get_schedule\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user wants to request leave for tomorrow's classes. I can't do that — I have no leave-request tool. I should make a plan (empty steps or maybe get_schedule to tell them which classes tomorrow), then explain I can't submit leave requests, but I can show tomorrow's classes and search notices about leave procedures.\n\nLet me plan: check schedule for this week (to list tomorrow's classes) and search notices for 请假.\n\nSteps: get_schedule, search_notices.\n\nThen answer.",
+      "prompt_tokens": 1261,
+      "completion_tokens": 205,
+      "latency_ms": 1810.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_UWtmUtvS2OUVfS9Qz2le8898",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        },
+        {
+          "id": "call_01_ET_3FujQiz8yfFInu7238B96480",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"请假\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1485,
+      "completion_tokens": 68,
+      "latency_ms": 768.6
+    },
+    {
+      "content": "不好意思，我没法直接替你提交请假申请——我目前只能查询课表、成绩、考勤、考试安排、水电余额和学校通知，没有办理请假的权限。\n\n不过我可以帮你把需要请假的信息整理清楚：\n\n**明天（9 月 22 日，周二）你的课：**\n- 数据结构｜陈老师｜实训楼 204｜第 3-4 节\n\n本周其余课程（供你安排补课参考）：今天（周一）软件工程导论、高等数学（下）；周三大学英语（四）、数据库原理；周四操作系统；周五体育（网球）。\n\n**请假流程建议：**\n1. 在教务系统或学校 App 的「请假」入口提交申请，写明事由、时间（明天第 3-4 节）、涉及课程《数据结构》；\n2. 一般需要先跟辅导员报备，并抄送任课教师陈老师；\n3. 事后按学校要求补交证明材料、办理销假。\n\n另外，我检索了校内通知中的「请假」关键词，暂时没有查到相关公告。如果你需要，我可以帮你查一下本周其他通知，或者你的考勤记录（看看请假是否会影响考勤统计）？",
+      "tool_calls": [],
+      "reasoning": "No notices found. Explain I can't submit leave request. Provide tomorrow's classes (Tuesday weekday 2): 数据结构，陈老师，实训楼204，第3-4节。\n\nSuggest contacting 辅导员/教务处. Note that notices search returned nothing.",
+      "prompt_tokens": 1963,
+      "completion_tokens": 304,
+      "latency_ms": 2833.7
+    }
+  ]
+}

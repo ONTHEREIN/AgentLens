@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "2c59b4f168180d0d",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_eJpP8QaaTMTEPLBK9pM67712",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周（第4周）课表，看周六是否有课\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "The user asks whether there are classes this Saturday. Today is Monday 2026-09-21, week 4. This Saturday is in week 4 (Sept 26). So get_schedule for week 4.\n\nLet me make plan first.",
+      "prompt_tokens": 1267,
+      "completion_tokens": 125,
+      "latency_ms": 1180.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_3jwHHP0GJ9hFvAgyM5hi6358",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1411,
+      "completion_tokens": 39,
+      "latency_ms": 1479.1
+    },
+    {
+      "content": "本周六（9月26日）没有课，你可以放心休息或者自行安排。🎉\n\n顺便附上你本周（第4周）的课表：\n\n| 星期 | 课程 | 节次 | 地点 |\n|---|---|---|---|\n| 周一 | 软件工程导论 | 1-2 | A3-201 |\n| 周一 | 高等数学（下） | 5-6 | B2-305 |\n| 周二 | 数据结构 | 3-4 | 实训楼 204 |\n| 周三 | 大学英语（四） | 1-2 | A1-108 |\n| 周三 | 数据库原理 | 7-8 | A3-302 |\n| 周四 | 操作系统 | 3-4 | B1-204 |\n| 周五 | 体育（网球） | 5-6 | 体育馆 2 号场 |\n\n周六、周日都没有安排课程，祝周末愉快～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1851,
+      "completion_tokens": 201,
+      "latency_ms": 1708.5
+    }
+  ]
+}

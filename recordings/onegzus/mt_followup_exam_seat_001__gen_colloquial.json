@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "e118739d7aae2f7a",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_lZzYY0sIlyuHNIM2YKzj7496",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道本学期操作系统期末考试的座位号\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks about seat number for the 操作系统 exam. I should call the tool to check. But wait — the previous turn: I answered without calling tools (that was a violation? The previous turn appears to have been made without tool calls). Now I should call make_plan then get_exams.\n\nLet me do make_plan and then get_exams.\n\nNote: tool results may not include seat numbers — I should report honestly.",
+      "prompt_tokens": 1306,
+      "completion_tokens": 156,
+      "latency_ms": 1608.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_2NgzMLp24BGqnKV6iFTl7653",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1481,
+      "completion_tokens": 56,
+      "latency_ms": 1069.6
+    },
+    {
+      "content": "操作系统期末考试安排在 2026-12-28（周一）14:00-16:00，考场 B1-204，你的座位号是 **27**。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1679,
+      "completion_tokens": 36,
+      "latency_ms": 1472.5
+    }
+  ]
+}

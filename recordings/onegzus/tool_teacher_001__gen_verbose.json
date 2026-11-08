@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "19e5ab98912e1b4d",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_i6FbsoneQAaCFH2EpjBU5826",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道「数据结构」这门课是哪位老师上的，同时随口抱怨选课系统崩溃。\", \"steps\": [\"get_schedule\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "The user asks about who teaches 数据结构 (Data Structures). I should check schedule. First make_plan, then call get_schedule. Maybe also search notices about 选课系统? The user's main question is the teacher for 数据结构. Let me plan: get_schedule (current week) to find the course. Possibly the course appears in current schedule. Let's do make_plan then get_schedule.\n\nAlso they complain about 选课系统崩溃 — could search notices for 选课系统. That's secondary but helpful. I'll include search_notices in plan.",
+      "prompt_tokens": 1270,
+      "completion_tokens": 202,
+      "latency_ms": 2256.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_rGXmmPtA80Vr6QsV2OsD6442",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        },
+        {
+          "id": "call_01_ET_pmGBaA5nFvWPvKnFylpl6225",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"选课系统\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1491,
+      "completion_tokens": 70,
+      "latency_ms": 1064.9
+    },
+    {
+      "content": "**数据结构这门课由陈老师授课**，上课时间为每周二第 3-4 节，地点在实训楼 204，第 1-16 周都有课（本周第 4 周正常上）。\n\n另外，我按「选课系统」查了一下校内通知，暂时没有搜到相关公告，因此选课系统崩溃的情况可能还没有正式通知。你可以关注教务处的后续消息，或者直接跟教务老师反馈一下～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1971,
+      "completion_tokens": 96,
+      "latency_ms": 1544.3
+    }
+  ]
+}

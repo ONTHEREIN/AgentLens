@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "b8ed0c5c63e97dff",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_YBekBAmAKwvpeh2vY1ml4246",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道自己饭卡（校园卡）里还剩多少钱\", \"steps\": [\"get_card_balance\"]}"
+        }
+      ],
+      "reasoning": "The user asks about card balance — but the tool get_card_balance is for dorm electricity/water balance, not meal card. Let me call the plan first.\n\nI should make a plan, call get_card_balance, and see what it returns. If it only returns electricity/water, I need to tell the user I can't query meal card balance.\n\nLet me do make_plan then call the tool.",
+      "prompt_tokens": 1267,
+      "completion_tokens": 156,
+      "latency_ms": 1850.6
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_KvIhKychkNNVoxvOCQRf1698",
+          "name": "get_card_balance",
+          "arguments": "{}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1442,
+      "completion_tokens": 24,
+      "latency_ms": 1060.8
+    },
+    {
+      "content": "我这边只能查到宿舍水电余额，查不到饭卡的消费余额哦——饭卡余额需要在食堂充值机、校园卡 App 或一卡通服务窗口查询。\n\n顺便给你报一下宿舍水电情况（演示宿舍 A1-101，更新于 2026-09-19 08:00）：\n\n- 电费：68.4 度（低于 30 度会提醒，目前充足）\n- 冷水：9.6 吨\n- 热水：42.80 元\n\n如果你其实是想问这些，那都还够用～需要我帮你看别的（课表、考勤、考试安排等）吗？",
+      "tool_calls": [],
+      "reasoning": "The tool only returns dorm electricity/water balance, not meal card. I must not fabricate. Tell the user I can't query meal card balance, but here's dorm balances.",
+      "prompt_tokens": 1705,
+      "completion_tokens": 174,
+      "latency_ms": 1929.4
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "fce6e8595454f03b",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_hsuAG09H8LTqL8evB7LG4841",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道《数据库原理》期末考试的地点和时间安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks: where is the final exam for 数据库原理. Need to call get_exams for current semester? Today is 2026-09-21, current semester 2026-2027 term 1. But exam for 数据库原理 — likely the upcoming final. Let me query exams for current year/term. Actually finals of this semester would be... Well query default (current). Let me also consider last semester (2025-2026 term 2). Hmm. The question \"期末数据库原理在哪个教室考\" - probably current semester's exam arrangement. I'll query current default first.\n\nPlan then call.",
+      "prompt_tokens": 1263,
+      "completion_tokens": 201,
+      "latency_ms": 1767.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_AvY1slEkHuuBygogoSY20523",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1483,
+      "completion_tokens": 56,
+      "latency_ms": 848.5
+    },
+    {
+      "content": "《数据库原理》期末考试安排在：\n\n- **教室：A3-302**（座位号 18）\n- **时间：2026-12-24（周四）09:00-11:00**\n\n另外提醒一下，你还有一门《操作系统》期末考试：2026-12-28（周一）14:00-16:00，B1-204，座位 27。别忘了提前确认考场哦。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1681,
+      "completion_tokens": 88,
+      "latency_ms": 922.8
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "22cab958ded377e3",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_pJksG5oiFXPDoCvhWCXX4232",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道学校是否已发布补考安排的通知\", \"steps\": [\"search_notices\"]}"
+        },
+        {
+          "id": "call_01_hDKHY2Q4DEq8adawOTBp6190",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"补考\"}"
+        }
+      ],
+      "reasoning": "The user asks about supplementary exam (补考) notices. Let me make a plan and search notices. Also maybe check exams schedule? The user specifically asks about 补考安排的通知. So search_notices with keyword \"补考\". Perhaps also get_exams for current semester? The question is about notice. Let me plan: search_notices(\"补考\"), maybe search_notices(\"补考安排\"). Just one.\n\nI could also get_exams to see if they have any exams... but the intent is the notice. Keep it to search_notices. Maybe also get_exams current semester to check personal arrangements — but that's not asked. I'll do search_notices with 补考.\n\nNote: user says \"刚吃完饭\" — casual. Answer politely.",
+      "prompt_tokens": 1269,
+      "completion_tokens": 256,
+      "latency_ms": 2565.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_UK4kDpSoVxEoZMAV3z9G8856",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试\"}"
+        }
+      ],
+      "reasoning": "No results. Maybe try \"补考安排\" or \"考试\". Let me try another keyword to confirm.",
+      "prompt_tokens": 1553,
+      "completion_tokens": 61,
+      "latency_ms": 983.5
+    },
+    {
+      "content": "我用「补考」为关键词检索了学校通知，**目前没有查到任何补考相关的通知**，看来补考安排的通知还没发布。\n\n顺便提一下，我以「考试」为关键词检索，能查到 2 条相关公告：\n- 《2026 年秋季学期课程提醒》（2026-09-18，教务处）：提醒关注近期课程安排和考试时间\n- 《关于期末考试安排的说明》（2026-09-12，教务处）：考试安排已更新\n\n如果你需要，我可以帮你查一下你本人的考试安排，或者你告诉我补考涉及的课程名，我再按课程名检索一次通知。",
+      "tool_calls": [],
+      "reasoning": "No 补考 notice found. Answer honestly: searched \"补考\" nothing; only general exam notices exist. Mention the two notices found. Offer to check personal exam schedule (get_exams) if needed.\n\nNote \"关于期末考试安排的说明\" dated 2026-09-12 — probably last semester's final exam. I shouldn't over-interpret. Just report.",
+      "prompt_tokens": 1756,
+      "completion_tokens": 209,
+      "latency_ms": 2355.4
+    }
+  ]
+}

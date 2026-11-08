@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "7bc29ca3a35cf182",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_C0YwnvqhgMSUjtCyosSg9818",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道课程结课后的考核（考试）安排在什么日期\", \"steps\": [\"get_exams\", \"search_notices\"]}"
+        }
+      ],
+      "reasoning": "用户问\"结课后的考核定在几号？\" — 需要查考试安排。先 make_plan。可能也需要课表？其实只需考试安排。但\"结课后的考核\"可能指考试安排。我先查考试安排，也可查课表看结课时间。先计划。\n\n我会调用 get_exams（当前学期），也许 search_notices 查\"考试\"通知。先做 get_exams 和 get_schedule 并行？plan 里列 steps。\n\n先 make_plan。",
+      "prompt_tokens": 1261,
+      "completion_tokens": 185,
+      "latency_ms": 1921.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_pB8kiLQxTrzjNrznSLJg2379",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        },
+        {
+          "id": "call_01_ET_KXIao8rBtkrrGZDZeQpX9658",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1465,
+      "completion_tokens": 85,
+      "latency_ms": 874.5
+    },
+    {
+      "content": "本学期你已排定的期末考试有两门：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n也就是说，最早的一场在 **12月24日**，最后一场在 **12月28日**。\n\n另外，教务系统在 9 月 12 日发布了《关于期末考试安排的说明》，提示考试安排已更新，建议及时查看。如果你想确认某门课具体的“结课后考核”形式（随堂考还是统一期末考），可以告诉我是哪门课，我再帮你查课表和相应通知。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1830,
+      "completion_tokens": 183,
+      "latency_ms": 1769.1
+    }
+  ]
+}

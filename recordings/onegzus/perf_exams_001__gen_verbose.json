@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "303031eadc71ad7d",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_kfcMOVf8PnDmWu5GeTC23972",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想查询本学期的期末考试安排（食堂麻辣香锅只是闲聊，无需工具）\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks about final exams. Need to call make_plan then get_exams. The food comment is just chit-chat, no tool.",
+      "prompt_tokens": 1268,
+      "completion_tokens": 108,
+      "latency_ms": 1679.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_LdPSsUt9xIn03xEebWuS4255",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1395,
+      "completion_tokens": 56,
+      "latency_ms": 923.1
+    },
+    {
+      "content": "食堂的麻辣香锅听着确实不错 😄\n\n关于本学期（2026-2027 学年第 1 学期）的期末考试，目前查到两门：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n两场考试间隔 4 天，注意提前复习安排。如果想看更多课程或最新通知，可以再问我。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1593,
+      "completion_tokens": 156,
+      "latency_ms": 1861.7
+    }
+  ]
+}

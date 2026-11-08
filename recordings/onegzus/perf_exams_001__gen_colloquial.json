@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "370b21a54ccc2ec9",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_YyUgrKFkVycjW7YtNvU09759",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期（2026-2027学年第1学期）的期末考试安排\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "User asks about final exam schedule. Current semester is 2026-2027 term 1. Call get_exams with year 2026, term 1.\n\nFirst make_plan.",
+      "prompt_tokens": 1258,
+      "completion_tokens": 114,
+      "latency_ms": 1363.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_e8ONvzq50TiWWeAiVvgy7662",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1391,
+      "completion_tokens": 56,
+      "latency_ms": 1183.5
+    },
+    {
+      "content": "本学期期末安排在 12 月底，共两门考试：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理（3 学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统（3 学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n需要我再帮你查课表或考勤吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1589,
+      "completion_tokens": 120,
+      "latency_ms": 1664.1
+    }
+  ]
+}

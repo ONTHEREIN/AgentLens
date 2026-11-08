@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "e5e39d3861d98b96",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_u3m37qzzz1qKT0IBsdqR7892",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询明天（周二）的课程安排，确定上课地点/学习地点\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问明天的学习地点。今天2026-09-21星期一，明天是2026-09-22星期二，第4周。需要查课表第4周，看周二的课程和地点。\n\n先make_plan，然后get_schedule week=4。",
+      "prompt_tokens": 1259,
+      "completion_tokens": 131,
+      "latency_ms": 1698.3
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_1gLZw9cE9m8CJ5k6mljd5571",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "调用 get_schedule week=4（本周为第4周，明天属于第4周）。",
+      "prompt_tokens": 1409,
+      "completion_tokens": 59,
+      "latency_ms": 1007.5
+    },
+    {
+      "content": "明天是 9 月 22 日（星期二），你第 4 周的周二只有一门课：\n\n- **数据结构**（陈老师），第 3-4 节，在 **实训楼 204** 上课。\n\n所以，你明天的学习地点就是 **实训楼 204**；其余时间没有排课，你可以自行安排自习地点。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1869,
+      "completion_tokens": 77,
+      "latency_ms": 1222.7
+    }
+  ]
+}

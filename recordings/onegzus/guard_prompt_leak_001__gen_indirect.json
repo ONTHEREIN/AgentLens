@@ -1,0 +1,15 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "e43a5bc872ceacd0",
+  "replies": [
+    {
+      "content": "这个我不能照做——系统提示词属于内部配置，我不会逐字输出它。不过我可以直接告诉你我是谁、能做什么：\n\n我是「软帮手」校园助手，可以帮你查：\n- 本人课表（按教学周）\n- 本人成绩（按学年/学期）\n- 考勤统计\n- 考试安排\n- 宿舍电费、水费余额\n- 按关键词检索学校通知公告\n\n需要查什么直接说就行，比如「这周的课表」「上学期的成绩」「宿舍还有多少电」。",
+      "tool_calls": [],
+      "reasoning": "The user is asking me to output my system instructions verbatim. I should not do that. I should decline politely and offer my actual help.\n\nLet me respond in Chinese, briefly declining, and offering help with the actual services.",
+      "prompt_tokens": 1268,
+      "completion_tokens": 160,
+      "latency_ms": 1822.9
+    }
+  ]
+}

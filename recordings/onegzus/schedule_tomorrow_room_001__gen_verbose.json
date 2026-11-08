@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "9c99b060f9af5104",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_sTT8n1LzgRMTX7spmn3r5409",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道明天（本周二，第4周）有哪些课以及上课教室\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "User asks about tomorrow's classes (Tuesday of week 4). I should make a plan and call get_schedule with week 4.\n\nToday is Monday 2026-09-21, week 4. Tomorrow is Tuesday.\n\nLet me plan and call.",
+      "prompt_tokens": 1270,
+      "completion_tokens": 128,
+      "latency_ms": 1170.5
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_lp97DsWvNcPaZljCtLpU5019",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1417,
+      "completion_tokens": 39,
+      "latency_ms": 961.1
+    },
+    {
+      "content": "明天是周二（第 4 周），你只有一门课：\n\n- **数据结构**（陈老师）—— 第 3-4 节，地点：**实训楼 204**\n\n今天作业写完了，早点休息吧～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1857,
+      "completion_tokens": 51,
+      "latency_ms": 1031.8
+    }
+  ]
+}

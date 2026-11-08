@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "db40b751d8b235a4",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_Oy6thPSpamyweEccTyzq0307",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询用户上学期的课程成绩（上学期指 2025-2026 学年第 2 学期，因为现在是 2026-2027 学年第 1 学期）\", \"steps\": [\"get_grades\"]}"
+        }
+      ],
+      "reasoning": "The user asks about last semester's grades. Today is 2026-09-21, current academic year 2026-2027, term 1 (fall). \"上学期\" = previous semester = 2025-2026 term 2 (spring semester).\n\nSo I should call get_grades with year \"2025\", term \"2\".\n\nFirst make_plan.",
+      "prompt_tokens": 1262,
+      "completion_tokens": 175,
+      "latency_ms": 1732.2
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_JOVJm57cX4CnHV0LJzZ62685",
+          "name": "get_grades",
+          "arguments": "{\"year\": \"2025\", \"term\": \"2\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1456,
+      "completion_tokens": 56,
+      "latency_ms": 956.3
+    },
+    {
+      "content": "你上学期（2025-2026 学年第 2 学期）的成绩如下，5 门课全部通过 🎉\n\n| 课程 | 学分 | 成绩 | 绩点 |\n|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 |\n| 数据结构 | 4 | 89 | 3.7 |\n| 大学英语（四） | 2 | 88 | 3.7 |\n| 数据库原理 | 3 | 90 | 4.0 |\n| 操作系统 | 3 | 85 | 3.3 |\n\n简单算一下：总学分 14，加权平均分约 **88.9**，加权绩点约 **3.71**。软件工程导论和数据库原理都拿到了 4.0 满绩，挺不错的～ 需要看考勤或其他学期成绩再跟我说。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1802,
+      "completion_tokens": 189,
+      "latency_ms": 1592.9
+    }
+  ]
+}

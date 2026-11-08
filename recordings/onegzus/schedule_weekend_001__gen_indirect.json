@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "04159503d8ff4844",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_xri3b7PvdpneSEnpNAFu9119",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本周（第4周）课表中周六是否有课程安排\", \"steps\": [\"get_schedule\"]}"
+        }
+      ],
+      "reasoning": "用户问\"这礼拜六安排了教学任务么\" — 需要查本周课表，看周六是否有课。今天是第4周。先 make_plan。",
+      "prompt_tokens": 1259,
+      "completion_tokens": 106,
+      "latency_ms": 1009.8
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_gyMJlg3qHKqk1q2Q8pBM5061",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1384,
+      "completion_tokens": 39,
+      "latency_ms": 1037.1
+    },
+    {
+      "content": "本周（第 4 周）课表里只有周一至周五的课程，**周六（9 月 26 日）没有安排教学任务**。\n\n本周课表如下供参考：\n- 周一：软件工程导论（1-2 节，A3-201）、高等数学（下）（5-6 节，B2-305）\n- 周二：数据结构（3-4 节，实训楼 204）\n- 周三：大学英语（四）（1-2 节，A1-108）、数据库原理（7-8 节，A3-302）\n- 周四：操作系统（3-4 节，B1-204）\n- 周五：体育（网球）（5-6 节，体育馆 2 号场）\n- 周六、周日：无课程\n\n注：以上仅为课表数据，若周六有临时调课、实践或考试安排，可能需要查看通知公告确认（需要的话我可以帮你搜一下）。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1824,
+      "completion_tokens": 210,
+      "latency_ms": 1911.3
+    }
+  ]
+}

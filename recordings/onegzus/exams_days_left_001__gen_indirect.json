@@ -1,0 +1,48 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "fcdb2b92529bd347",
+  "replies": [
+    {
+      "content": "先理解一下你的问题，然后查数据。",
+      "tool_calls": [
+        {
+          "id": "call_00_gN0eL1gTwN382rQtHWPz1613",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道「数据库原理」结课测评还有几天，需要先找到该测评的具体日期\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+        }
+      ],
+      "reasoning": "The user asks: how many days until the \"数据库原理\" final assessment (结课测评). Need to search notices for 数据库原理 exam arrangement, and query exams.\n\nLet me make a plan: search_notices for \"数据库原理\" and get_exams for current term.\n\nCurrent: 2026-09-21, 2026-2027学年第一学期第4周. So year \"2026\", term \"1\".",
+      "prompt_tokens": 1264,
+      "completion_tokens": 182,
+      "latency_ms": 1892.1
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_YGgPXhsssFv3g87uRT945238",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"数据库原理\"}"
+        },
+        {
+          "id": "call_01_OYQska1KvJlcW9KtTjRQ7236",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "Call both in parallel.",
+      "prompt_tokens": 1465,
+      "completion_tokens": 91,
+      "latency_ms": 742.5
+    },
+    {
+      "content": "**距「数据库原理」结课（期末）测评还有 94 天。**\n\n| 项目 | 内容 |\n|---|---|\n| 课程 | 数据库原理（3 学分） |\n| 类型 | 期末考试 |\n| 日期 | 2026-12-24（星期四） |\n| 时间 | 09:00-11:00 |\n| 地点 | A3-302，座位号 18 |\n\n今天 2026-09-21（周一），9 月剩余 9 天、10 月 31 天、11 月 30 天、12 月 24 天，共 **94 天**。\n\n补充：学校通知里暂未检索到与「数据库原理」相关的公告，以上信息来自你的考试安排。另外，本学期你还有一门「操作系统」期末考试在 2026-12-28（星期一）14:00-16:00，地点 B1-204，座位 27。",
+      "tool_calls": [],
+      "reasoning": "Today 2026-09-21. 数据库原理 exam 2026-12-24. Days between: Sep 21 → Dec 24.\n\nSep: 30-21 = 9 days remaining in Sept (to Sep 30), Oct 31, Nov 30, Dec 24. 9+31+30+24 = 94 days.\n\nLet's verify: from Sep 21 to Dec 24. Sept 21 + 94 days = ? Sept remaining 9 days → Sep 30. +31 → Oct 31 (40). +30 → Nov 30 (70). +24 → Dec 24 (94). Yes, 94 days.\n\nAlso weekday: Dec 24, 2026 is Thursday — check: Sep 21 2026 is Monday (given). Days from Sep 21 to Dec 24 = 94, 94 mod 7 = 3 (since 91=13*7), so Monday+3 = Thursday. ✓ Consistent.\n\nNote: search_notices returned nothing for \"数据库原理\".",
+      "prompt_tokens": 1707,
+      "completion_tokens": 423,
+      "latency_ms": 2866.5
+    }
+  ]
+}

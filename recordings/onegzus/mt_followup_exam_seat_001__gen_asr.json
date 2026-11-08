@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "3a6895b53f6de19a",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_BGbUP9rEus62mn1tQNKE7982",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"查询本学期\\\"操作系统\\\"期末考试的具体信息，特别是座位号\", \"steps\": [\"get_exams\"]}"
+        }
+      ],
+      "reasoning": "用户问操作系统考试的座位号。上一轮我给出了考试安排但没提座位号——实际上我上一轮回答可能没有依据座位号数据。我现在需要调用 get_exams 查当前学期考试安排，看是否返回座位号。\n\n先 make_plan，然后调用 get_exams（当前学年 2026-2027 第1学期，缺省即可）。",
+      "prompt_tokens": 1305,
+      "completion_tokens": 149,
+      "latency_ms": 1732.4
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_5KHWHhMIAIEeveDjUch02427",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1473,
+      "completion_tokens": 56,
+      "latency_ms": 909.9
+    },
+    {
+      "content": "操作系统期末考试安排在 12 月 28 日（星期一）14:00–16:00，地点是 B1-204，你的座位号是 **27 号**。",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1671,
+      "completion_tokens": 40,
+      "latency_ms": 961.0
+    }
+  ]
+}

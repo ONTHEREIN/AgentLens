@@ -1,0 +1,43 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "74d64a2e9c9e33d1",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_DehGoV9BQIR4DxWDey1t4829",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户想知道学校校园卡服务最近有没有相关通知或改动\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "User asks about campus card service changes/notices. Use search_notices with keyword \"校园卡\". First make_plan.",
+      "prompt_tokens": 1266,
+      "completion_tokens": 97,
+      "latency_ms": 1426.0
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_ET_zKHwUQ9x1QuP27gcj7r98214",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"校园卡\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1382,
+      "completion_tokens": 40,
+      "latency_ms": 981.8
+    },
+    {
+      "content": "我查了一下和「校园卡」相关的通知，最近找到一条：\n\n**《校园卡服务已更新》**\n- 分类：办事大厅·申请\n- 发布日期：2026-09-17，上周四\n- 摘要：可在应用中查看常用校园服务\n- 来源：jwxt\n\n这条通知的标题就是“校园卡服务已更新”，说明校园卡相关功能有更新，之后可以在应用里查看常用校园服务。通知没有说明具体改动细节，如果需要完整内容，可以在办事大厅里再看一下详情。另外，同期还有一条《校园创新实践周报名开始》（9-16），和校园卡无关，供你参考。\n\n需要我帮你查一下宿舍水电余额或者本周课表吗？",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1546,
+      "completion_tokens": 154,
+      "latency_ms": 1756.2
+    }
+  ]
+}

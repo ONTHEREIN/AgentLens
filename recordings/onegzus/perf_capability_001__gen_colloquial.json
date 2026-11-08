@@ -1,0 +1,29 @@
+{
+  "format": 1,
+  "model": "deepseek-flash",
+  "input_sha": "5b284e03312f9896",
+  "replies": [
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_y60ihkwUNP7xBx0By6P82605",
+          "name": "make_plan",
+          "arguments": "{\"intent\": \"用户只是询问我能提供哪些帮助，属于自我介绍，不需要查询任何个人数据\", \"steps\": []}"
+        }
+      ],
+      "reasoning": "The user asks casually \"what can you help me with?\" I should make a plan — no tools needed for this, but the instruction says call make_plan before calling any tool. Since I don't need tools, steps empty array. Let me call make_plan with empty steps.",
+      "prompt_tokens": 1261,
+      "completion_tokens": 129,
+      "latency_ms": 1499.4
+    },
+    {
+      "content": "嗨！我是「软帮手」，你的校园生活小助手 😊 我可以帮你查这些（都只查你本人的信息）：\n\n1. **课表** —— 查本周或任意教学周的课表\n2. **成绩** —— 查某学年某学期的各科成绩\n3. **考勤** —— 查某学期的出勤/缺勤统计\n4. **考试安排** —— 查某学期的考试时间地点\n5. **宿舍水电** —— 查电费、水费余额\n6. **学校通知** —— 按关键词检索公告\n\n现在正好是 **2026-2027 学年第 1 学期第 4 周**，要不要我先帮你看看这周的课表？或者直接告诉我你想查什么～",
+      "tool_calls": [],
+      "reasoning": "",
+      "prompt_tokens": 1409,
+      "completion_tokens": 162,
+      "latency_ms": 1622.7
+    }
+  ]
+}
