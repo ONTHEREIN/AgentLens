@@ -1,0 +1,29 @@
+id: mt_followup_credit_001
+title: 多轮：追问上一轮列表中某门课的学分
+dimension: multi_turn
+difficulty: medium
+source: golden
+tags: [onegzus, followup, grades]
+
+input:
+  messages:
+    - role: user
+      content: "上学期成绩怎么样"
+    - role: assistant
+      content: "上学期 5 门课：软件工程导论 92、数据结构 89、大学英语（四）88、数据库原理 90、操作系统 85，全部通过。"
+    - role: user
+      content: "数据结构是几个学分的课"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  rubric: 数据结构 4 学分；上一轮没给学分，应查询后回答，不得猜测

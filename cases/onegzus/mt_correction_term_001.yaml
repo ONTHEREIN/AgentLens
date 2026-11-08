@@ -1,0 +1,29 @@
+id: mt_correction_term_001
+title: 多轮：用户纠正学期后重新查询
+dimension: multi_turn
+difficulty: medium
+source: golden
+tags: [onegzus, correction, grades, academic_period]
+
+input:
+  messages:
+    - role: user
+      content: "查一下 2024 年秋季学期的成绩"
+    - role: assistant
+      content: "2024-2025 学年第 1 学期没有查到成绩记录。"
+    - role: user
+      content: "不对，我要的是上学期的"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["软件工程导论"]

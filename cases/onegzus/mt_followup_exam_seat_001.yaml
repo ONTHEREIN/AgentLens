@@ -1,0 +1,26 @@
+id: mt_followup_exam_seat_001
+title: 多轮：追问上一轮未给出的考试座位号
+dimension: multi_turn
+difficulty: medium
+source: golden
+tags: [onegzus, followup, exams]
+
+input:
+  messages:
+    - role: user
+      content: "这学期有哪些期末考试"
+    - role: assistant
+      content: "本学期有两门期末考试：数据库原理 12 月 24 日 09:00，操作系统 12 月 28 日 14:00。"
+    - role: user
+      content: "操作系统那场我座位号多少"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_exams
+  refusal: false
+  answer_contains: ["27"]
+
+note: 上一轮回答里没有座位号，必须重新查，不能凭空给
