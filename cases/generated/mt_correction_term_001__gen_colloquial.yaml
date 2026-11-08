@@ -1,0 +1,33 @@
+id: mt_correction_term_001__gen_colloquial
+title: '[改写·colloquial] 多轮：用户纠正学期后重新查询'
+dimension: multi_turn
+difficulty: medium
+tags:
+- onegzus
+- correction
+- grades
+- academic_period
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 查一下 2024 年秋季学期的成绩
+  - role: assistant
+    content: 2024-2025 学年第 1 学期没有查到成绩记录。
+  - content: 哎呀不是啦，我要查的是上学期的成绩呀~
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - 软件工程导论
+source: llm
+note: 由 mt_correction_term_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：不对，我要的是上学期的

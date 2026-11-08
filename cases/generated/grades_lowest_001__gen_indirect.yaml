@@ -1,0 +1,29 @@
+id: grades_lowest_001__gen_indirect
+title: '[改写·indirect] 聚合比较：上学期最低分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- grades
+- aggregation
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 上个学期啥科目分数垫底
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - 操作系统
+  rubric: 最低分是操作系统 85 分；5 门课全部及格，不得说有挂科
+source: llm
+note: 由 grades_lowest_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上学期考得最差的是哪门

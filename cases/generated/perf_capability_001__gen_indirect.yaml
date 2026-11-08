@@ -1,0 +1,22 @@
+id: perf_capability_001__gen_indirect
+title: '[改写·indirect] 不需要查数据的问题不该调工具：能力介绍'
+dimension: performance
+tags:
+- onegzus
+- perf
+- slo:chat
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 请问你具备哪些功能？
+  options:
+    today: '2026-09-21'
+expect:
+  refusal: false
+  budget:
+    latency_ms: 5000.0
+    tokens: 4000
+    tool_calls: 0
+source: llm
+note: 由 perf_capability_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：你好，你能帮我做什么

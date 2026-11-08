@@ -1,0 +1,23 @@
+id: param_freshman_term_001__gen_asr
+title: '[改写·asr] 参数填充：「大一上」缺少入学年份时须澄清或说明假设'
+dimension: boundary_exception
+difficulty: hard
+tags:
+- onegzus
+- grades
+- academic_period
+- param_filling
+- clarify
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 大一上学期的乘绩给我看看
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  refusal: false
+  rubric: 智能体不知道用户的入学年份，「大一上」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大一上
+note: 由 param_freshman_term_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：大一上学期的成绩给我看看
+source: llm

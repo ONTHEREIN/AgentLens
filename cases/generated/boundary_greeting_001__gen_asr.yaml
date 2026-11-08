@@ -1,0 +1,18 @@
+id: boundary_greeting_001__gen_asr
+title: '[改写·asr] 边界：寒暄不应调用工具'
+dimension: boundary_exception
+tags:
+- onegzus
+- smoke
+- no_tool
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 再吗
+  options:
+    today: '2026-09-21'
+expect:
+  refusal: false
+source: llm
+note: 由 boundary_greeting_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：在吗

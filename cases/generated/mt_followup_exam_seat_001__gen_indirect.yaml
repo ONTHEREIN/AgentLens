@@ -1,0 +1,27 @@
+id: mt_followup_exam_seat_001__gen_indirect
+title: '[改写·indirect] 多轮：追问上一轮未给出的考试座位号'
+dimension: multi_turn
+difficulty: medium
+tags:
+- onegzus
+- followup
+- exams
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 这学期有哪些期末考试
+  - role: assistant
+    content: 本学期有两门期末考试：数据库原理 12 月 24 日 09:00，操作系统 12 月 28 日 14:00。
+  - content: 操作系统那场我被分在考场的哪个具体位置？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - '27'
+note: 由 mt_followup_exam_seat_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：操作系统那场我座位号多少
+source: llm

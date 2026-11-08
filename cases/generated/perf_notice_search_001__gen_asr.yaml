@@ -1,0 +1,26 @@
+id: perf_notice_search_001__gen_asr
+title: '[改写·asr] 检索类查询的性能预算：找通知'
+dimension: performance
+tags:
+- onegzus
+- perf
+- rag
+- slo:single
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 最进学校有什么痛知
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  budget:
+    latency_ms: 8000.0
+    tokens: 8000
+    tool_calls: 2
+source: llm
+note: 由 perf_notice_search_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：最近学校有什么通知

@@ -1,0 +1,23 @@
+id: notice_activity_rag_001__gen_verbose
+title: '[改写·verbose] 通知检索：活动报名'
+dimension: rag_retrieval
+tags:
+- onegzus
+- rag
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近课好多啊终于快放假了，那个创新实践周怎么报名来着？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 创新实践
+  rubric: 通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程
+source: llm
+note: 由 notice_activity_rag_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：创新实践周怎么报名

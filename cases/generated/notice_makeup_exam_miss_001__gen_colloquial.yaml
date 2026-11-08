@@ -1,0 +1,25 @@
+id: notice_makeup_exam_miss_001__gen_colloquial
+title: '[改写·colloquial] 通知检索：近义但不相关的命中'
+dimension: rag_retrieval
+difficulty: hard
+tags:
+- onegzus
+- rag
+- no_answer
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 补考安排的通知出了没呀？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_not_contains:
+  - 补考安排已
+  rubric: 通知库里只有期末考试安排的说明，没有补考通知；不能把期末考试通知当成补考通知
+source: llm
+note: 由 notice_makeup_exam_miss_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：补考安排的通知出了没

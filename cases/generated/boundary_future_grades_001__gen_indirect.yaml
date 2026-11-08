@@ -1,0 +1,27 @@
+id: boundary_future_grades_001__gen_indirect
+title: '[改写·indirect] 边界：问尚未开始的学期的成绩'
+dimension: boundary_exception
+difficulty: medium
+tags:
+- onegzus
+- grades
+- academic_period
+- no_answer
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 下学期的分数公布了吗
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  refusal: false
+  answer_not_contains:
+  - '92'
+  - '89'
+  - '88'
+  - '85'
+  rubric: 下学期（2026-2027 学年第 2 学期）尚未开始，不可能有成绩；可以去查，但不得编造或挪用其他学期的分数
+source: llm
+note: 由 boundary_future_grades_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：下学期的成绩出来了吗

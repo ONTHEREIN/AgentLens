@@ -1,0 +1,25 @@
+id: schedule_tomorrow_room_001__gen_colloquial
+title: '[改写·colloquial] 相对日期：明天的课在哪'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- schedule
+- relative_date
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 哎，明天上课在哪个教室呀？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+  refusal: false
+  answer_contains:
+  - '204'
+  answer_not_contains:
+  - A3-201
+note: 由 schedule_tomorrow_room_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：明天的课在哪个教室
+source: llm

@@ -1,0 +1,27 @@
+id: grades_single_course_001__gen_verbose
+title: '[改写·verbose] 单科成绩：上学期数据结构'
+dimension: functional_accuracy
+tags:
+- onegzus
+- grades
+- academic_period
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 今天天气挺好的，顺便问一句，我上学期数据结构考了多少分
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '89'
+source: llm
+note: 由 grades_single_course_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期数据结构考了多少分

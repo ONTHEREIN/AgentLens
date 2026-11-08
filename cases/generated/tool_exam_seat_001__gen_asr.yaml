@@ -1,0 +1,21 @@
+id: tool_exam_seat_001__gen_asr
+title: '[改写·asr] 工具选型：问座位号应查考试安排'
+dimension: tool_use
+tags:
+- onegzus
+- exams
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 操做系统考试我座几号
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - '27'
+source: llm
+note: 由 tool_exam_seat_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：操作系统考试我坐几号

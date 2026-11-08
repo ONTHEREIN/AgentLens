@@ -1,0 +1,25 @@
+id: boundary_week_out_of_range_001__gen_colloquial
+title: '[改写·colloquial] 边界：教学周超出学期范围'
+dimension: boundary_exception
+difficulty: medium
+tags:
+- onegzus
+- schedule
+- param_filling
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 第35周都有啥课呀
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  refusal: false
+  answer_not_contains:
+  - 软件工程导论
+  - 数据结构
+  rubric: 一个学期没有第 35 周（课程只排在 1-16 周），应说明周次不存在或超出范围，不能列出课表
+source: llm
+note: 由 boundary_week_out_of_range_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：第
+  35 周有什么课

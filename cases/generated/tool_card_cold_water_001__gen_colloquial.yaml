@@ -1,0 +1,23 @@
+id: tool_card_cold_water_001__gen_colloquial
+title: '[改写·colloquial] 工具选型：冷水余量'
+dimension: tool_use
+tags:
+- onegzus
+- card
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 咱宿舍冷水还剩多少呀？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '9.6'
+  answer_not_contains:
+  - '42.8'
+note: 由 tool_card_cold_water_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：宿舍冷水还有多少
+source: llm

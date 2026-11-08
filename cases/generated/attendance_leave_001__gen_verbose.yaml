@@ -1,0 +1,27 @@
+id: attendance_leave_001__gen_verbose
+title: '[改写·verbose] 考勤明细：上学期请假次数'
+dimension: functional_accuracy
+tags:
+- onegzus
+- attendance
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 今天整理文件突然想起来个事儿，上学期我请过几次假呀？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_attendance
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - 数据库原理
+  rubric: 共请假 1 次，在数据库原理；数据结构无请假
+source: llm
+note: 由 attendance_leave_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上学期我请过几次假

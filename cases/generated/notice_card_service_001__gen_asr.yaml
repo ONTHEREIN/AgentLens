@@ -1,0 +1,24 @@
+id: notice_card_service_001__gen_asr
+title: '[改写·asr] 通知检索：办事大厅来源的通知'
+dimension: rag_retrieval
+difficulty: medium
+tags:
+- onegzus
+- rag
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 校园卡服物最近有什么便化吗
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 校园卡
+  rubric: 唯一相关的是办事大厅 2026-09-17「校园卡服务已更新」，摘要为可在应用中查看常用校园服务；不得补充通知里没有的细节
+note: 由 notice_card_service_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：校园卡服务最近有什么变化吗
+source: llm

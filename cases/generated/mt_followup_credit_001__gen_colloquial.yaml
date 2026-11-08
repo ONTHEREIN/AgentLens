@@ -1,0 +1,31 @@
+id: mt_followup_credit_001__gen_colloquial
+title: '[改写·colloquial] 多轮：追问上一轮列表中某门课的学分'
+dimension: multi_turn
+difficulty: medium
+tags:
+- onegzus
+- followup
+- grades
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 上学期成绩怎么样
+  - role: assistant
+    content: 上学期 5 门课：软件工程导论 92、数据结构 89、大学英语（四）88、数据库原理 90、操作系统 85，全部通过。
+  - content: 数据结构几个学分啊
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  rubric: 数据结构 4 学分；上一轮没给学分，应查询后回答，不得猜测
+source: llm
+note: 由 mt_followup_credit_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：数据结构是几个学分的课

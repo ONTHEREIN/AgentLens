@@ -1,0 +1,21 @@
+id: tool_card_hot_water_001__gen_colloquial
+title: '[改写·colloquial] 工具选型：热水余额'
+dimension: tool_use
+tags:
+- onegzus
+- card
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 我热水还剩多少来着？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_card_balance
+  refusal: false
+  answer_contains:
+  - '42.8'
+source: llm
+note: 由 tool_card_hot_water_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：热水还剩多少钱

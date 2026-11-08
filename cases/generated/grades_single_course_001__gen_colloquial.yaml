@@ -1,0 +1,27 @@
+id: grades_single_course_001__gen_colloquial
+title: '[改写·colloquial] 单科成绩：上学期数据结构'
+dimension: functional_accuracy
+tags:
+- onegzus
+- grades
+- academic_period
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 帮我瞅瞅呗，我上学期数据结构考了多少分呀
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - '89'
+source: llm
+note: 由 grades_single_course_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我上学期数据结构考了多少分

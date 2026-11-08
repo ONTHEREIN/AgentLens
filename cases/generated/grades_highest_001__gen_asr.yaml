@@ -1,0 +1,29 @@
+id: grades_highest_001__gen_asr
+title: '[改写·asr] 聚合比较：上学期最高分'
+dimension: functional_accuracy
+difficulty: medium
+tags:
+- onegzus
+- grades
+- aggregation
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 上学其哪门可分最搞
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  answer_contains:
+  - 软件工程导论
+  rubric: 最高分是软件工程导论 92 分
+source: llm
+note: 由 grades_highest_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上学期哪门课分最高

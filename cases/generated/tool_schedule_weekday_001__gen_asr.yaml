@@ -1,0 +1,21 @@
+id: tool_schedule_weekday_001__gen_asr
+title: '[改写·asr] 工具选型：这周四上午有没有课'
+dimension: tool_use
+tags:
+- onegzus
+- schedule
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 这周四上午有课马
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+  refusal: false
+  answer_contains:
+  - 操作系统
+note: 由 tool_schedule_weekday_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：这周四上午有课吗
+source: llm

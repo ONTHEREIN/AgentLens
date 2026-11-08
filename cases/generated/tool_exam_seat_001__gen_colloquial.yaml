@@ -1,0 +1,21 @@
+id: tool_exam_seat_001__gen_colloquial
+title: '[改写·colloquial] 工具选型：问座位号应查考试安排'
+dimension: tool_use
+tags:
+- onegzus
+- exams
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 哎，操作系统考试我坐几号位啊？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - '27'
+source: llm
+note: 由 tool_exam_seat_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：操作系统考试我坐几号

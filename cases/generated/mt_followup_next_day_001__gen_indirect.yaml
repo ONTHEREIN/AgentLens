@@ -1,0 +1,30 @@
+id: mt_followup_next_day_001__gen_indirect
+title: '[改写·indirect] 多轮：「那周二呢」沿用上一轮的周次'
+dimension: multi_turn
+difficulty: hard
+tags:
+- onegzus
+- followup
+- schedule
+- relative_date
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 下周一有什么课
+  - role: assistant
+    content: 下周一（第 5 周）有软件工程导论（1-2 节，A3-201）和高等数学（下）（5-6 节，B2-305）。
+  - content: 请问下星期二的课程安排是怎样的？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+    args:
+      week:
+        equals: 5
+  refusal: false
+  answer_contains:
+  - 数据结构
+note: 由 mt_followup_next_day_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：那周二呢
+source: llm

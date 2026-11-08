@@ -1,0 +1,21 @@
+id: tool_schedule_weekday_001__gen_verbose
+title: '[改写·verbose] 工具选型：这周四上午有没有课'
+dimension: tool_use
+tags:
+- onegzus
+- schedule
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 刚吃完饭有点困，想问下这周四上午有课吗？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+  refusal: false
+  answer_contains:
+  - 操作系统
+note: 由 tool_schedule_weekday_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：这周四上午有课吗
+source: llm

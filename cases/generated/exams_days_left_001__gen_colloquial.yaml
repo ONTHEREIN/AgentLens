@@ -1,0 +1,24 @@
+id: exams_days_left_001__gen_colloquial
+title: '[改写·colloquial] 日期计算：离考试还有几天'
+dimension: functional_accuracy
+difficulty: hard
+tags:
+- onegzus
+- exams
+- date_math
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 哎，问下哈，数据库原理考试还有几天呀？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_exams
+  refusal: false
+  answer_contains:
+  - '94'
+  rubric: 今天 2026-09-21，考试 2026-12-24，相差 94 天
+note: 由 exams_days_left_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：离数据库原理考试还有多少天
+source: llm

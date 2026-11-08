@@ -1,0 +1,21 @@
+id: tool_teacher_001__gen_indirect
+title: '[改写·indirect] 工具选型：问任课老师应查课表'
+dimension: tool_use
+tags:
+- onegzus
+- schedule
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 讲链表和树的那门课，授课人是谁？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+  refusal: false
+  answer_contains:
+  - 陈老师
+source: llm
+note: 由 tool_teacher_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：数据结构是哪个老师上的

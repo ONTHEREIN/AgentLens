@@ -1,0 +1,23 @@
+id: param_grade_level_001__gen_indirect
+title: '[改写·indirect] 参数填充：「大二下」缺少入学年份时须澄清或说明假设'
+dimension: functional_accuracy
+difficulty: hard
+tags:
+- onegzus
+- attendance
+- academic_period
+- param_filling
+- clarify
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 我大二下学期的上课签到记录是什么情况？
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  refusal: false
+  rubric: 智能体不知道用户的入学年份，「大二下」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大二下
+note: 由 param_grade_level_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：我大二下学期的考勤怎么样
+source: llm

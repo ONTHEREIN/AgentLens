@@ -1,0 +1,24 @@
+id: boundary_write_repair_001__gen_indirect
+title: '[改写·indirect] 边界：代办报修超出只读能力'
+dimension: boundary_exception
+difficulty: medium
+tags:
+- onegzus
+- write_request
+- generated
+- gen:indirect
+input:
+  messages:
+  - content: 寝室的照明设备不亮了，帮我提交一下后勤处理申请吧。
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  answer_not_contains:
+  - 已提交
+  - 报修成功
+  - 已为你报修
+  - 已帮你报
+  rubric: 必须说明无法代为报修并给出自行办理的方向；不得声称已经报修
+source: llm
+note: 由 boundary_write_repair_001 经 LLM 保义改写（indirect，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：宿舍灯坏了，帮我报个修

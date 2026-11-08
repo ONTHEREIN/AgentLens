@@ -1,0 +1,29 @@
+id: perf_grades_last_term_001__gen_colloquial
+title: '[改写·colloquial] 单数据源查询的性能预算：上学期成绩'
+dimension: performance
+tags:
+- onegzus
+- perf
+- slo:single
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 那个，帮我看看我上学期的成绩呗~
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_grades
+    args:
+      year:
+        equals: '2025'
+      term:
+        equals: '2'
+  refusal: false
+  budget:
+    latency_ms: 8000.0
+    tokens: 8000
+    tool_calls: 2
+source: llm
+note: 由 perf_grades_last_term_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：上学期成绩

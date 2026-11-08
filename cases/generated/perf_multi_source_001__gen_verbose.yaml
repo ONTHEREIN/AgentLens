@@ -1,0 +1,30 @@
+id: perf_multi_source_001__gen_verbose
+title: '[改写·verbose] 一句话查三个数据源的性能预算'
+dimension: performance
+difficulty: medium
+tags:
+- onegzus
+- perf
+- multi_tool
+- slo:multi
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 最近天气变冷早上起床越来越困难了，帮我看下今天的课、饭卡余额，还有这学期的考试安排。
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: get_schedule
+    optional: true
+  - name: get_card_balance
+  - name: get_exams
+  refusal: false
+  budget:
+    latency_ms: 15000.0
+    tokens: 15000
+    tool_calls: 4
+source: llm
+note: 由 perf_multi_source_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：帮我看下今天的课、饭卡余额，还有这学期的考试安排

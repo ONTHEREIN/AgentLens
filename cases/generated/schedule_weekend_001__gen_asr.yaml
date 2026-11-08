@@ -1,0 +1,24 @@
+id: schedule_weekend_001__gen_asr
+title: '[改写·asr] 空结果：周六没有课'
+dimension: functional_accuracy
+tags:
+- onegzus
+- schedule
+- empty
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 这周六有课马
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+  refusal: false
+  answer_not_contains:
+  - 软件工程导论
+  - 体育
+  rubric: 课表里周六没有课，应明确回答没有课，不能把别的日子的课说成周六
+source: llm
+note: 由 schedule_weekend_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：这周六有课吗

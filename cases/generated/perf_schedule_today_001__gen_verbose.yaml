@@ -1,0 +1,24 @@
+id: perf_schedule_today_001__gen_verbose
+title: '[改写·verbose] 单数据源查询的性能预算：今天的课'
+dimension: performance
+tags:
+- onegzus
+- perf
+- slo:single
+- generated
+- gen:verbose
+input:
+  messages:
+  - content: 哈喽，在吗？想问下今天有什么课呀？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_schedule
+  refusal: false
+  budget:
+    latency_ms: 8000.0
+    tokens: 8000
+    tool_calls: 2
+source: llm
+note: 由 perf_schedule_today_001 经 LLM 保义改写（verbose，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：今天有什么课

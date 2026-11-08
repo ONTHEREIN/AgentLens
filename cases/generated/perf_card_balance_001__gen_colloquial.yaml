@@ -1,0 +1,24 @@
+id: perf_card_balance_001__gen_colloquial
+title: '[改写·colloquial] 单数据源查询的性能预算：饭卡余额'
+dimension: performance
+tags:
+- onegzus
+- perf
+- slo:single
+- generated
+- gen:colloquial
+input:
+  messages:
+  - content: 哎，我饭卡里还剩多少钱啊？
+  options:
+    today: '2026-09-21'
+expect:
+  tools:
+  - name: get_card_balance
+  refusal: false
+  budget:
+    latency_ms: 8000.0
+    tokens: 8000
+    tool_calls: 2
+source: llm
+note: 由 perf_card_balance_001 经 LLM 保义改写（colloquial，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：饭卡里还有多少钱

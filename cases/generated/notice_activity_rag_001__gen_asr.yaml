@@ -1,0 +1,23 @@
+id: notice_activity_rag_001__gen_asr
+title: '[改写·asr] 通知检索：活动报名'
+dimension: rag_retrieval
+tags:
+- onegzus
+- rag
+- generated
+- gen:asr
+input:
+  messages:
+  - content: 创心实践周怎么报明
+  options:
+    today: '2026-09-21'
+expect:
+  mode: contains
+  tools:
+  - name: search_notices
+  refusal: false
+  answer_contains:
+  - 创新实践
+  rubric: 通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程
+source: llm
+note: 由 notice_activity_rag_001 经 LLM 保义改写（asr，qwen3.7-plus，rewrite-v1），期望沿用基准。原句：创新实践周怎么报名
