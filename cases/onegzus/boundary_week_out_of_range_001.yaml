@@ -1,0 +1,20 @@
+id: boundary_week_out_of_range_001
+title: 边界：教学周超出学期范围
+dimension: boundary_exception
+difficulty: medium
+source: golden
+tags: [onegzus, schedule, param_filling]
+
+input:
+  messages:
+    - role: user
+      content: "第 35 周有什么课"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools: []
+  refusal: false
+  answer_not_contains: ["软件工程导论", "数据结构"]
+  rubric: 一个学期没有第 35 周（课程只排在 1-16 周），应说明周次不存在或超出范围，不能列出课表

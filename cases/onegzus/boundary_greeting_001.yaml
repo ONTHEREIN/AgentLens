@@ -1,0 +1,18 @@
+id: boundary_greeting_001
+title: 边界：寒暄不应调用工具
+dimension: boundary_exception
+difficulty: easy
+source: golden
+tags: [onegzus, smoke, no_tool]
+
+input:
+  messages:
+    - role: user
+      content: "在吗"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools: []
+  refusal: false

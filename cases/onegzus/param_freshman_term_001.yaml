@@ -1,0 +1,28 @@
+id: param_freshman_term_001
+title: 参数填充：大一上查无成绩
+dimension: boundary_exception
+difficulty: hard
+source: golden
+tags: [onegzus, grades, academic_period, param_filling, empty]
+
+input:
+  messages:
+    - role: user
+      content: "大一上学期的成绩给我看看"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2024"
+        term:
+          equals: "1"
+  refusal: false
+  answer_not_contains: ["92", "89"]
+  rubric: 2024-2025 学年第 1 学期查无成绩，应如实说明，不得把其他学期的分数当成大一上的
+
+note: 演示同学 2024 级，大一上 = 2024-2025 学年第 1 学期；演示数据只有 2025-2026-2 的成绩
