@@ -1,0 +1,23 @@
+id: tool_card_cold_water_001
+title: 工具选型：冷水余量
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [onegzus, card]
+
+input:
+  messages:
+    - role: user
+      content: "宿舍冷水还有多少"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_card_balance
+  refusal: false
+  answer_contains: ["9.6"]
+  answer_not_contains: ["42.8"]
+
+note: 冷水按吨计（9.6 吨），热水按元计（42.80 元），不能张冠李戴

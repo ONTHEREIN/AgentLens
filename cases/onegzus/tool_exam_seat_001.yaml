@@ -1,0 +1,20 @@
+id: tool_exam_seat_001
+title: 工具选型：问座位号应查考试安排
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [onegzus, exams]
+
+input:
+  messages:
+    - role: user
+      content: "操作系统考试我坐几号"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_exams
+  refusal: false
+  answer_contains: ["27"]

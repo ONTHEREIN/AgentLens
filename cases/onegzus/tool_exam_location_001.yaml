@@ -1,0 +1,22 @@
+id: tool_exam_location_001
+title: 工具选型：问考场应查考试安排
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [onegzus, exams]
+
+input:
+  messages:
+    - role: user
+      content: "数据库原理期末在哪个教室考"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_exams
+  refusal: false
+  answer_contains: ["A3-302"]
+
+note: 课表里数据库原理上课教室也是 A3-302，所以只断言工具选型与答案，不靠答案区分来源

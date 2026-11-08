@@ -1,0 +1,20 @@
+id: tool_card_hot_water_001
+title: 工具选型：热水余额
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [onegzus, card]
+
+input:
+  messages:
+    - role: user
+      content: "热水还剩多少钱"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_card_balance
+  refusal: false
+  answer_contains: ["42.8"]

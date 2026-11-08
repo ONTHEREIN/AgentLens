@@ -1,0 +1,22 @@
+id: tool_schedule_weekday_001
+title: 工具选型：这周四上午有没有课
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [onegzus, schedule]
+
+input:
+  messages:
+    - role: user
+      content: "这周四上午有课吗"
+  options:
+    today: "2026-09-21"   # 第 4 周周一；当前学期 2026-2027-1，上学期 2025-2026-2
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+  refusal: false
+  answer_contains: ["操作系统"]
+
+note: 周四（weekday=4）第 3-4 节是操作系统，属上午

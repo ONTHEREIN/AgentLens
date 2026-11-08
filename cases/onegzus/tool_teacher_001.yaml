@@ -1,0 +1,20 @@
+id: tool_teacher_001
+title: 工具选型：问任课老师应查课表
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [onegzus, schedule]
+
+input:
+  messages:
+    - role: user
+      content: "数据结构是哪个老师上的"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+  refusal: false
+  answer_contains: ["陈老师"]
