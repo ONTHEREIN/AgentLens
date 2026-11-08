@@ -1,0 +1,23 @@
+id: notice_card_service_001
+title: 通知检索：办事大厅来源的通知
+dimension: rag_retrieval
+difficulty: medium
+source: golden
+tags: [onegzus, rag]
+
+input:
+  messages:
+    - role: user
+      content: "校园卡服务最近有什么变化吗"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_notices
+  refusal: false
+  answer_contains: ["校园卡"]
+  rubric: 唯一相关的是办事大厅 2026-09-17「校园卡服务已更新」，摘要为可在应用中查看常用校园服务；不得补充通知里没有的细节
+
+note: 这条通知来自办事大厅，不在教务通知里，检验两路通知的合并检索

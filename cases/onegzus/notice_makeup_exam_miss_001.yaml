@@ -1,0 +1,21 @@
+id: notice_makeup_exam_miss_001
+title: 通知检索：近义但不相关的命中
+dimension: rag_retrieval
+difficulty: hard
+source: golden
+tags: [onegzus, rag, no_answer]
+
+input:
+  messages:
+    - role: user
+      content: "补考安排的通知出了没"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_notices
+  refusal: false
+  answer_not_contains: ["补考安排已"]
+  rubric: 通知库里只有期末考试安排的说明，没有补考通知；不能把期末考试通知当成补考通知

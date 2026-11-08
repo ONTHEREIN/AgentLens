@@ -1,0 +1,21 @@
+id: notice_activity_rag_001
+title: 通知检索：活动报名
+dimension: rag_retrieval
+difficulty: easy
+source: golden
+tags: [onegzus, rag]
+
+input:
+  messages:
+    - role: user
+      content: "创新实践周怎么报名"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_notices
+  refusal: false
+  answer_contains: ["创新实践"]
+  rubric: 通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程
