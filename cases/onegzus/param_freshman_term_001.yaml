@@ -1,9 +1,9 @@
 id: param_freshman_term_001
-title: 参数填充：大一上查无成绩
+title: 参数填充：「大一上」缺少入学年份时须澄清或说明假设
 dimension: boundary_exception
 difficulty: hard
 source: golden
-tags: [onegzus, grades, academic_period, param_filling, empty]
+tags: [onegzus, grades, academic_period, param_filling, clarify]
 
 input:
   messages:
@@ -13,16 +13,9 @@ input:
     today: "2026-09-21"
 
 expect:
-  mode: exact
-  tools:
-    - name: get_grades
-      args:
-        year:
-          equals: "2024"
-        term:
-          equals: "1"
+  mode: contains
+  tools: []
   refusal: false
-  answer_not_contains: ["92", "89"]
-  rubric: 2024-2025 学年第 1 学期查无成绩，应如实说明，不得把其他学期的分数当成大一上的
+  rubric: 智能体不知道用户的入学年份，「大一上」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大一上
 
-note: 演示同学 2024 级，大一上 = 2024-2025 学年第 1 学期；演示数据只有 2025-2026-2 的成绩
+note: system prompt 只给了今天与当前学期，没有年级信息，所以不约束 year 参数

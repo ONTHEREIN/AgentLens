@@ -1,9 +1,9 @@
 id: param_grade_level_001
-title: 参数填充：用「大二下」指代学期
+title: 参数填充：「大二下」缺少入学年份时须澄清或说明假设
 dimension: functional_accuracy
 difficulty: hard
 source: golden
-tags: [onegzus, attendance, academic_period, param_filling]
+tags: [onegzus, attendance, academic_period, param_filling, clarify]
 
 input:
   messages:
@@ -13,15 +13,9 @@ input:
     today: "2026-09-21"
 
 expect:
-  mode: exact
-  tools:
-    - name: get_attendance
-      args:
-        year:
-          equals: "2025"
-        term:
-          equals: "2"
+  mode: contains
+  tools: []
   refusal: false
-  answer_contains: ["数据结构"]
+  rubric: 智能体不知道用户的入学年份，「大二下」对应哪个学年无从推出；应先询问入学年份，或明确说明按某个假设去查，不得把某个学年断言成用户的大二下
 
-note: 演示同学 2024 级，大二下 = 2025-2026 学年第 2 学期
+note: system prompt 只给了今天与当前学期，没有年级信息，所以不约束 year 参数
