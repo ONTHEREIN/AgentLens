@@ -1,0 +1,21 @@
+id: schedule_weekend_001
+title: 空结果：周六没有课
+dimension: functional_accuracy
+difficulty: easy
+source: golden
+tags: [onegzus, schedule, empty]
+
+input:
+  messages:
+    - role: user
+      content: "这周六有课吗"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+  refusal: false
+  answer_not_contains: ["软件工程导论", "体育"]
+  rubric: 课表里周六没有课，应明确回答没有课，不能把别的日子的课说成周六

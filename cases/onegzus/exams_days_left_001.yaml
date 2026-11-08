@@ -1,0 +1,23 @@
+id: exams_days_left_001
+title: 日期计算：离考试还有几天
+dimension: functional_accuracy
+difficulty: hard
+source: golden
+tags: [onegzus, exams, date_math]
+
+input:
+  messages:
+    - role: user
+      content: "离数据库原理考试还有多少天"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_exams
+  refusal: false
+  answer_contains: ["94"]
+  rubric: 今天 2026-09-21，考试 2026-12-24，相差 94 天
+
+note: 与 D-005（日期间隔算错）同类

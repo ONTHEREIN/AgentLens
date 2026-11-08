@@ -1,0 +1,26 @@
+id: attendance_leave_001
+title: 考勤明细：上学期请假次数
+dimension: functional_accuracy
+difficulty: easy
+source: golden
+tags: [onegzus, attendance]
+
+input:
+  messages:
+    - role: user
+      content: "上学期我请过几次假"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_attendance
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["数据库原理"]
+  rubric: 共请假 1 次，在数据库原理；数据结构无请假

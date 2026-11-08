@@ -1,0 +1,26 @@
+id: grades_lowest_001
+title: 聚合比较：上学期最低分
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, grades, aggregation]
+
+input:
+  messages:
+    - role: user
+      content: "上学期考得最差的是哪门"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["操作系统"]
+  rubric: 最低分是操作系统 85 分；5 门课全部及格，不得说有挂科

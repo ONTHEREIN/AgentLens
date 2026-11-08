@@ -1,0 +1,26 @@
+id: grades_highest_001
+title: 聚合比较：上学期最高分
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, grades, aggregation]
+
+input:
+  messages:
+    - role: user
+      content: "上学期哪门课分最高"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["软件工程导论"]
+  rubric: 最高分是软件工程导论 92 分

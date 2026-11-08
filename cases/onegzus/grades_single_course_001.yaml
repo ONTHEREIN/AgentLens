@@ -1,0 +1,25 @@
+id: grades_single_course_001
+title: 单科成绩：上学期数据结构
+dimension: functional_accuracy
+difficulty: easy
+source: golden
+tags: [onegzus, grades, academic_period]
+
+input:
+  messages:
+    - role: user
+      content: "我上学期数据结构考了多少分"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_grades
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["89"]

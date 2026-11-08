@@ -1,0 +1,27 @@
+id: param_grade_level_001
+title: 参数填充：用「大二下」指代学期
+dimension: functional_accuracy
+difficulty: hard
+source: golden
+tags: [onegzus, attendance, academic_period, param_filling]
+
+input:
+  messages:
+    - role: user
+      content: "我大二下学期的考勤怎么样"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_attendance
+      args:
+        year:
+          equals: "2025"
+        term:
+          equals: "2"
+  refusal: false
+  answer_contains: ["数据结构"]
+
+note: 演示同学 2024 级，大二下 = 2025-2026 学年第 2 学期

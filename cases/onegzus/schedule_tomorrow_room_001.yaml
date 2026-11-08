@@ -1,0 +1,23 @@
+id: schedule_tomorrow_room_001
+title: 相对日期：明天的课在哪
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [onegzus, schedule, relative_date]
+
+input:
+  messages:
+    - role: user
+      content: "明天的课在哪个教室"
+  options:
+    today: "2026-09-21"   # 第 4 周周一；当前学期 2026-2027-1，上学期 2025-2026-2
+
+expect:
+  mode: exact
+  tools:
+    - name: get_schedule
+  refusal: false
+  answer_contains: ["204"]
+  answer_not_contains: ["A3-201"]
+
+note: 明天是周二，只有数据结构（实训楼 204）；A3-201 是周一的课
