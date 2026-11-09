@@ -334,29 +334,6 @@
       .join("");
   }
 
-  function renderChecks(trace) {
-    const checks = trace.verdict?.checks || [];
-    const degraded = trace.verdict?.judge_degraded
-      ? '<p class="muted small">LLM 裁判降级：无缓存且未配置，只有规则轨结论。</p>'
-      : "";
-    if (!checks.length) return `<div class="side-head"><h3>判定</h3></div><p class="muted">没有检查记录（跳过）。</p>${degraded}`;
-    const passed = checks.filter((c) => c.passed).length;
-    const rows = checks.map((check) => {
-      const isLlm = check.check === "llm_faithfulness";
-      const links = evidenceLinks(check.evidence);
-      return `
-        <div class="check-row ${check.passed ? "" : "is-bad"}">
-          <span class="check-mark" aria-hidden="true">${check.passed ? "✓" : "×"}</span>
-          <div>
-            <div class="check-name">${escapeHtml(CHECK_LABELS[check.check] || check.check)}${isLlm ? ' <span class="track-tag">语义轨</span>' : ' <span class="track-tag rule">规则轨</span>'}</div>
-            <div class="check-reason">${escapeHtml(check.reason)}</div>
-            ${links ? `<div class="check-evidence">${links}</div>` : ""}
-          </div>
-        </div>
-      `;
-    }).join("");
-    return `<div class="side-head"><h3>判定明细</h3><span>${passed}/${checks.length} 项通过</span></div><div class="check-list">${rows}</div>${degraded}`;
-  }
 
   function renderAttribution(trace) {
     const healthy = !trace.layer;
@@ -403,44 +380,6 @@
     return labels?.[`${row.trace_key}|${target}`] || null;
   }
 
-  function reviewHtml(row, labels, { next = false } = {}) {
-    const targets = REVIEW_TARGETS.filter((t) => machineValue(row.trace, t) !== null);
-    if (!targets.length) return `<section class="side-card review-card"><div class="side-head"><h3>人工复核</h3></div><p class="muted">跳过的用例不参与复核。</p></section>`;
-    const items = targets.map((target) => {
-      const machine = machineValue(row.trace, target);
-      const label = labelFor(labels, row, target);
-      const current = label ? label.human : "";
-      const options = REVIEW_OPTIONS[target]
-        .map(([v, text]) => `<option value="${v}" ${v === current ? "selected" : ""}>${escapeHtml(text)}${v === machine ? "（同机器）" : ""}</option>`)
-        .join("");
-      const status = label
-        ? `<span class="review-status ${label.agree ? "agree" : "disagree"}">${label.agree ? "同意机器" : "不同意"} · ${escapeHtml(label.reviewer || "匿名")} · ${escapeHtml(formatTime(label.at))}</span>`
-        : '<span class="review-status">未复核</span>';
-      return `
-        <div class="review-row">
-          <div class="review-target">
-            <b>${escapeHtml(state.catalog.review_targets[target])}</b>
-            <span>机器：${escapeHtml(valueLabel(target, machine))}</span>
-          </div>
-          <div class="review-quick" role="group" aria-label="${escapeHtml(state.catalog.review_targets[target])}">
-            <button type="button" class="chip-btn ${current && current === machine ? "is-on" : ""}" data-agree="${target}">同意机器</button>
-            <select data-target="${target}" data-machine="${escapeHtml(machine)}" aria-label="${escapeHtml(state.catalog.review_targets[target])} 的人工结论">
-              <option value="">改判为…</option>${options}
-            </select>
-          </div>
-          ${status}
-          ${label?.note ? `<p class="review-note">${escapeHtml(label.note)}</p>` : ""}
-        </div>`;
-    }).join("");
-    return `
-      <section class="side-card review-card" id="reviewCard">
-        <div class="side-head"><h3>人工复核</h3><span>标注按 trace 指纹沿用到所有复跑</span></div>
-        <div class="review-list">${items}</div>
-        <textarea id="reviewNote" rows="2" maxlength="500" placeholder="备注（可选）：例如「88.7 应为 88.64」"></textarea>
-        <button type="button" class="run-button" id="reviewSubmit">${next ? "提交并看下一条" : "提交复核"}</button>
-      </section>`;
-  }
-
   function messagesHtml(row) {
     const recorded = rowMessages(row);
     if (!recorded.length) return '<p class="case-note">这条对话产生于记录用户输入之前，原始问题已无法还原；回答与执行链路仍可审计。</p>';
@@ -451,148 +390,6 @@
       </div>`).join("");
   }
 
-  function expectedTools(item) {
-    return (item?.expect?.tools || []).filter((t) => !t.optional).map((t) => t.name);
-  }
-
-  // opts.hero：是否显示问题与元信息（会话视图左侧已经有对话，不重复）；opts.banner：复核队列的入队原因
-  function inspectorHtml(row, labels, opts = {}) {
-    const { hero = true, banner = "", next = false } = opts;
-    const item = row.case || {};
-    const t = row.trace;
-    const rule = verdictClass(t.verdict.rule);
-    const expected = expectedTools(item);
-    const actual = (t.spans || []).filter((s) => s.span === "tool_call").map((s) => s.name);
-    const evidence = new Set(t.layer_evidence || []);
-    (t.verdict?.checks || []).forEach((c) => {
-      if (!c.passed) (c.evidence || []).forEach((id) => evidence.add(id));
-    });
-    const meta = t.meta || {};
-    const chips = `
-      <div class="meta-row">
-        <span class="meta-chip">${escapeHtml(t.model)}</span>
-        ${meta.today ? `<span class="meta-chip">今天 ${escapeHtml(meta.today)}</span>` : ""}
-        ${meta.current_term ? `<span class="meta-chip">${escapeHtml(meta.current_term)} 第 ${escapeHtml(meta.week)} 周</span>` : ""}
-        <span class="meta-chip">耗时 ${escapeHtml(latencyLabel(t.latency_ms) || "0ms")}</span>
-        <span class="meta-chip">tokens ${escapeHtml((t.tokens?.prompt || 0) + (t.tokens?.completion || 0))}</span>
-        <span class="meta-chip mono" title="trace 内容指纹：人工标注按它沿用">#${escapeHtml(row.trace_key)}</span>
-        ${(item.tags || []).map((tag) => `<span class="meta-chip">#${escapeHtml(tag)}</span>`).join("")}
-      </div>`;
-    const head = hero ? `
-      <header class="case-hero">
-        <div class="case-headline">
-          <span class="status-badge ${rule}"><i></i>${statusLabel(t.verdict.rule)}</span>
-          <div>
-            <div class="case-kicker"><b>${escapeHtml(t.case_id)}</b> · ${escapeHtml(dimensionLabel(row.dimension))}${item.difficulty ? ` · ${escapeHtml(item.difficulty)}` : ""}</div>
-            <h2 class="case-h2">${escapeHtml(rowTitle(row))}</h2>
-          </div>
-        </div>
-        ${messagesHtml(row)}
-        ${chips}
-        ${item.note ? `<p class="case-note">${escapeHtml(item.note)}</p>` : ""}
-      </header>` : `<header class="case-hero is-compact">
-        <div class="case-headline">
-          <span class="status-badge ${rule}"><i></i>${statusLabel(t.verdict.rule)}</span>
-          <div class="case-kicker"><b>第 ${escapeHtml(t.turn || 1)} 轮</b> · ${escapeHtml(t.case_id)}</div>
-        </div>
-        ${chips}
-      </header>`;
-    const toolCompare = row.case ? `
-      <div class="tool-compare">
-        <div class="compare-cell"><small>期望工具</small><code>${escapeHtml(expected.join(", ") || "无")}</code>${(item.expect?.forbid_tools || []).length ? `<small class="forbid">禁止：${escapeHtml(item.expect.forbid_tools.join(", "))}</small>` : ""}</div>
-        <div class="compare-cell ${rule === "fail" && JSON.stringify(expected) !== JSON.stringify(actual) ? "is-bad" : ""}"><small>实际工具</small><code>${escapeHtml(actual.join(", ") || "无")}</code></div>
-      </div>` : "";
-    return `
-      <article class="detail">
-        ${banner}
-        ${head}
-        <div class="detail-grid">
-          <div class="trace-column">
-            <div class="block-title">
-              <span>思考—行动链路</span>
-              <span>${(t.spans || []).length} 步 · 点证据可定位</span>
-            </div>
-            ${toolCompare}
-            <ol class="trace-list">${(t.spans || []).map((s, i) => renderSpan(s, evidence, i)).join("")}</ol>
-            <section class="answer-card">
-              <div class="answer-label"><span>智能体回答</span><span>${escapeHtml(latencyLabel(t.latency_ms))}</span></div>
-              <p class="answer-text">${escapeHtml(t.answer || "（无回答）")}</p>
-            </section>
-          </div>
-          <aside class="evidence-column">
-            ${next ? reviewHtml(row, labels, { next }) : ""}
-            ${renderAttribution(t)}
-            <section class="side-card">${renderChecks(t)}</section>
-            ${next ? "" : reviewHtml(row, labels)}
-          </aside>
-        </div>
-      </article>`;
-  }
-
-  // 证据跳转 + 复核提交；onSaved(labels) 由调用方决定之后怎么刷新
-  function bindInspector(root, row, labels, onSaved) {
-    root.addEventListener("click", (e) => {
-      const link = e.target.closest("[data-jump]");
-      if (link) {
-        const target = $(`[data-span-id="${CSS.escape(link.dataset.jump)}"]`, root);
-        if (!target) return;
-        target.classList.add("is-evidence");
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-        target.animate(
-          [{ boxShadow: "0 0 0 0 rgba(220,236,155,.75)" }, { boxShadow: "0 0 0 7px rgba(220,236,155,0)" }],
-          { duration: 900, easing: "ease-out" },
-        );
-        return;
-      }
-      const agree = e.target.closest("[data-agree]");
-      if (agree) {
-        const select = $(`select[data-target="${agree.dataset.agree}"]`, root);
-        select.value = select.dataset.machine;
-        root.querySelectorAll(`[data-agree="${agree.dataset.agree}"]`).forEach((b) => b.classList.add("is-on"));
-      }
-    });
-    root.querySelectorAll(".review-row select").forEach((select) => select.addEventListener("change", () => {
-      $(`[data-agree="${select.dataset.target}"]`, root)?.classList.toggle("is-on", select.value === select.dataset.machine);
-    }));
-    $("#reviewSubmit", root)?.addEventListener("click", () => submitReview(root, row, labels, onSaved));
-  }
-
-  async function submitReview(root, row, labels, onSaved) {
-    const picks = [...root.querySelectorAll(".review-row select")].filter((s) => s.value);
-    if (!picks.length) {
-      showToast("至少给一项选择人工结论（可以直接点「同意机器」）");
-      return;
-    }
-    if (!reviewer()) {
-      showToast("请先在左下角填写复核人");
-      reviewerInput.focus();
-      return;
-    }
-    const note = $("#reviewNote", root).value.trim();
-    try {
-      for (const select of picks) {
-        const { label } = await api("/api/reviews", {
-          method: "POST",
-          body: JSON.stringify({
-            trace_key: row.trace_key,
-            case_id: row.trace.case_id,
-            run_id: row.run_id,
-            target: select.dataset.target,
-            machine: select.dataset.machine,
-            human: select.value,
-            note,
-            reviewer: reviewer(),
-          }),
-        });
-        labels[`${row.trace_key}|${label.target}`] = label;
-      }
-      showToast(`已保存 ${picks.length} 项复核`);
-      refreshQueueBadge();
-      onSaved();
-    } catch (error) {
-      showToast(`保存失败：${error.message}`);
-    }
-  }
 
   // ------------------------------------------------------------ 最新审计（概览）
 
@@ -819,14 +616,18 @@
           <div class="transcript-head">对话记录 <span class="muted small">点一轮查看它的审计</span></div>
           ${turns}
         </aside>
-        <section class="detail-panel" id="detailPanel">${inspectorHtml(rows[sel], c.labels, { hero: false })}</section>
+        <section class="detail-panel" id="detailPanel">${auditPanelHtml(itemFromRow(rows[sel], c.labels), rows[sel], { inPlace: true, compact: true })}</section>
       </section>`;
     view.querySelectorAll("[data-turn]").forEach((b) => b.addEventListener("click", () => {
       state.selectedTurn = Number(b.dataset.turn);
       history.replaceState(null, "", `#/chat/${encodeURIComponent(c.conversation_id)}/${state.selectedTurn + 1}`);
       renderChat();
     }));
-    bindInspector($("#detailPanel"), rows[sel], c.labels, renderChat);
+    state.audit = null;
+    bindAudit(itemFromRow(rows[sel], c.labels), rows[sel], {
+      opts: { inPlace: true, compact: true },
+      onSaved: (records) => { mergeLabels(c.labels, records); renderChat(); },
+    });
   }
 
   // ------------------------------------------------------------ 待人工复核（复核工作台）
@@ -1064,16 +865,16 @@
     return `${head}${issues ? `<ol class="rv-issues">${issues}</ol>` : '<p class="muted">裁判没有指出问题。</p>'}`;
   }
 
-  function familyBlock(item) {
-    const peers = state.queue.items.filter((i) => i.family === item.family && i !== item && i.source === item.source);
+  // peers：同一基准用例的其他说法（队列里取队列条目，运行页里取同一次运行的用例）
+  function familyBlock(peers) {
     if (!peers.length) return "";
     const rows = peers.map((p) => `
-      <a class="rv-peer" href="${queueHref(p)}" data-qkey="${escapeHtml(itemKey(p))}">
+      <a class="rv-peer" href="${p.href}" ${p.qkey ? `data-qkey="${escapeHtml(p.qkey)}"` : ""}>
         <span class="rv-variant">${escapeHtml(variantLabel(p))}</span>
         <span class="verdict-pill ${verdictClass(p.verdict)}">${statusLabel(p.verdict)}</span>
         ${p.layer ? `<span class="layer-mini">${escapeHtml(p.layer)}</span>` : ""}
         <span class="rv-peer-checks">${escapeHtml(p.failed_checks.map((c) => CHECK_LABELS[c] || c).join("、") || "—")}</span>
-        <span class="rv-peer-state">${p.disposition ? escapeHtml(dispositionLabel(p.disposition)) : p.reviewed ? "已复核" : "待复核"}</span>
+        <span class="rv-peer-state">${escapeHtml(p.state)}</span>
       </a>`).join("");
     return `
       <section class="rv-section">
@@ -1083,37 +884,44 @@
       </section>`;
   }
 
-  function dossierHtml(item, row) {
+  // opts.inPlace：已经在所属运行 / 会话里，不再给「打开」链接；opts.compact：左侧已有对话记录，不重复；opts.peers：同组说法
+  function dossierHtml(item, row, opts = {}) {
     const t = row.trace;
     const evidence = new Set(t.layer_evidence || []);
     (t.verdict?.checks || []).forEach((c) => { if (!c.passed) (c.evidence || []).forEach((id) => evidence.add(id)); });
     const meta = t.meta || {};
-    const guide = item.reasons.map((r) => `<li>${reasonTag(r)}<span>${escapeHtml(REASON_GUIDE[r] || "")}</span></li>`).join("");
+    const guide = (item.reasons || []).map((r) => `<li>${reasonTag(r)}<span>${escapeHtml(REASON_GUIDE[r] || "")}</span></li>`).join("");
     return `
       <article class="rv-dossier">
         <header class="rv-head">
-          <p class="rv-kicker">${escapeHtml(suiteLabel(item.suite))} · ${escapeHtml(dimensionLabel(item.dimension))} · <span class="mono">${escapeHtml(t.case_id)}</span></p>
-          <h2>${escapeHtml(familyTitle(item))}<span class="rv-variant">${escapeHtml(variantLabel(item))}</span></h2>
+          <p class="rv-kicker">
+            <span class="status-badge ${verdictClass(t.verdict.rule)}"><i></i>${statusLabel(t.verdict.rule)}</span>
+            ${escapeHtml(suiteLabel(item.suite))}${item.dimension === "chat" ? "" : ` · ${escapeHtml(dimensionLabel(item.dimension))}`} · <span class="mono">${escapeHtml(t.case_id)}</span>${row.case?.difficulty ? ` · ${escapeHtml(row.case.difficulty)}` : ""}
+          </p>
+          <h2>${escapeHtml(familyTitle(item))}${item.source === "chat" ? "" : `<span class="rv-variant">${escapeHtml(variantLabel(item))}</span>`}</h2>
           <div class="meta-row">
             <span class="meta-chip">${escapeHtml(t.model)}</span>
             ${meta.today ? `<span class="meta-chip">今天 ${escapeHtml(meta.today)}</span>` : ""}
             ${meta.current_term ? `<span class="meta-chip">${escapeHtml(meta.current_term)} 第 ${escapeHtml(meta.week)} 周</span>` : ""}
             <span class="meta-chip">耗时 ${escapeHtml(latencyLabel(t.latency_ms) || "0ms")}</span>
             <span class="meta-chip mono" title="trace 内容指纹：人工标注按它沿用到所有复跑">#${escapeHtml(row.trace_key)}</span>
-            <a class="meta-chip link" href="${item.source === "chat" ? `#/chat/${encodeURIComponent(item.conversation_id || "")}` : `#/run/${encodeURIComponent(item.run_id)}/${encodeURIComponent(item.case_id)}`}">在${item.source === "chat" ? "会话" : "所属运行"}里打开 →</a>
+            ${opts.inPlace ? "" : `<a class="meta-chip link" href="${item.source === "chat" ? `#/chat/${encodeURIComponent(item.conversation_id || "")}` : `#/run/${encodeURIComponent(item.run_id)}/${encodeURIComponent(item.case_id)}`}">在${item.source === "chat" ? "会话" : "所属运行"}里打开 →</a>`}
+            ${(row.case?.tags || []).map((tag) => `<span class="meta-chip">#${escapeHtml(tag)}</span>`).join("")}
           </div>
         </header>
 
+        ${guide ? `
         <section class="rv-guide">
           <h3>你要判断什么</h3>
           <ul>${guide}</ul>
-        </section>
+        </section>` : ""}
 
+        ${opts.compact ? "" : `
         <section class="rv-section">
           <h3>对话</h3>
           ${messagesHtml(row)}
           ${row.case?.note ? `<p class="case-note">用例说明：${escapeHtml(row.case.note)}</p>` : ""}
-        </section>
+        </section>`}
 
         <section class="rv-section">
           <h3>期望 vs 实际</h3>
@@ -1140,11 +948,48 @@
           <ol class="trace-list">${(t.spans || []).map((s, i) => renderSpan(s, evidence, i)).join("")}</ol>
         </section>
 
-        ${familyBlock(item)}
+        ${familyBlock(opts.peers || [])}
       </article>`;
   }
 
   // ---------------------------------------------------- 判断面板
+
+  // 运行页 / 会话页没有队列条目：从审计行和已有标注拼出同样形状的条目
+  function itemFromRow(row, labels) {
+    const t = row.trace;
+    const chat = row.dimension === "chat";
+    const human = {};
+    let reviewer_ = null;
+    let defect = null;
+    Object.keys(state.catalog.review_targets).forEach((target) => {
+      const lb = labels?.[`${row.trace_key}|${target}`];
+      if (!lb) return;
+      human[target] = lb.human;
+      reviewer_ = reviewer_ || lb.reviewer;
+      defect = defect || lb.defect || null;
+    });
+    const sep = t.case_id.indexOf("__gen_");
+    return {
+      run_id: row.run_id,
+      case_id: t.case_id,
+      conversation_id: t.conversation_id,
+      source: chat ? "chat" : "cases",
+      suite: chat ? "chat" : state.detail?.summary?.suite,
+      title: rowTitle(row),
+      dimension: row.dimension,
+      family: sep >= 0 ? t.case_id.slice(0, sep) : t.case_id,
+      variant: sep >= 0 ? t.case_id.slice(sep + 6) : null,
+      verdict: t.verdict.rule,
+      layer: t.layer,
+      reasons: [],
+      failed_checks: (t.verdict.checks || []).filter((c) => !c.passed).map((c) => c.check),
+      machine: Object.fromEntries(REVIEW_TARGETS.map((target) => [target, machineValue(t, target)])),
+      human,
+      reviewer: reviewer_,
+      defect,
+      disposition: human.disposition || null,
+    };
+  }
 
   // 复核草稿：每条一份，切走再回来不丢
   function draftFor(item) {
@@ -1167,7 +1012,7 @@
   // 由复核结论推出要写的几项标注；返回 [labels, 错误提示]
   function labelsFromDraft(item, row, d) {
     const m = item.machine;
-    if (!d.disposition) return [null, "先选「这条失败站得住吗」"];
+    if (!d.disposition) return [null, m.verdict === "pass" ? "先选「机器判通过，对吗」" : "先选「这条失败站得住吗」"];
     const onlyLlmFailed = item.failed_checks.length === 1 && item.failed_checks[0] === "llm_faithfulness";
     let verdict = null;
     let layer = null;
@@ -1175,7 +1020,7 @@
       verdict = "fail";
       layer = d.layer;
       if (!layer) return [null, "选一个归因层"];
-    } else if (d.disposition === "case_too_strict") {
+    } else if (d.disposition === "case_too_strict" || d.disposition === "pass_ok") {
       verdict = "pass";
       layer = "none";
     } else if (d.disposition === "judge_wrong") {
@@ -1186,7 +1031,8 @@
     let llm = d.llm || null;
     if (d.disposition === "judge_wrong" && m.llm_faithfulness) llm = m.llm_faithfulness === "faithful" ? "unfaithful" : "faithful";
     const base = { trace_key: row.trace_key, case_id: row.trace.case_id, run_id: row.run_id, reviewer: reviewer(), note: d.note.trim(), defect: d.defect.trim() };
-    const out = [{ ...base, target: "disposition", machine: m.verdict, human: d.disposition }];
+    // 「确认通过」不是复核结论（没有失败要定性），只记总判定等几项
+    const out = d.disposition === "pass_ok" ? [] : [{ ...base, target: "disposition", machine: m.verdict, human: d.disposition }];
     if (verdict && m.verdict) out.push({ ...base, target: "verdict", machine: m.verdict, human: verdict });
     if (layer && m.layer) out.push({ ...base, target: "layer", machine: m.layer, human: layer });
     if (llm && m.llm_faithfulness && d.disposition !== "case_invalid" && d.disposition !== "unsure") {
@@ -1195,15 +1041,36 @@
     return [out, null];
   }
 
-  function decisionHtml(item) {
+  // 机器判通过时第一步换成「对吗」：确认通过，或标出机器漏判的缺陷
+  const PASS_CHOICES = {
+    pass_ok: ["确认通过", "回答和链路都没问题"],
+    agent_defect: ["其实有问题（机器漏判）", "规则与裁判都没发现，但智能体确实错了"],
+  };
+
+  // opts.batch：同组批量沿用（只在复核队列）；opts.queue：显示跳过与 J/K 提示
+  function prevSummary(item) {
+    const h = item.human;
+    const head = h.disposition ? dispositionLabel(h.disposition) : h.verdict === "pass" ? "确认通过" : h.verdict === "fail" ? "确认失败" : "";
+    const layer = h.layer && h.layer !== "none" ? `${h.layer} ${layerName(h.layer)}` : "";
+    return [head, layer].filter(Boolean).join(" · ") || "已标注";
+  }
+
+  function decisionHtml(item, opts = {}) {
     const d = draftFor(item);
     const m = item.machine;
+    if (!m.verdict) {
+      return `<aside class="rv-decide"><div class="rv-machine"><small>机器结论</small><div><span class="verdict-pill skip">SKIP</span></div></div><p class="muted">跳过的用例没有判定，不参与复核。</p></aside>`;
+    }
+    const passed = m.verdict === "pass";
     const needsLayer = d.disposition === "agent_defect"
       || (d.disposition === "judge_wrong" && !(item.failed_checks.length === 1 && item.failed_checks[0] === "llm_faithfulness"));
-    const dispositions = Object.entries(state.catalog.dispositions).map(([key, text], idx) => `
+    const choices = passed
+      ? Object.entries(PASS_CHOICES).map(([key, [text, help]]) => [key, text, help])
+      : Object.entries(state.catalog.dispositions).map(([key, text]) => [key, text, DISPOSITION_HELP[key]]);
+    const dispositions = choices.map(([key, text, help], idx) => `
       <button type="button" class="rv-choice ${d.disposition === key ? "is-on" : ""}" data-disp="${key}" ${key === "judge_wrong" && !m.llm_faithfulness ? "disabled" : ""}>
         <kbd>${idx + 1}</kbd>
-        <span><b>${escapeHtml(text)}</b><small>${escapeHtml(DISPOSITION_HELP[key])}</small></span>
+        <span><b>${escapeHtml(text)}</b><small>${escapeHtml(help)}</small></span>
       </button>`).join("");
     const layers = Object.keys(LAYER_HELP).map((code) => `
       <button type="button" class="rv-layer ${d.layer === code ? "is-on" : ""}" data-layer="${code}">
@@ -1220,10 +1087,10 @@
           <button type="button" class="${d.llm && d.llm !== m.llm_faithfulness ? "is-on" : ""}" data-llm="${m.llm_faithfulness === "faithful" ? "unfaithful" : "faithful"}">不对</button>
         </div>
       </div>` : "";
-    const peers = batchPeers(item);
+    const peers = opts.batch ? batchPeers(item) : [];
     const defects = (state.catalog.defects || []).map((x) => `<option value="${escapeHtml(x.id)}">${escapeHtml(x.layer)} · ${escapeHtml(x.title)}</option>`).join("");
     const previous = Object.keys(item.human || {}).length
-      ? `<p class="rv-prev">已复核：${escapeHtml(dispositionLabel(item.disposition) || "")} ${item.human.layer ? `· ${escapeHtml(item.human.layer)}` : ""} · ${escapeHtml(item.reviewer || "匿名")}。再次提交会追加一条新结论，以最后一次为准。</p>`
+      ? `<p class="rv-prev">已复核：${escapeHtml(prevSummary(item))} · ${escapeHtml(item.reviewer || "匿名")}${item.defect ? ` · ${escapeHtml(item.defect)}` : ""}。再次提交会追加一条新结论，以最后一次为准。</p>`
       : "";
     return `
       <aside class="rv-decide" aria-label="复核判断">
@@ -1238,7 +1105,7 @@
         </div>
         ${previous}
         <div class="rv-step">
-          <h4><span>1</span>这条失败站得住吗？</h4>
+          <h4><span>1</span>${passed ? "机器判通过，对吗？" : "这条失败站得住吗？"}</h4>
           <div class="rv-choices">${dispositions}</div>
         </div>
         ${needsLayer ? `
@@ -1262,9 +1129,9 @@
         </label>` : ""}
         <div class="rv-actions">
           <button type="button" class="run-button" id="rvSubmit">提交<kbd>Enter</kbd></button>
-          <button type="button" class="ghost-button" id="rvSkip">跳过<kbd>S</kbd></button>
+          ${opts.queue ? '<button type="button" class="ghost-button" id="rvSkip">跳过<kbd>S</kbd></button>' : ""}
         </div>
-        <p class="rv-keys">J / K 上下条 · 1–5 选结论 · A 全部同意 · Enter 提交</p>
+        <p class="rv-keys">${opts.queue ? "J / K 上下条 · " : ""}1–${choices.length} 选结论 · A 全部同意 · Enter 提交</p>
       </aside>`;
   }
 
@@ -1306,6 +1173,12 @@
     }).join("");
   }
 
+  function queueOpts(item) {
+    const peers = state.queue.items.filter((i) => i.family === item.family && i !== item && i.source === item.source)
+      .map((p) => ({ ...p, href: queueHref(p), qkey: itemKey(p), state: p.disposition ? dispositionLabel(p.disposition) : p.reviewed ? "已复核" : "待复核" }));
+    return { queue: true, batch: true, peers };
+  }
+
   function renderQueue() {
     const q = state.queue;
     const items = queueItems();
@@ -1325,7 +1198,7 @@
     } else if (!state.queueRow) {
       body = `<section class="rv-empty">${placeholder("正在读取 trace…")}</section>`;
     } else {
-      body = `${dossierHtml(current, state.queueRow)}${decisionHtml(current)}`;
+      body = "__PANEL__";
     }
 
     view.innerHTML = `
@@ -1342,7 +1215,7 @@
           ${reasonChips ? `<div class="rv-chips">${reasonChips}</div>` : ""}
           <div class="rv-list">${queueListHtml(items) || '<div class="is-empty-state">没有条目。</div>'}</div>
         </aside>
-        <div class="rv-main" id="rvMain"><div class="rv-grid">${body}</div></div>
+        ${body === "__PANEL__" ? auditPanelHtml(current, state.queueRow, queueOpts(current)) : `<div class="rv-main"><div class="rv-grid">${body}</div></div>`}
       </section>`;
 
     view.querySelectorAll("[data-qtab]").forEach((b) => b.addEventListener("click", () => {
@@ -1359,10 +1232,17 @@
       selectQueueItem(q.items.find((i) => itemKey(i) === b.dataset.qkey));
     }));
     $(".rv-item.is-selected", view)?.scrollIntoView({ block: "nearest" });
-    if (current && state.queueRow) bindDecision(current);
+    state.audit = null;
+    if (current && state.queueRow) bindAudit(current, state.queueRow, { opts: queueOpts(current), onSaved: () => afterQueueSave(current) });
   }
 
-  function bindDecision(item) {
+  // 卷宗 + 判断面板（复核队列、运行页、会话页共用）
+  function auditPanelHtml(item, row, opts = {}) {
+    return `<div class="rv-main" id="rvMain"><div class="rv-grid">${dossierHtml(item, row, opts)}${decisionHtml(item, opts)}</div></div>`;
+  }
+
+  // ctx：{ opts（同 auditPanelHtml）, onSaved(records) }；当前面板记在 state.audit，供快捷键使用
+  function bindAudit(item, row, ctx) {
     const main = $("#rvMain");
     const d = draftFor(item);
     main.addEventListener("click", (e) => {
@@ -1374,51 +1254,58 @@
       }
     });
     const rerender = () => {
-      const scroll = $(".rv-decide", main)?.scrollTop || 0;
+      const panel = $(".rv-decide", main);
+      if (!panel) return;
+      const scroll = panel.scrollTop;
       const fresh = document.createElement("div");
-      fresh.innerHTML = decisionHtml(item);
-      $(".rv-decide", main).replaceWith(fresh.firstElementChild);
+      fresh.innerHTML = decisionHtml(item, ctx.opts);
+      panel.replaceWith(fresh.firstElementChild);
       $(".rv-decide", main).scrollTop = scroll;
       wire();
     };
     const wire = () => {
       const panel = $(".rv-decide", main);
+      if (!$("#rvSubmit", panel)) return; // 跳过的用例
       panel.querySelectorAll("[data-disp]").forEach((b) => b.addEventListener("click", () => {
-        d.disposition = b.dataset.disp;
-        // 判「用例过严」= 认可回答没问题：裁判若判了忠实，默认认可它（可再改）
-        if (d.disposition === "case_too_strict" && !d.llm && item.machine.llm_faithfulness === "faithful") d.llm = "faithful";
+        pickDisposition(item, b.dataset.disp);
         rerender();
       }));
       panel.querySelectorAll("[data-layer]").forEach((b) => b.addEventListener("click", () => { d.layer = b.dataset.layer; rerender(); }));
       panel.querySelectorAll("[data-llm]").forEach((b) => b.addEventListener("click", () => { d.llm = b.dataset.llm; rerender(); }));
-      $("[data-agree-all]", panel).addEventListener("click", () => agreeAll(item));
+      $("[data-agree-all]", panel).addEventListener("click", () => { agreeAll(item); rerender(); });
       const defect = $("#rvDefect", panel);
       defect.value = d.defect;
       defect.addEventListener("change", () => { d.defect = defect.value; });
       $("#rvNote", panel).addEventListener("input", (e) => { d.note = e.target.value; });
       $("#rvBatch", panel)?.addEventListener("change", (e) => { d.batch = e.target.checked; });
-      $("#rvSubmit", panel).addEventListener("click", () => submitDecision(item));
-      $("#rvSkip", panel).addEventListener("click", () => stepQueue(1));
+      $("#rvSubmit", panel).addEventListener("click", () => submitAudit(item, row, ctx));
+      $("#rvSkip", panel)?.addEventListener("click", () => stepQueue(1));
     };
     wire();
+    state.audit = { item, row, ctx, root: main, rerender };
+  }
+
+  function pickDisposition(item, disp) {
+    const d = draftFor(item);
+    d.disposition = disp;
+    // 判「用例过严」或「确认通过」= 认可回答没问题：裁判若判了忠实，默认认可它（可再改）
+    if ((disp === "case_too_strict" || disp === "pass_ok") && !d.llm && item.machine.llm_faithfulness === "faithful") d.llm = "faithful";
   }
 
   function agreeAll(item) {
     const d = draftFor(item);
     const m = item.machine;
-    d.disposition = m.verdict === "fail" ? "agent_defect" : "case_too_strict";
+    d.disposition = m.verdict === "fail" ? "agent_defect" : "pass_ok";
     d.layer = m.layer && m.layer !== "none" ? m.layer : "";
     d.llm = m.llm_faithfulness || "";
-    renderQueue();
   }
 
-  async function submitDecision(item) {
+  async function submitAudit(item, row, ctx) {
     if (!reviewer()) {
       showToast("请先在左下角填写复核人");
       reviewerInput.focus();
       return;
     }
-    const row = state.queueRow;
     const d = draftFor(item);
     const [labels, error] = labelsFromDraft(item, row, d);
     if (error) {
@@ -1426,26 +1313,37 @@
       return;
     }
     let all = labels;
-    if (d.batch) {
+    if (d.batch && ctx.opts.batch) {
       // 同组样本照搬结论：trace 不同，指纹各自独立，标 batch_of 以便 κ 剔除
-      const peers = batchPeers(item);
-      for (const p of peers) {
+      for (const p of batchPeers(item)) {
         const peerRow = await api(`/api/trace?run=${encodeURIComponent(p.run_id)}&case=${encodeURIComponent(p.case_id)}`);
         all = all.concat(labels.map((lb) => ({ ...lb, trace_key: peerRow.trace_key, case_id: p.case_id, run_id: p.run_id, batch_of: row.trace_key })));
       }
     }
+    let saved;
     try {
-      await api("/api/reviews", { method: "POST", body: JSON.stringify({ labels: all }) });
+      saved = (await api("/api/reviews", { method: "POST", body: JSON.stringify({ labels: all }) })).labels;
     } catch (err) {
       showToast(`保存失败：${err.message}`);
       return;
     }
     delete state.reviewDrafts[itemKey(item)];
+    const name = d.disposition === "pass_ok" ? "确认通过" : dispositionLabel(d.disposition);
+    showToast(`已保存${all.length > labels.length ? `（含同组 ${all.length / labels.length - 1} 条）` : ""}：${name}`);
+    refreshQueueBadge();
+    ctx.onSaved(saved);
+  }
+
+  // 运行页 / 会话页：保存后把新标注并进本页的标注表再重绘
+  function mergeLabels(labels, records) {
+    records.forEach((lb) => { labels[`${lb.trace_key}|${lb.target}`] = lb; });
+  }
+
+  async function afterQueueSave(item) {
     const before = queueItems();
     const at = before.findIndex((i) => itemKey(i) === itemKey(item));
     state.queue = await api("/api/queue");
     setQueueBadge(state.queue.pending);
-    showToast(`已保存${d.batch ? `（含同组 ${all.length / labels.length - 1} 条）` : ""}：${dispositionLabel(d.disposition)}`);
     const after = queueItems();
     const stay = state.queueTab === "reviewed";
     selectQueueItem(stay ? state.queue.items.find((i) => itemKey(i) === itemKey(item)) : after[Math.min(at, after.length - 1)] || null);
@@ -1459,25 +1357,30 @@
     if (next && itemKey(next) !== state.queueSel) selectQueueItem(next);
   }
 
-  // 复核快捷键：只在复核页、且焦点不在输入框里时生效
+  // 复核快捷键：页面上有判断面板、且焦点不在输入框里时生效；J/K/S 只在复核队列
   document.addEventListener("keydown", (e) => {
-    if (!location.hash.startsWith("#/queue") || !state.queue || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.target.closest("input, textarea, select")) return;
     if (e.key === "Enter" && e.target.closest("button, a")) return; // 回车已经在触发聚焦按钮的点击
-    const item = state.queue.items.find((i) => itemKey(i) === state.queueSel);
     const key = e.key.toLowerCase();
-    if (key === "j") stepQueue(1);
-    else if (key === "k") stepQueue(-1);
-    else if (key === "s") stepQueue(1);
-    else if (!item || !state.queueRow) return;
-    else if (key === "a") agreeAll(item);
-    else if (key === "enter") submitDecision(item);
-    else if (/^[1-5]$/.test(key)) {
-      const disp = Object.keys(state.catalog.dispositions)[Number(key) - 1];
-      if (disp === "judge_wrong" && !item.machine.llm_faithfulness) return;
-      draftFor(item).disposition = disp;
-      renderQueue();
-    } else return;
+    const inQueue = location.hash.startsWith("#/queue") && state.queue;
+    if (inQueue && (key === "j" || key === "s")) stepQueue(1);
+    else if (inQueue && key === "k") stepQueue(-1);
+    else {
+      const a = state.audit;
+      if (!a || !document.contains(a.root) || !a.item.machine.verdict) return;
+      const choices = a.item.machine.verdict === "pass" ? Object.keys(PASS_CHOICES) : Object.keys(state.catalog.dispositions);
+      if (key === "a") {
+        agreeAll(a.item);
+        a.rerender();
+      } else if (key === "enter") submitAudit(a.item, a.row, a.ctx);
+      else if (/^[1-9]$/.test(key) && Number(key) <= choices.length) {
+        const disp = choices[Number(key) - 1];
+        if (disp === "judge_wrong" && !a.item.machine.llm_faithfulness) return;
+        pickDisposition(a.item, disp);
+        a.rerender();
+      } else return;
+    }
     e.preventDefault();
   });
 
@@ -1727,6 +1630,19 @@
     return index < 0 ? null : rows[index];
   }
 
+  // 运行页的「同一问题的其他说法」：同一次运行里同一基准用例的其他条目
+  function runOpts(row) {
+    const family = (id) => id.split("__gen_")[0];
+    const peers = state.detail.rows
+      .map((r, i) => [r, i])
+      .filter(([r]) => r !== row && family(r.trace.case_id) === family(row.trace.case_id))
+      .map(([r, i]) => {
+        const it = itemFromRow(r, state.detail.labels);
+        return { ...it, href: `#/run/${encodeURIComponent(r.run_id)}/${encodeURIComponent(r.trace.case_id)}`, state: it.disposition ? dispositionLabel(it.disposition) : it.human.verdict ? "已复核" : "未复核", key: rowKey(r, i) };
+      });
+    return { inPlace: true, peers };
+  }
+
   function renderRun() {
     const d = state.detail;
     const s = d.summary;
@@ -1772,7 +1688,7 @@
           <select id="dimSelect" class="dim-select" aria-label="按维度筛选"><option value="">全部维度</option>${dims}</select>
           <div class="case-list" id="caseList">${caseListHtml()}</div>
         </aside>
-        <section class="detail-panel" id="detailPanel">${row ? inspectorHtml(row, d.labels) : placeholder("从左侧选择一条用例")}</section>
+        <section class="detail-panel" id="detailPanel">${row ? auditPanelHtml(itemFromRow(row, d.labels), row, runOpts(row)) : placeholder("从左侧选择一条用例")}</section>
       </section>
     `;
     bindRunEvents(row);
@@ -1814,7 +1730,13 @@
       renderRun();
       if (window.innerWidth < 821) $("#detailPanel").scrollIntoView({ behavior: "smooth", block: "start" });
     });
-    if (row) bindInspector($("#detailPanel"), row, state.detail.labels, renderRun);
+    state.audit = null;
+    if (row) {
+      bindAudit(itemFromRow(row, state.detail.labels), row, {
+        opts: runOpts(row),
+        onSaved: (records) => { mergeLabels(state.detail.labels, records); renderRun(); },
+      });
+    }
   }
 
   // ------------------------------------------------------------ 运行对比
@@ -2021,7 +1943,18 @@
     document.querySelectorAll("[data-nav]").forEach((a) => a.classList.toggle("is-active", a.dataset.nav === name));
   }
 
+  // 页面跳转时作废上一次还在路上的请求：否则慢的旧请求回来会把新页面覆盖掉
+  const STALE_ROUTE = Symbol("stale-route");
+
+  async function routeApi(seq, path) {
+    const result = await api(path);
+    if (seq !== state.routeSeq) throw STALE_ROUTE;
+    return result;
+  }
+
   async function route() {
+    state.routeSeq = (state.routeSeq || 0) + 1;
+    const seq = state.routeSeq;
     const parts = location.hash.replace(/^#\/?/, "").split("/").map(decodeURIComponent);
     const [page, a, b] = parts;
     try {
@@ -2031,7 +1964,7 @@
           view.innerHTML = a.startsWith("chat-")
             ? placeholder("正在读取线上对话并逐条判定…", "未判定过的对话需要调用裁判模型，首次打开可能要几十秒")
             : placeholder("正在读取运行…");
-          state.detail = await api(`/api/runs/${encodeURIComponent(a)}`);
+          state.detail = await routeApi(seq, `/api/runs/${encodeURIComponent(a)}`);
           state.filter = { verdict: "all", dimension: "", layer: "" };
           state.selectedCase = null;
         }
@@ -2049,18 +1982,18 @@
       } else if (page === "compare" && a && b) {
         setNav("runs");
         view.innerHTML = placeholder("正在对比…");
-        state.compare = await api(`/api/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`);
+        state.compare = await routeApi(seq, `/api/compare?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`);
         renderCompare();
       } else if (page === "chats") {
         setNav("chats");
         view.innerHTML = placeholder("正在读取线上对话…");
-        state.chats = (await api("/api/chats")).conversations;
+        state.chats = (await routeApi(seq, "/api/chats")).conversations;
         renderChats();
       } else if (page === "chat" && a) {
         setNav("chats");
         if (state.chat?.conversation_id !== a) {
           view.innerHTML = placeholder("正在读取会话并判定…", "未判定过的轮次需要调用裁判模型，可能要十几秒");
-          state.chat = await api(`/api/chats/${encodeURIComponent(a)}`);
+          state.chat = await routeApi(seq, `/api/chats/${encodeURIComponent(a)}`);
         }
         const turn = Number(b);
         state.selectedTurn = turn >= 1 ? turn - 1 : Math.max(0, state.chat.rows.findIndex((r) => r.trace.verdict.rule === "fail"));
@@ -2068,7 +2001,7 @@
       } else if (page === "queue") {
         setNav("queue");
         view.innerHTML = placeholder("正在整理复核队列…");
-        state.queue = await api("/api/queue");
+        state.queue = await routeApi(seq, "/api/queue");
         setQueueBadge(state.queue.pending);
         const wanted = a && b ? `${a}/${b}` : null;
         let item = state.queue.items.find((i) => itemKey(i) === wanted);
@@ -2077,22 +2010,23 @@
         await selectQueueItem(item);
       } else if (page === "reviews") {
         setNav("reviews");
-        state.reviews = await api("/api/reviews");
+        state.reviews = await routeApi(seq, "/api/reviews");
         renderReviews();
       } else if (page === "runs") {
         setNav("runs");
-        state.runs = (await api("/api/runs")).runs;
+        state.runs = (await routeApi(seq, "/api/runs")).runs;
         state.detail = null;
         renderRuns();
       } else {
         setNav("overview");
         view.innerHTML = placeholder("正在汇总最新审计…");
-        state.overview = await api("/api/overview");
+        state.overview = await routeApi(seq, "/api/overview");
         setQueueBadge(state.overview.queue.pending);
         renderOverview();
       }
       window.scrollTo({ top: 0 });
     } catch (error) {
+      if (error === STALE_ROUTE) return;
       view.innerHTML = placeholder("加载失败", error.message);
       showToast(error.message);
     }

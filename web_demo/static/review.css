@@ -890,7 +890,17 @@ kbd {
 
 /* ---------------------------------------------------------------- 窄屏 */
 
-@container (max-width: 820px) {
+@container (max-width: 960px) {
+  .rv-grid {
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+
+  .rv-layers {
+    grid-template-columns: 1fr;
+  }
+}
+
+@container (max-width: 720px) {
   .rv-grid {
     grid-template-columns: minmax(0, 1fr);
   }
