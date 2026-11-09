@@ -19,7 +19,8 @@
     chat: null, // 当前打开的会话
     selectedTurn: 0,
     queue: null,
-    queueTab: "pending",
+    queueTab: "pending", // pending / discuss / reviewed
+    reviewDrafts: {}, // 复核草稿，按 run_id/case_id
     queueReason: "",
     queueSel: null, // `${run_id}/${case_id}`
     queueRow: null,
@@ -384,6 +385,7 @@
   };
 
   function valueLabel(target, value) {
+    if (target === "disposition") return state.catalog.dispositions?.[value] || value;
     return (REVIEW_OPTIONS[target].find(([v]) => v === value) || [value, value])[1];
   }
 
@@ -827,11 +829,59 @@
     bindInspector($("#detailPanel"), rows[sel], c.labels, renderChat);
   }
 
-  // ------------------------------------------------------------ 待人工复核
+  // ------------------------------------------------------------ 待人工复核（复核工作台）
+  //
+  // 三栏：左边队列（同一基准用例的几种说法归一组）→ 中间卷宗（期望 vs 实际、回答高亮、裁判意见、链路）
+  // → 右边判断面板（先定「这条失败站不站得住」，再定归因层与裁判对错）。键盘：J/K 上下条、A 全部同意机器、
+  // 1–5 选复核结论、Enter 提交、S 跳过。
+
+  const VARIANT_LABELS = { asr: "语音转写", colloquial: "口语", verbose: "啰嗦", indirect: "间接问法" };
+
+  const REASON_SHORT = { conflict: "两轨冲突", llm_only: "仅 LLM 发现", uncertain: "归因待定", failure: "规则轨失败", unjudged: "未经裁判" };
+
+  const REASON_GUIDE = {
+    conflict: "规则轨判失败（答案里出现了不该出现的内容，或缺了该有的内容），LLM 裁判却认为回答忠实。看回答：是智能体真答错了，还是用例要求太严？",
+    llm_only: "规则轨全部通过，只有 LLM 裁判指出问题。逐条核对裁判列出的问题是否属实，尤其是它给的「正确值」。",
+    uncertain: "归因器没能把失败定到某一层。看链路，判断根因在哪一层。",
+    failure: "规则轨判失败。确认失败成立，以及机器给的归因层对不对。",
+    unjudged: "LLM 裁判没判（无缓存也未配置），只有规则轨结论。",
+  };
+
+  const DISPOSITION_HELP = {
+    agent_defect: "失败成立，是被测智能体的问题",
+    case_too_strict: "智能体其实答对了，是用例的断言写得过严",
+    judge_wrong: "LLM 裁判指出的问题不成立",
+    case_invalid: "改写跑偏了原意，或期望本身写错，这条不该参与评判",
+    unsure: "先放进「待讨论」，回头再定",
+  };
+
+  const LAYER_HELP = {
+    L0: "超时、异常、不可达",
+    L1: "没计划、计划与执行脱节、多余调用",
+    L2: "选错了工具",
+    L3: "参数填错、学期口径错",
+    L4: "数据拿对了，回答说错 / 算错",
+    L5: "照实转述，但数据源或召回本身错",
+    L6: "该拒没拒，或误拒",
+  };
+
+  function variantLabel(item) {
+    if (item.source === "chat") return "线上对话";
+    return item.variant ? VARIANT_LABELS[item.variant] || item.variant : "基准";
+  }
+
+  function familyTitle(item) {
+    return String(item.title || "").replace(/^\[改写·[a-z]+\]\s*/, "");
+  }
+
+  function dispositionLabel(value) {
+    return state.catalog.dispositions?.[value] || value;
+  }
 
   function queueItems() {
     const q = state.queue;
-    return q.items.filter((i) => (state.queueTab === "pending" ? !i.reviewed : i.reviewed)
+    const tab = state.queueTab;
+    return q.items.filter((i) => (tab === "pending" ? !i.reviewed && !i.discuss : tab === "discuss" ? i.discuss : i.reviewed)
       && (!state.queueReason || i.reasons.includes(state.queueReason)));
   }
 
@@ -839,56 +889,460 @@
     return `${item.run_id}/${item.case_id}`;
   }
 
-  function queueBanner(item) {
-    if (!item) return "";
+  // 同组、未复核、失败方式完全相同（失败检查项、机器归因层、LLM 结论都一样）的其他说法：可一并沿用本条结论
+  function batchPeers(item) {
+    const sig = (i) => JSON.stringify([i.failed_checks, i.machine]);
+    return state.queue.items.filter((i) => i !== item && i.family === item.family && i.source === item.source
+      && !i.reviewed && sig(i) === sig(item));
+  }
+
+  // ---------------------------------------------------- 卷宗：期望 vs 实际
+
+  function constraintText(name, c) {
+    if (c.equals !== null && c.equals !== undefined) return `${name} = ${formatValue(c.equals)}`;
+    if (c.in) return `${name} ∈ {${c.in.map(formatValue).join(", ")}}`;
+    if (c.regex) return `${name} ~ /${c.regex}/`;
+    const range = [c.gte != null ? `≥ ${c.gte}` : "", c.lte != null ? `≤ ${c.lte}` : ""].filter(Boolean).join(" 且 ");
+    return range ? `${name} ${range}` : name;
+  }
+
+  function expectationFor(check, expect, judgement) {
+    const tools = (expect.tools || []).map((t) => `${t.name}${t.optional ? "（可选）" : ""}`);
+    switch (check) {
+      case "status": return "执行正常完成";
+      case "refusal": return expect.refusal === true ? "应当拒答" : expect.refusal === false ? "不应拒答" : "不判";
+      case "tool_sequence":
+        return tools.length ? `${expect.mode === "exact" ? "恰好调用" : "至少包含"} ${tools.join(" → ")}` : (expect.mode === "exact" ? "不调用任何工具" : "不限");
+      case "forbidden_tools": return `不得调用 ${(expect.forbid_tools || []).join("、")}`;
+      case "tool_args": {
+        const parts = (expect.tools || []).flatMap((t) => Object.entries(t.args || {}).map(([k, c]) => `${t.name}.${constraintText(k, c)}`));
+        return parts.join("；") || "—";
+      }
+      case "tool_schema": return "参数通过工具 schema 校验";
+      case "plan": return "计划的工具与实际执行一致";
+      case "answer_text": {
+        const parts = [];
+        if ((expect.answer_contains || []).length) parts.push(`必须出现：${expect.answer_contains.join("、")}`);
+        if ((expect.answer_not_contains || []).length) parts.push(`不得出现：${expect.answer_not_contains.join("、")}`);
+        return parts.join("；") || "—";
+      }
+      case "budget": {
+        const b = expect.budget || {};
+        return [b.latency_ms ? `耗时 ≤ ${b.latency_ms}ms` : "", b.tokens ? `token ≤ ${b.tokens}` : "", b.tool_calls != null ? `工具调用 ≤ ${b.tool_calls} 次` : ""].filter(Boolean).join("；");
+      }
+      case "llm_faithfulness": {
+        const rubric = expect.rubric || judgement?.rubric;
+        return `回答忠实于观测${rubric ? `；额外要求：${rubric}` : ""}`;
+      }
+      default: return "—";
+    }
+  }
+
+  function checksTable(row) {
+    const checks = row.trace.verdict?.checks || [];
+    if (!checks.length) return '<p class="muted">没有检查记录（跳过）。</p>';
+    const expect = row.case?.expect || {};
+    const body = checks.map((c) => `
+      <tr class="${c.passed ? "" : "is-bad"}">
+        <td class="rv-mark">${c.passed ? "✓" : "✗"}</td>
+        <td><b>${escapeHtml(CHECK_LABELS[c.check] || c.check)}</b><span class="rv-track ${c.check === "llm_faithfulness" ? "llm" : ""}">${c.check === "llm_faithfulness" ? "语义轨" : "规则轨"}</span></td>
+        <td>${row.case || c.check === "llm_faithfulness" || c.check === "status" ? escapeHtml(expectationFor(c.check, expect, row.judgement)) : '<span class="muted">线上对话无预设期望</span>'}</td>
+        <td>${c.check === "llm_faithfulness" && row.judgement?.verdict ? `${c.passed ? "判忠实" : "判不忠实"}（评分 ${escapeHtml(row.judgement.verdict.score)}/5），逐条意见见下方「LLM 裁判意见」` : escapeHtml(c.reason)}${evidenceLinks(c.evidence) ? `<div class="rv-links">${evidenceLinks(c.evidence)}</div>` : ""}</td>
+      </tr>`).join("");
     return `
-      <div class="queue-banner">
-        <span>为什么要人看</span>
-        <div>${item.reasons.map(reasonTag).join(" ")}</div>
-        <a class="text-link" href="${item.source === "chat" ? `#/chat/${encodeURIComponent(item.conversation_id || "")}` : `#/run/${encodeURIComponent(item.run_id)}/${encodeURIComponent(item.case_id)}`}">在${item.source === "chat" ? "会话" : "所属运行"}里打开 →</a>
+      <div class="table-wrap">
+        <table class="rv-table">
+          <thead><tr><th></th><th>检查项</th><th>期望</th><th>实际</th></tr></thead>
+          <tbody>${body}</tbody>
+        </table>
       </div>`;
+  }
+
+  // ---------------------------------------------------- 卷宗：回答（Markdown + 高亮）
+
+  // 先转义、再用私有区字符占位高亮词、再做极简 Markdown，最后把占位换成 <mark>：高亮不会被 Markdown 拆坏
+  function renderAnswer(text, marks) {
+    let src = escapeHtml(text || "");
+    const used = [];
+    marks.forEach(({ term, cls, title }) => {
+      const t = escapeHtml(term);
+      if (!t || !src.includes(t) || used.some((u) => u.t === t)) return;
+      const id = used.length;
+      used.push({ t, cls, title });
+      src = src.split(t).join(`\uE000${id}\uE001`);
+    });
+    const inline = (s) => s
+      .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<code>$1</code>");
+    const lines = src.split("\n");
+    const out = [];
+    let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      if (/^\s*\|.*\|\s*$/.test(line)) {
+        const rows = [];
+        while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
+        const cells = (r) => r.trim().replace(/^\||\|$/g, "").split("|").map((c) => inline(c.trim()));
+        const isSep = (r) => /^\s*\|?[\s:|-]+\|?\s*$/.test(r);
+        const head = rows[0];
+        const bodyRows = rows.slice(isSep(rows[1] || "") ? 2 : 1);
+        out.push(`<div class="table-wrap"><table class="rv-md-table"><thead><tr>${cells(head).map((c) => `<th>${c}</th>`).join("")}</tr></thead><tbody>${bodyRows.map((r) => `<tr>${cells(r).map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`);
+        continue;
+      }
+      if (/^\s*([-*]|\d+\.)\s+/.test(line)) {
+        const ordered = /^\s*\d+\./.test(line);
+        const items = [];
+        while (i < lines.length && /^\s*([-*]|\d+\.)\s+/.test(lines[i])) items.push(lines[i++].replace(/^\s*([-*]|\d+\.)\s+/, ""));
+        out.push(`<${ordered ? "ol" : "ul"}>${items.map((it) => `<li>${inline(it)}</li>`).join("")}</${ordered ? "ol" : "ul"}>`);
+        continue;
+      }
+      if (/^#{1,6}\s+/.test(line)) {
+        out.push(`<p class="rv-md-h">${inline(line.replace(/^#{1,6}\s+/, ""))}</p>`);
+      } else if (line.trim()) {
+        out.push(`<p>${inline(line)}</p>`);
+      }
+      i += 1;
+    }
+    const html = out.join("").replace(/\uE000(\d+)\uE001/g, (_, id) => {
+      const m = used[Number(id)];
+      return `<mark class="${m.cls}" title="${escapeHtml(m.title)}">${m.t}</mark>`;
+    });
+    return { html, used: new Set(used.map((u) => u.cls)) };
+  }
+
+  // 裁判引用的原话常和回答差几个 Markdown 符号（如 **88.9**）：整句对不上时，退而高亮其中的小数和三位以上的数字
+  function claimTerms(claim, answer) {
+    if (answer.includes(claim)) return [claim];
+    return (claim.match(/\d+\.\d+|\d{3,}/g) || []).filter((n) => answer.includes(n));
+  }
+
+  function answerBlock(row) {
+    const t = row.trace;
+    const expect = row.case?.expect || {};
+    const issues = row.judgement?.verdict?.issues || [];
+    const marks = [
+      ...(expect.answer_not_contains || []).filter((w) => (t.answer || "").includes(w)).map((w) => ({ term: w, cls: "hl-bad", title: "用例要求不得出现" })),
+      ...(expect.answer_contains || []).map((w) => ({ term: w, cls: "hl-ok", title: "用例要求必须出现" })),
+      ...issues.map((it) => (typeof it === "string" ? null : it?.claim)).filter((c) => c && c.length <= 60)
+        .flatMap((c) => claimTerms(c, t.answer || "")).map((c) => ({ term: c, cls: "hl-claim", title: "LLM 裁判指出的问题" })),
+    ];
+    const rendered = t.answer ? renderAnswer(t.answer, marks) : null;
+    const missing = (expect.answer_contains || []).filter((w) => !(t.answer || "").includes(w));
+    const used = rendered?.used || new Set();
+    const legend = [
+      used.has("hl-bad") ? '<span><mark class="hl-bad">　</mark>不得出现却出现了</span>' : "",
+      used.has("hl-ok") ? '<span><mark class="hl-ok">　</mark>要求出现</span>' : "",
+      used.has("hl-claim") ? '<span><mark class="hl-claim">　</mark>裁判指出的问题</span>' : "",
+    ].filter(Boolean).join("");
+    return `
+      <div class="rv-answer">${rendered ? rendered.html : '<p class="muted">（无回答）</p>'}</div>
+      ${missing.length ? `<p class="rv-missing">要求出现但回答里没有：${missing.map((w) => `<code>${escapeHtml(w)}</code>`).join(" ")}</p>` : ""}
+      ${legend ? `<div class="rv-legend">${legend}</div>` : ""}`;
+  }
+
+  function judgementBlock(row) {
+    const check = (row.trace.verdict?.checks || []).find((c) => c.check === "llm_faithfulness");
+    if (!check) return '<p class="muted">这条没有经过 LLM 裁判（拒答、未完成，或没有可对照的观测）。</p>';
+    const j = row.judgement;
+    const verdict = j?.verdict;
+    const head = `
+      <div class="rv-judge-head">
+        <span class="rv-verdict ${check.passed ? "ok" : "bad"}">${check.passed ? "判忠实" : "判不忠实"}</span>
+        ${verdict?.score != null ? `<span class="rv-score">评分 <b>${escapeHtml(verdict.score)}</b> / 5</span>` : ""}
+        ${j ? `<span class="muted small">${escapeHtml(j.model || "")} · ${escapeHtml(j.prompt_version || "")}</span>` : ""}
+      </div>`;
+    if (!verdict) return `${head}<p class="muted">${escapeHtml(check.reason)}（裁判缓存未找到，看不到逐条意见）</p>`;
+    const issues = (verdict.issues || []).map((it) => {
+      if (typeof it === "string") return `<li><p>${escapeHtml(it)}</p></li>`;
+      return `
+        <li>
+          ${it.claim ? `<blockquote>${escapeHtml(it.claim)}</blockquote>` : ""}
+          <p>${escapeHtml(it.problem || "")}</p>
+          ${it.span ? `<div class="rv-links">${evidenceLinks([it.span])}</div>` : ""}
+        </li>`;
+    }).join("");
+    return `${head}${issues ? `<ol class="rv-issues">${issues}</ol>` : '<p class="muted">裁判没有指出问题。</p>'}`;
+  }
+
+  function familyBlock(item) {
+    const peers = state.queue.items.filter((i) => i.family === item.family && i !== item && i.source === item.source);
+    if (!peers.length) return "";
+    const rows = peers.map((p) => `
+      <a class="rv-peer" href="${queueHref(p)}" data-qkey="${escapeHtml(itemKey(p))}">
+        <span class="rv-variant">${escapeHtml(variantLabel(p))}</span>
+        <span class="verdict-pill ${verdictClass(p.verdict)}">${statusLabel(p.verdict)}</span>
+        ${p.layer ? `<span class="layer-mini">${escapeHtml(p.layer)}</span>` : ""}
+        <span class="rv-peer-checks">${escapeHtml(p.failed_checks.map((c) => CHECK_LABELS[c] || c).join("、") || "—")}</span>
+        <span class="rv-peer-state">${p.disposition ? escapeHtml(dispositionLabel(p.disposition)) : p.reviewed ? "已复核" : "待复核"}</span>
+      </a>`).join("");
+    return `
+      <section class="rv-section">
+        <h3>同一问题的其他说法 <span class="muted">${peers.length}</span></h3>
+        <p class="muted small">保义改写：说法不同、期望相同。几种说法都错在同一处，基本可以断定是稳定缺陷；只有一种错，先怀疑改写本身。</p>
+        <div class="rv-peers">${rows}</div>
+      </section>`;
+  }
+
+  function dossierHtml(item, row) {
+    const t = row.trace;
+    const evidence = new Set(t.layer_evidence || []);
+    (t.verdict?.checks || []).forEach((c) => { if (!c.passed) (c.evidence || []).forEach((id) => evidence.add(id)); });
+    const meta = t.meta || {};
+    const guide = item.reasons.map((r) => `<li>${reasonTag(r)}<span>${escapeHtml(REASON_GUIDE[r] || "")}</span></li>`).join("");
+    return `
+      <article class="rv-dossier">
+        <header class="rv-head">
+          <p class="rv-kicker">${escapeHtml(suiteLabel(item.suite))} · ${escapeHtml(dimensionLabel(item.dimension))} · <span class="mono">${escapeHtml(t.case_id)}</span></p>
+          <h2>${escapeHtml(familyTitle(item))}<span class="rv-variant">${escapeHtml(variantLabel(item))}</span></h2>
+          <div class="meta-row">
+            <span class="meta-chip">${escapeHtml(t.model)}</span>
+            ${meta.today ? `<span class="meta-chip">今天 ${escapeHtml(meta.today)}</span>` : ""}
+            ${meta.current_term ? `<span class="meta-chip">${escapeHtml(meta.current_term)} 第 ${escapeHtml(meta.week)} 周</span>` : ""}
+            <span class="meta-chip">耗时 ${escapeHtml(latencyLabel(t.latency_ms) || "0ms")}</span>
+            <span class="meta-chip mono" title="trace 内容指纹：人工标注按它沿用到所有复跑">#${escapeHtml(row.trace_key)}</span>
+            <a class="meta-chip link" href="${item.source === "chat" ? `#/chat/${encodeURIComponent(item.conversation_id || "")}` : `#/run/${encodeURIComponent(item.run_id)}/${encodeURIComponent(item.case_id)}`}">在${item.source === "chat" ? "会话" : "所属运行"}里打开 →</a>
+          </div>
+        </header>
+
+        <section class="rv-guide">
+          <h3>你要判断什么</h3>
+          <ul>${guide}</ul>
+        </section>
+
+        <section class="rv-section">
+          <h3>对话</h3>
+          ${messagesHtml(row)}
+          ${row.case?.note ? `<p class="case-note">用例说明：${escapeHtml(row.case.note)}</p>` : ""}
+        </section>
+
+        <section class="rv-section">
+          <h3>期望 vs 实际</h3>
+          ${checksTable(row)}
+        </section>
+
+        <section class="rv-section">
+          <h3>智能体回答</h3>
+          ${answerBlock(row)}
+        </section>
+
+        <section class="rv-section">
+          <h3>LLM 裁判意见</h3>
+          ${judgementBlock(row)}
+        </section>
+
+        <section class="rv-section">
+          <h3>机器归因</h3>
+          ${renderAttribution(t)}
+        </section>
+
+        <section class="rv-section">
+          <h3>思考—行动链路 <span class="muted">${(t.spans || []).length} 步 · 高亮为证据</span></h3>
+          <ol class="trace-list">${(t.spans || []).map((s, i) => renderSpan(s, evidence, i)).join("")}</ol>
+        </section>
+
+        ${familyBlock(item)}
+      </article>`;
+  }
+
+  // ---------------------------------------------------- 判断面板
+
+  // 复核草稿：每条一份，切走再回来不丢
+  function draftFor(item) {
+    state.reviewDrafts = state.reviewDrafts || {};
+    const key = itemKey(item);
+    if (!state.reviewDrafts[key]) {
+      const h = item.human || {};
+      state.reviewDrafts[key] = {
+        disposition: h.disposition || "",
+        layer: h.layer && h.layer !== "none" ? h.layer : item.machine.layer && item.machine.layer !== "none" ? item.machine.layer : "",
+        llm: h.llm_faithfulness || "",
+        defect: item.defect || "",
+        note: "",
+        batch: false,
+      };
+    }
+    return state.reviewDrafts[key];
+  }
+
+  // 由复核结论推出要写的几项标注；返回 [labels, 错误提示]
+  function labelsFromDraft(item, row, d) {
+    const m = item.machine;
+    if (!d.disposition) return [null, "先选「这条失败站得住吗」"];
+    const onlyLlmFailed = item.failed_checks.length === 1 && item.failed_checks[0] === "llm_faithfulness";
+    let verdict = null;
+    let layer = null;
+    if (d.disposition === "agent_defect") {
+      verdict = "fail";
+      layer = d.layer;
+      if (!layer) return [null, "选一个归因层"];
+    } else if (d.disposition === "case_too_strict") {
+      verdict = "pass";
+      layer = "none";
+    } else if (d.disposition === "judge_wrong") {
+      verdict = onlyLlmFailed ? "pass" : "fail";
+      layer = verdict === "pass" ? "none" : d.layer;
+      if (!layer) return [null, "除了裁判那项，还有别的检查失败：选一个归因层"];
+    }
+    let llm = d.llm || null;
+    if (d.disposition === "judge_wrong" && m.llm_faithfulness) llm = m.llm_faithfulness === "faithful" ? "unfaithful" : "faithful";
+    const base = { trace_key: row.trace_key, case_id: row.trace.case_id, run_id: row.run_id, reviewer: reviewer(), note: d.note.trim(), defect: d.defect.trim() };
+    const out = [{ ...base, target: "disposition", machine: m.verdict, human: d.disposition }];
+    if (verdict && m.verdict) out.push({ ...base, target: "verdict", machine: m.verdict, human: verdict });
+    if (layer && m.layer) out.push({ ...base, target: "layer", machine: m.layer, human: layer });
+    if (llm && m.llm_faithfulness && d.disposition !== "case_invalid" && d.disposition !== "unsure") {
+      out.push({ ...base, target: "llm_faithfulness", machine: m.llm_faithfulness, human: llm });
+    }
+    return [out, null];
+  }
+
+  function decisionHtml(item) {
+    const d = draftFor(item);
+    const m = item.machine;
+    const needsLayer = d.disposition === "agent_defect"
+      || (d.disposition === "judge_wrong" && !(item.failed_checks.length === 1 && item.failed_checks[0] === "llm_faithfulness"));
+    const dispositions = Object.entries(state.catalog.dispositions).map(([key, text], idx) => `
+      <button type="button" class="rv-choice ${d.disposition === key ? "is-on" : ""}" data-disp="${key}" ${key === "judge_wrong" && !m.llm_faithfulness ? "disabled" : ""}>
+        <kbd>${idx + 1}</kbd>
+        <span><b>${escapeHtml(text)}</b><small>${escapeHtml(DISPOSITION_HELP[key])}</small></span>
+      </button>`).join("");
+    const layers = Object.keys(LAYER_HELP).map((code) => `
+      <button type="button" class="rv-layer ${d.layer === code ? "is-on" : ""}" data-layer="${code}">
+        <b>${code}</b><span>${escapeHtml(layerName(code))}</span>
+        ${m.layer === code ? '<i class="rv-machine-tag">机器</i>' : ""}
+        <small>${escapeHtml(LAYER_HELP[code])}</small>
+      </button>`).join("");
+    const llmNo = needsLayer ? 3 : 2;
+    const llmStep = m.llm_faithfulness && !["case_invalid", "unsure", "judge_wrong"].includes(d.disposition) ? `
+      <div class="rv-step">
+        <h4><span>${llmNo}</span>LLM 裁判判「${m.llm_faithfulness === "faithful" ? "忠实" : "不忠实"}」，对吗？</h4>
+        <div class="rv-seg">
+          <button type="button" class="${d.llm === m.llm_faithfulness ? "is-on" : ""}" data-llm="${m.llm_faithfulness}">对</button>
+          <button type="button" class="${d.llm && d.llm !== m.llm_faithfulness ? "is-on" : ""}" data-llm="${m.llm_faithfulness === "faithful" ? "unfaithful" : "faithful"}">不对</button>
+        </div>
+      </div>` : "";
+    const peers = batchPeers(item);
+    const defects = (state.catalog.defects || []).map((x) => `<option value="${escapeHtml(x.id)}">${escapeHtml(x.layer)} · ${escapeHtml(x.title)}</option>`).join("");
+    const previous = Object.keys(item.human || {}).length
+      ? `<p class="rv-prev">已复核：${escapeHtml(dispositionLabel(item.disposition) || "")} ${item.human.layer ? `· ${escapeHtml(item.human.layer)}` : ""} · ${escapeHtml(item.reviewer || "匿名")}。再次提交会追加一条新结论，以最后一次为准。</p>`
+      : "";
+    return `
+      <aside class="rv-decide" aria-label="复核判断">
+        <div class="rv-machine">
+          <small>机器结论</small>
+          <div>
+            <span class="verdict-pill ${verdictClass(m.verdict)}">${statusLabel(m.verdict)}</span>
+            ${m.layer && m.layer !== "none" ? `<span class="layer-mini">${escapeHtml(m.layer)} ${escapeHtml(layerName(m.layer))}</span>` : ""}
+            ${m.llm_faithfulness ? `<span class="tag ${m.llm_faithfulness === "faithful" ? "ok" : "warn"}">LLM ${m.llm_faithfulness === "faithful" ? "忠实" : "不忠实"}</span>` : ""}
+          </div>
+          <button type="button" class="rv-agree" data-agree-all><kbd>A</kbd> 全部同意机器</button>
+        </div>
+        ${previous}
+        <div class="rv-step">
+          <h4><span>1</span>这条失败站得住吗？</h4>
+          <div class="rv-choices">${dispositions}</div>
+        </div>
+        ${needsLayer ? `
+        <div class="rv-step">
+          <h4><span>2</span>根因在哪一层？</h4>
+          <div class="rv-layers">${layers}</div>
+        </div>` : ""}
+        ${llmStep}
+        <div class="rv-step">
+          <h4><span>${llmStep ? llmNo + 1 : llmNo}</span>关联缺陷与备注 <small>（可选）</small></h4>
+          <select id="rvDefect" class="dim-select" aria-label="关联缺陷编号">
+            <option value="">不关联缺陷编号</option>${defects}
+          </select>
+          <textarea id="rvNote" rows="2" maxlength="500" placeholder="例如：88.8 是算术平均，加权应为 88.64">${escapeHtml(d.note)}</textarea>
+        </div>
+        ${peers.length ? `
+        <label class="rv-batch">
+          <input type="checkbox" id="rvBatch" ${d.batch ? "checked" : ""}>
+          <span>同组还有 <b>${peers.length}</b> 种说法失败方式完全相同（${escapeHtml(peers.map(variantLabel).join("、"))}），一并沿用本条结论
+          <small>批量沿用的标注不计入 κ，只计你亲眼看过的这一条</small></span>
+        </label>` : ""}
+        <div class="rv-actions">
+          <button type="button" class="run-button" id="rvSubmit">提交<kbd>Enter</kbd></button>
+          <button type="button" class="ghost-button" id="rvSkip">跳过<kbd>S</kbd></button>
+        </div>
+        <p class="rv-keys">J / K 上下条 · 1–5 选结论 · A 全部同意 · Enter 提交</p>
+      </aside>`;
+  }
+
+  // ---------------------------------------------------- 队列
+
+  function queueListHtml(items) {
+    const groups = [];
+    const byFamily = new Map();
+    items.forEach((i) => {
+      const k = `${i.source}:${i.family}`;
+      if (!byFamily.has(k)) {
+        byFamily.set(k, []);
+        groups.push(k);
+      }
+      byFamily.get(k).push(i);
+    });
+    return groups.map((k) => {
+      const list = byFamily.get(k);
+      const head = list[0];
+      const rows = list.map((i) => {
+        const key = itemKey(i);
+        const state_ = i.disposition ? `rv-dot is-${i.disposition}` : "rv-dot";
+        return `
+          <button type="button" class="rv-item ${key === state.queueSel ? "is-selected" : ""}" data-qkey="${escapeHtml(key)}">
+            <i class="${state_}" title="${escapeHtml(i.disposition ? dispositionLabel(i.disposition) : "未定")}"></i>
+            <span class="rv-item-variant">${escapeHtml(variantLabel(i))}</span>
+            <span class="rv-item-reason" title="${escapeHtml(state.queue.reasons[i.reasons[0]] || "")}">${escapeHtml(REASON_SHORT[i.reasons[0]] || i.reasons[0])}</span>
+            ${i.layer ? `<span class="layer-mini">${escapeHtml(i.layer)}</span>` : ""}
+          </button>`;
+      }).join("");
+      return `
+        <div class="rv-group">
+          <div class="rv-group-head">
+            <b>${escapeHtml(familyTitle(head))}</b>
+            <span>${escapeHtml(suiteLabel(head.suite))} · ${list.length} 条</span>
+          </div>
+          ${rows}
+        </div>`;
+    }).join("");
   }
 
   function renderQueue() {
     const q = state.queue;
     const items = queueItems();
     const current = q.items.find((i) => itemKey(i) === state.queueSel) || null;
-    const tab = (key, text, n) => `<button class="filter ${state.queueTab === key ? "is-active" : ""}" type="button" data-qtab="${key}">${text} <b>${n}</b></button>`;
-    const reasons = Object.entries(q.reasons).map(([r, text]) => {
-      const n = q.items.filter((i) => (state.queueTab === "pending" ? !i.reviewed : i.reviewed) && i.reasons.includes(r)).length;
-      return n ? `<option value="${r}" ${state.queueReason === r ? "selected" : ""}>${escapeHtml(text)}（${n}）</option>` : "";
+    const total = q.items.length;
+    const done = q.reviewed;
+    const tab = (key, text, n) => `<button class="${state.queueTab === key ? "is-on" : ""}" type="button" data-qtab="${key}">${text} <b>${n}</b></button>`;
+    const inTab = q.items.filter((i) => (state.queueTab === "pending" ? !i.reviewed && !i.discuss : state.queueTab === "discuss" ? i.discuss : i.reviewed));
+    const reasonChips = Object.entries(q.reasons).map(([r, text]) => {
+      const n = inTab.filter((i) => i.reasons.includes(r)).length;
+      return n ? `<button type="button" class="rv-chip ${state.queueReason === r ? "is-on" : ""}" data-reason="${r}" title="${escapeHtml(text)}">${escapeHtml(REASON_SHORT[r] || text)} <b>${n}</b></button>` : "";
     }).join("");
-    const list = items.map((i) => {
-      const key = itemKey(i);
-      return `
-        <button type="button" class="case-item is-${verdictClass(i.verdict)} ${key === state.queueSel ? "is-selected" : ""}" data-qkey="${escapeHtml(key)}">
-          <span class="case-item-top">
-            <span class="case-id">${escapeHtml(suiteLabel(i.suite))}</span>
-            <span class="verdict-pill ${verdictClass(i.verdict)}">${statusLabel(i.verdict)}</span>
-          </span>
-          <span class="case-title">${escapeHtml(i.title)}</span>
-          <span class="case-bottom">
-            ${reasonTag(i.reasons[0])}
-            ${i.layer ? `<span class="layer-mini">${escapeHtml(i.layer)} ${escapeHtml(layerName(i.layer))}</span>` : ""}
-          </span>
-        </button>`;
-    }).join("");
-    let detail;
-    if (!current) detail = placeholder(items.length ? "从左侧选一条开始复核" : "这里没有条目", state.queueTab === "pending" ? "队列清空后，新的失败与分歧会在下次运行后自动出现" : "");
-    else if (!state.queueRow) detail = placeholder("正在读取 trace…");
-    else detail = inspectorHtml(state.queueRow, state.queueRow.labels, { banner: queueBanner(current), next: state.queueTab === "pending" });
+
+    let body;
+    if (!current) {
+      body = `<section class="rv-empty">${placeholder(items.length ? "从左侧选一条开始复核" : state.queueTab === "pending" ? "待复核队列已清空" : "这里没有条目", state.queueTab === "pending" ? "新的失败与两轨分歧会在下次运行后自动进来" : "")}</section>`;
+    } else if (!state.queueRow) {
+      body = `<section class="rv-empty">${placeholder("正在读取 trace…")}</section>`;
+    } else {
+      body = `${dossierHtml(current, state.queueRow)}${decisionHtml(current)}`;
+    }
 
     view.innerHTML = `
-      ${pageHead("待人工复核", "机器拿不准、或两条判定轨结论打架的样本。逐条确认「总判定」和「归因层」，结论写入 reviews/labels.jsonl，用来算人机一致性 κ。每条用例只看最近一次运行；注入样本根因已知，不进队列。")}
-      <section class="workspace-grid queue-grid">
-        <aside class="case-panel" aria-label="复核队列">
-          <div class="filters" role="group" aria-label="复核状态">
-            ${tab("pending", "待复核", q.pending)}${tab("reviewed", "已复核", q.reviewed)}
+      ${pageHead("待人工复核", "机器拿不准、或两条判定轨结论打架的样本。先判断这条失败站不站得住，再确认归因层与裁判对错；结论写入 reviews/labels.jsonl，用来算人机一致性 κ。")}
+      <div class="rv-progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}">
+        <div class="rv-bar"><i style="width:${total ? (done / total) * 100 : 0}%"></i><i class="discuss" style="width:${total ? (q.discuss / total) * 100 : 0}%"></i></div>
+        <span>已复核 <b>${done}</b> / ${total}${q.discuss ? ` · 待讨论 ${q.discuss}` : ""}</span>
+      </div>
+      <section class="rv-workspace">
+        <aside class="rv-queue" aria-label="复核队列">
+          <div class="rv-tabs" role="group" aria-label="复核状态">
+            ${tab("pending", "待复核", q.pending)}${tab("discuss", "待讨论", q.discuss)}${tab("reviewed", "已复核", q.reviewed)}
           </div>
-          <select id="reasonSelect" class="dim-select" aria-label="按入队原因筛选"><option value="">全部原因</option>${reasons}</select>
-          <div class="case-list">${list || '<div class="is-empty-state">没有条目。</div>'}</div>
+          ${reasonChips ? `<div class="rv-chips">${reasonChips}</div>` : ""}
+          <div class="rv-list">${queueListHtml(items) || '<div class="is-empty-state">没有条目。</div>'}</div>
         </aside>
-        <section class="detail-panel" id="detailPanel">${detail}</section>
+        <div class="rv-main" id="rvMain"><div class="rv-grid">${body}</div></div>
       </section>`;
 
     view.querySelectorAll("[data-qtab]").forEach((b) => b.addEventListener("click", () => {
@@ -896,24 +1350,136 @@
       state.queueReason = "";
       selectQueueItem(queueItems()[0] || null);
     }));
-    $("#reasonSelect").addEventListener("change", (e) => {
-      state.queueReason = e.target.value;
+    view.querySelectorAll("[data-reason]").forEach((b) => b.addEventListener("click", () => {
+      state.queueReason = state.queueReason === b.dataset.reason ? "" : b.dataset.reason;
       selectQueueItem(queueItems()[0] || null);
-    });
-    view.querySelectorAll("[data-qkey]").forEach((b) => b.addEventListener("click", () => {
+    }));
+    view.querySelectorAll("[data-qkey]").forEach((b) => b.addEventListener("click", (e) => {
+      e.preventDefault();
       selectQueueItem(q.items.find((i) => itemKey(i) === b.dataset.qkey));
     }));
-    if (current && state.queueRow) {
-      bindInspector($("#detailPanel"), state.queueRow, state.queueRow.labels, async () => {
-        const before = queueItems();
-        const at = before.findIndex((i) => itemKey(i) === state.queueSel);
-        state.queue = await api("/api/queue");
-        setQueueBadge(state.queue.pending);
-        const after = queueItems();
-        selectQueueItem(state.queueTab === "pending" ? (after[at] || after[after.length - 1] || null) : current);
-      });
-    }
+    $(".rv-item.is-selected", view)?.scrollIntoView({ block: "nearest" });
+    if (current && state.queueRow) bindDecision(current);
   }
+
+  function bindDecision(item) {
+    const main = $("#rvMain");
+    const d = draftFor(item);
+    main.addEventListener("click", (e) => {
+      const jump = e.target.closest("[data-jump]");
+      if (jump) {
+        const target = $(`[data-span-id="${CSS.escape(jump.dataset.jump)}"]`, main);
+        target?.scrollIntoView({ behavior: "smooth", block: "center" });
+        target?.animate([{ boxShadow: "0 0 0 0 rgba(220,236,155,.75)" }, { boxShadow: "0 0 0 7px rgba(220,236,155,0)" }], { duration: 900 });
+      }
+    });
+    const rerender = () => {
+      const scroll = $(".rv-decide", main)?.scrollTop || 0;
+      const fresh = document.createElement("div");
+      fresh.innerHTML = decisionHtml(item);
+      $(".rv-decide", main).replaceWith(fresh.firstElementChild);
+      $(".rv-decide", main).scrollTop = scroll;
+      wire();
+    };
+    const wire = () => {
+      const panel = $(".rv-decide", main);
+      panel.querySelectorAll("[data-disp]").forEach((b) => b.addEventListener("click", () => {
+        d.disposition = b.dataset.disp;
+        // 判「用例过严」= 认可回答没问题：裁判若判了忠实，默认认可它（可再改）
+        if (d.disposition === "case_too_strict" && !d.llm && item.machine.llm_faithfulness === "faithful") d.llm = "faithful";
+        rerender();
+      }));
+      panel.querySelectorAll("[data-layer]").forEach((b) => b.addEventListener("click", () => { d.layer = b.dataset.layer; rerender(); }));
+      panel.querySelectorAll("[data-llm]").forEach((b) => b.addEventListener("click", () => { d.llm = b.dataset.llm; rerender(); }));
+      $("[data-agree-all]", panel).addEventListener("click", () => agreeAll(item));
+      const defect = $("#rvDefect", panel);
+      defect.value = d.defect;
+      defect.addEventListener("change", () => { d.defect = defect.value; });
+      $("#rvNote", panel).addEventListener("input", (e) => { d.note = e.target.value; });
+      $("#rvBatch", panel)?.addEventListener("change", (e) => { d.batch = e.target.checked; });
+      $("#rvSubmit", panel).addEventListener("click", () => submitDecision(item));
+      $("#rvSkip", panel).addEventListener("click", () => stepQueue(1));
+    };
+    wire();
+  }
+
+  function agreeAll(item) {
+    const d = draftFor(item);
+    const m = item.machine;
+    d.disposition = m.verdict === "fail" ? "agent_defect" : "case_too_strict";
+    d.layer = m.layer && m.layer !== "none" ? m.layer : "";
+    d.llm = m.llm_faithfulness || "";
+    renderQueue();
+  }
+
+  async function submitDecision(item) {
+    if (!reviewer()) {
+      showToast("请先在左下角填写复核人");
+      reviewerInput.focus();
+      return;
+    }
+    const row = state.queueRow;
+    const d = draftFor(item);
+    const [labels, error] = labelsFromDraft(item, row, d);
+    if (error) {
+      showToast(error);
+      return;
+    }
+    let all = labels;
+    if (d.batch) {
+      // 同组样本照搬结论：trace 不同，指纹各自独立，标 batch_of 以便 κ 剔除
+      const peers = batchPeers(item);
+      for (const p of peers) {
+        const peerRow = await api(`/api/trace?run=${encodeURIComponent(p.run_id)}&case=${encodeURIComponent(p.case_id)}`);
+        all = all.concat(labels.map((lb) => ({ ...lb, trace_key: peerRow.trace_key, case_id: p.case_id, run_id: p.run_id, batch_of: row.trace_key })));
+      }
+    }
+    try {
+      await api("/api/reviews", { method: "POST", body: JSON.stringify({ labels: all }) });
+    } catch (err) {
+      showToast(`保存失败：${err.message}`);
+      return;
+    }
+    delete state.reviewDrafts[itemKey(item)];
+    const before = queueItems();
+    const at = before.findIndex((i) => itemKey(i) === itemKey(item));
+    state.queue = await api("/api/queue");
+    setQueueBadge(state.queue.pending);
+    showToast(`已保存${d.batch ? `（含同组 ${all.length / labels.length - 1} 条）` : ""}：${dispositionLabel(d.disposition)}`);
+    const after = queueItems();
+    const stay = state.queueTab === "reviewed";
+    selectQueueItem(stay ? state.queue.items.find((i) => itemKey(i) === itemKey(item)) : after[Math.min(at, after.length - 1)] || null);
+  }
+
+  function stepQueue(delta) {
+    const items = queueItems();
+    if (!items.length) return;
+    const at = items.findIndex((i) => itemKey(i) === state.queueSel);
+    const next = items[Math.max(0, Math.min(items.length - 1, (at < 0 ? 0 : at) + delta))];
+    if (next && itemKey(next) !== state.queueSel) selectQueueItem(next);
+  }
+
+  // 复核快捷键：只在复核页、且焦点不在输入框里时生效
+  document.addEventListener("keydown", (e) => {
+    if (!location.hash.startsWith("#/queue") || !state.queue || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.target.closest("input, textarea, select")) return;
+    if (e.key === "Enter" && e.target.closest("button, a")) return; // 回车已经在触发聚焦按钮的点击
+    const item = state.queue.items.find((i) => itemKey(i) === state.queueSel);
+    const key = e.key.toLowerCase();
+    if (key === "j") stepQueue(1);
+    else if (key === "k") stepQueue(-1);
+    else if (key === "s") stepQueue(1);
+    else if (!item || !state.queueRow) return;
+    else if (key === "a") agreeAll(item);
+    else if (key === "enter") submitDecision(item);
+    else if (/^[1-5]$/.test(key)) {
+      const disp = Object.keys(state.catalog.dispositions)[Number(key) - 1];
+      if (disp === "judge_wrong" && !item.machine.llm_faithfulness) return;
+      draftFor(item).disposition = disp;
+      renderQueue();
+    } else return;
+    e.preventDefault();
+  });
 
   async function selectQueueItem(item) {
     state.queueSel = item ? itemKey(item) : null;
@@ -926,6 +1492,7 @@
       if (state.queueSel !== itemKey(item)) return; // 读取期间已切到别的条目
       state.queueRow = row;
       renderQueue();
+      $("#rvMain")?.scrollTo({ top: 0 });
     } catch (error) {
       showToast(error.message);
     }
@@ -1366,6 +1933,25 @@
     return `#/run/${encodeURIComponent(lb.run_id)}/${encodeURIComponent(lb.case_id)}`;
   }
 
+  // 复核结论分布：多少失败被确认为智能体缺陷、多少其实是用例或裁判的问题
+  function dispositionPanel(r) {
+    const counts = r.dispositions || {};
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    if (!total) return "";
+    const rows = Object.entries(counts).map(([k, n]) => `
+      <div class="disp-row">
+        <span><i class="rv-dot is-${k}"></i>${escapeHtml(state.catalog.dispositions[k] || k)}</span>
+        <span class="disp-bar"><i class="is-${k}" style="width:${(n / total) * 100}%"></i></span>
+        <b>${n}</b>
+      </div>`).join("");
+    return `
+      <section class="panel">
+        <div class="panel-bar"><h2>复核结论 <span class="muted">${total}</span></h2></div>
+        <div class="disp-list">${rows}</div>
+        ${r.batched ? `<p class="muted small">其中 ${r.batched} 条标注是同组批量沿用的，不计入上面的 κ。</p>` : ""}
+      </section>`;
+  }
+
   function renderReviews() {
     const r = state.reviews;
     const cards = Object.entries(r.targets).map(([, s]) => `
@@ -1378,28 +1964,51 @@
         </div>
         <p class="muted small">${escapeHtml(kappaLabel(s.kappa))}${s.n && s.n < 30 ? " · 样本少于 30，结论仅供参考" : ""}</p>
       </article>`).join("");
-    const rows = r.labels.map((lb) => `
-      <tr class="${lb.agree ? "" : "is-changed"}">
-        <td>${escapeHtml(formatTime(lb.at))}</td>
-        <td class="mono"><a href="${labelHref(lb)}">${escapeHtml(lb.case_id)}</a></td>
-        <td>${escapeHtml(state.catalog.review_targets[lb.target] || lb.target)}</td>
-        <td>${escapeHtml(valueLabel(lb.target, lb.machine))}</td>
-        <td>${escapeHtml(valueLabel(lb.target, lb.human))}</td>
-        <td>${lb.agree ? '<span class="tag ok">一致</span>' : '<span class="tag warn">不一致</span>'}</td>
-        <td>${escapeHtml(lb.reviewer || "")}</td>
-        <td>${escapeHtml(lb.note || "")}</td>
-      </tr>`).join("");
+    // 一条样本一行：同一 trace 的几项标注合并，逐项写「机器 → 人工」，不一致的标出来
+    const byTrace = new Map();
+    r.labels.forEach((lb) => {
+      if (!byTrace.has(lb.trace_key)) byTrace.set(lb.trace_key, { first: lb, items: {} });
+      const g = byTrace.get(lb.trace_key);
+      g.items[lb.target] = lb;
+      if (lb.at > g.first.at) g.first = { ...g.first, at: lb.at };
+    });
+    const cell = (lb, target) => {
+      if (!lb) return '<td class="muted">—</td>';
+      if (target === "disposition") return `<td><span class="rv-disp"><i class="rv-dot is-${escapeHtml(lb.human)}"></i>${escapeHtml(valueLabel(target, lb.human))}</span></td>`;
+      const same = lb.machine === lb.human;
+      return `<td class="${same ? "" : "is-diff"}">${same ? escapeHtml(valueLabel(target, lb.human)) : `<s>${escapeHtml(valueLabel(target, lb.machine))}</s> → <b>${escapeHtml(valueLabel(target, lb.human))}</b>`}</td>`;
+    };
+    const groups = [...byTrace.values()].sort((a, b) => (a.first.at < b.first.at ? 1 : -1));
+    const rows = groups.map(({ first, items }) => {
+      const any = Object.values(items);
+      const defect = any.find((lb) => lb.defect)?.defect;
+      const note = any.find((lb) => lb.note)?.note || "";
+      const batch = any.some((lb) => lb.batch_of);
+      return `
+      <tr>
+        <td class="nowrap">${escapeHtml(formatTime(first.at))}</td>
+        <td class="mono"><a href="${labelHref(first)}">${escapeHtml(first.case_id)}</a>${batch ? ' <span class="tag" title="同组批量沿用，不计入 κ">批量</span>' : ""}</td>
+        ${cell(items.disposition, "disposition")}
+        ${cell(items.verdict, "verdict")}
+        ${cell(items.layer, "layer")}
+        ${cell(items.llm_faithfulness, "llm_faithfulness")}
+        <td>${defect ? `<span class="tag bad">${escapeHtml(defect)}</span>` : ""}</td>
+        <td>${escapeHtml(first.reviewer || "")}</td>
+        <td>${escapeHtml(note)}</td>
+      </tr>`;
+    }).join("");
     view.innerHTML = `
       ${pageHead("复核一致性", "机器结论与人工复核的一致率和 Cohen's κ：这是归因在真实缺陷上到底准不准的唯一证据。同一 trace 同一目标只取最后一次标注。", {
         actions: '<a class="run-button" href="#/queue">去复核队列</a>',
       })}
       <section class="stat-grid">${cards}</section>
+      ${dispositionPanel(r)}
       <section class="panel">
-        <div class="panel-bar"><h2>标注明细 <span class="muted">${r.labels.length}</span></h2></div>
+        <div class="panel-bar"><h2>标注明细 <span class="muted">${byTrace.size} 条样本</span></h2><span class="muted small">划线为机器结论，箭头后为人工改判</span></div>
         ${r.labels.length ? `
           <div class="table-wrap">
             <table class="data-table">
-              <thead><tr><th>时间</th><th>用例</th><th>目标</th><th>机器</th><th>人工</th><th>一致</th><th>复核人</th><th>备注</th></tr></thead>
+              <thead><tr><th>时间</th><th>用例</th><th>复核结论</th><th>总判定</th><th>归因层</th><th>LLM 忠实度</th><th>缺陷</th><th>复核人</th><th>备注</th></tr></thead>
               <tbody>${rows}</tbody>
             </table>
           </div>` : placeholder("还没有人工标注", "到「待人工复核」逐条确认机器结论")}
