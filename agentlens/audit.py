@@ -256,6 +256,8 @@ def chat_row(trace: dict[str, Any], run_id: str) -> dict[str, Any]:
 def chat_detail(file: Path, config: JudgeConfig | None) -> dict[str, Any]:
     traces = judged_chat_traces(file, config)
     rows = [chat_row(t, f"{CHAT_PREFIX}{file.stem}") for t in traces]
+    for row in rows:
+        row["judgement"] = judgement_of(row["trace"])
     return {"summary": chat_summary(file, traces), "heatmap": heatmap(rows), "rows": rows}
 
 
@@ -310,6 +312,8 @@ def conversation_detail(chat_dir: Path, conversation_id: str, config: JudgeConfi
     with ThreadPoolExecutor(max_workers=4) as pool:
         traces = list(pool.map(lambda item: judge_chat_trace(item[1], config), raws))
     rows = [chat_row(t, run_id) for (run_id, _), t in zip(raws, traces)]
+    for row in rows:
+        row["judgement"] = judgement_of(row["trace"])
     return {"conversation_id": conversation_id, "date": raws[0][0].removeprefix(CHAT_PREFIX), "rows": rows}
 
 
@@ -344,7 +348,9 @@ def run_detail(run_dir: Path, cases: dict[str, Case], suite_of: dict[str, str] |
     rows = []
     for trace in load_run(run_dir):
         case = cases.get(trace["case_id"])
-        rows.append(case_row(trace, case, run_dir.name))
+        row = case_row(trace, case, run_dir.name)
+        row["judgement"] = judgement_of(trace)
+        rows.append(row)
     calib = calibration([(r["case"]["inject"], r["trace"]) for r in rows if r["case"] and r["case"].get("inject")])
     return {"summary": summary, "heatmap": heatmap(rows), "rows": rows, "calibration": calib}
 
