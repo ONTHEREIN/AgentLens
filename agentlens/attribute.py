@@ -17,6 +17,7 @@
        性能预算（答案无误、只有 budget 不过时，插在 5 之前）：
            工具调用超次数 → L1 规划冗余；耗时超预算 → L0，理由里拆出数据源 / 模型各占多少；
            只有 token 超预算 → L1
+       多余调用（exact 模式期望工具都调了、答案无误，只多调了别的工具，插在 5 之前）→ L1 规划冗余
         -   都不匹配 → 未定层，落人工复核队列（诚实标注，不硬凑）
 
 > v0 未经校准，接口稳定、规则可迭代。M2 用 100 条人工标注集跑准确率。
@@ -147,6 +148,19 @@ def attribute(case: Case, trace: Trace) -> Attribution:
     # 性能预算：答案没问题、只是超预算。必须在 5 之前，否则带检索的用例会被误归知识源
     if "budget" in failed and not answer_issue:
         return _attribute_budget(case, trace)
+
+    # 多余调用：exact 模式下期望工具都调了、答案也没问题，只是额外多调了别的工具。
+    # 必须在 5 之前，否则顺手多检索一次通知会因为 trace 里有 retrieve 被误归知识源
+    if "tool_sequence" in failed and case.expect.mode == "exact":
+        required = [t.name for t in case.expect.tools if not t.optional]
+        allowed = {t.name for t in case.expect.tools}
+        extra = [n for n in _distinct(actual) if n not in allowed]
+        if extra and all(n in actual for n in required):
+            return Attribution(
+                "L1",
+                f"期望工具均已调用，但额外调用了 {extra}（实际 {actual}）：规划冗余",
+                [plan.span_id, *[t.span_id for t in trace.tool_calls if t.name in extra]],
+            )
 
     # 5 —— 知识与检索：答案忠实，但拿到的知识/数据本身就是错的
     if trace.retrieves:

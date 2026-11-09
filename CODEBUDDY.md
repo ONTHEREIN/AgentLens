@@ -85,6 +85,7 @@ Adapter.invoke(case)      → AgentOutput(status/answer/spans/tokens)
 2. L2  期望的首个工具不在实际调用中
 3. L3  tool_args 失败或 schema_ok=False
 4. L4  工具返回全 ok，但 answer_text 断言不过
+   ·   exact 模式期望工具都调了、答案无误、只多调了别的工具 → L1 规划冗余（插在 5 之前）
 5. L5  有 retrieve（零召回 / 知识源本身错），或 observation 报错
    –   都不匹配 → 仍返回 L1 并标注「需人工复核」，不引入未定义层
 ```
@@ -147,7 +148,6 @@ LLM 裁判（M2，尚未实现）只负责答案忠实度 / rubric 这类规则�
   性能预算断言（`expect.budget`）、基线门禁（`compare` / `run --baseline`，审计台运行对比页同一结论）、
   自包含 HTML 报告（`report.py`，由 traces.jsonl 二次生成，断网可开）
 - 用例：测被测对象 354 条（人工 82 + 生成 272，自动生成 76.8%）+ 校准集 159 条（见 `docs/用例扩充-2026-11-08.md`）
-- 归因决策树缺「多余工具调用」分支：`exact` 模式多调一次 `search_notices` 会被误归 L5
 - **归因在真实缺陷上的准确率未知**：校准集 100% 有循环论证成分（算子对着决策树分支设计），
   真实准确率只能靠人工复核 κ，目前标注仅 3 条
 - L6 没有注入通道（护栏是规则，不经 LLM 回复）；性能预算只有 5 条用例 + 2 条变慢故障
