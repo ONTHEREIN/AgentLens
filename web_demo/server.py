@@ -39,6 +39,7 @@ from agentlens.schema import LAYER_NAMES, SPAN_KINDS  # noqa: E402
 WEB_DIR = Path(__file__).resolve().parent / "static"
 RESULTS_DIR = ROOT / "results"
 LABELS_FILE = ROOT / "reviews" / "labels.jsonl"
+DEFECTS_FILE = ROOT / "docs" / "缺陷清单.md"
 # 软帮手线上对话日志（聊天页每轮一行），审计台按天读成 chat-<日期> 运行
 CHAT_DIR = Path(os.environ.get(
     "ONEGZUS_TRACE_DIR", ROOT.parent / "GZUS-PRO-agent" / "services" / "api" / "data" / "traces",
@@ -80,6 +81,14 @@ SUITES: dict[str, dict] = {
 RUN_LOCK = threading.Lock()
 
 
+def defect_catalog() -> list[dict]:
+    """缺陷清单总表（docs/缺陷清单.md）里的编号与一句话，复核时关联缺陷用；清单是唯一来源。"""
+    if not DEFECTS_FILE.is_file():
+        return []
+    rows = re.findall(r"^\| (D-\d{3}) \| (L\d) \| (\S+) \| ([^|]+?) \|", DEFECTS_FILE.read_text(encoding="utf-8"), re.M)
+    return [{"id": d, "layer": layer, "severity": sev, "title": title} for d, layer, sev, title in rows]
+
+
 def catalog_payload(suites: dict[str, list[Case]]) -> dict:
     return {
         "app": "AgentLens 审计台",
@@ -87,7 +96,9 @@ def catalog_payload(suites: dict[str, list[Case]]) -> dict:
         "layers": LAYER_NAMES,
         "span_kinds": list(SPAN_KINDS),
         "span_labels": audit.SPAN_LABELS,
-        "review_targets": audit.REVIEW_TARGETS,
+        "review_targets": audit.LABEL_TARGETS,
+        "dispositions": audit.DISPOSITIONS,
+        "defects": defect_catalog(),
         "judge_configured": JudgeConfig.load() is not None,
         "suites": [
             {"id": sid, "label": SUITES[sid]["label"], "cases": len(cases),
@@ -283,12 +294,14 @@ class AgentLensHandler(BaseHTTPRequestHandler):
             return
 
         if path == "/api/reviews":
+            # 单条 {target, ...} 或批量 {"labels": [...]}；批量要么全写要么全不写
+            batch = payload.get("labels") if isinstance(payload.get("labels"), list) else [payload]
             try:
-                record = audit.add_label(LABELS_FILE, payload)
-            except ValueError as exc:
+                records = audit.add_labels(LABELS_FILE, batch)
+            except (ValueError, TypeError, AttributeError) as exc:
                 self._send_error_json(str(exc))
                 return
-            self._send_json({"label": record})
+            self._send_json({"label": records[0], "labels": records})
             return
 
         suite = payload.get("suite", "onegzus")
@@ -314,10 +327,13 @@ class AgentLensHandler(BaseHTTPRequestHandler):
 
 
 def main() -> int:
+    global LABELS_FILE
     parser = argparse.ArgumentParser(description="AgentLens 审计台")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--labels", type=Path, default=LABELS_FILE, help="人工标注文件（试用复核流程时可指向临时文件）")
     args = parser.parse_args()
+    LABELS_FILE = args.labels
 
     try:
         suites = {sid: load_cases(spec["dir"]) for sid, spec in SUITES.items()}

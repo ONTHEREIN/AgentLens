@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -33,6 +34,17 @@ REVIEW_TARGETS: dict[str, str] = {
     "llm_faithfulness": "LLM 忠实度结论",
 }
 LAYER_VALUES = ["none", *LAYER_NAMES]
+
+# 复核结论：这条失败「站不站得住、是谁的问题」。不进 κ（机器没有对应的判断），
+# 但决定这条样本最终算不算被测对象的缺陷，是缺陷清单与「用例过严」类争议的落脚点
+DISPOSITIONS: dict[str, str] = {
+    "agent_defect": "智能体缺陷",
+    "case_too_strict": "用例过严，应判通过",
+    "judge_wrong": "裁判误判",
+    "case_invalid": "用例无效（改写漂移 / 预言写错）",
+    "unsure": "拿不准，待讨论",
+}
+LABEL_TARGETS: dict[str, str] = {**REVIEW_TARGETS, "disposition": "复核结论"}
 
 # 维度与 span 的中文名：审计台与 HTML 报告共用；schema.py 的维度若有变动需同步
 DIMENSION_LABELS: dict[str, str] = {
@@ -559,20 +571,28 @@ def latest_labels(labels: list[dict[str, Any]]) -> dict[tuple[str, str], dict[st
     return out
 
 
-def add_label(path: Path, label: dict[str, Any]) -> dict[str, Any]:
+_DEFECT_ID = re.compile(r"^D-\d{3}$")
+
+
+def make_label(label: dict[str, Any]) -> dict[str, Any]:
+    """校验一条人工标注并补全成落盘记录；不合法抛 ValueError。"""
     target = label.get("target")
-    if target not in REVIEW_TARGETS:
+    if target not in LABEL_TARGETS:
         raise ValueError(f"未知复核目标：{target}")
     allowed = {
         "verdict": {"pass", "fail"},
         "layer": set(LAYER_VALUES),
         "llm_faithfulness": {"faithful", "unfaithful"},
+        "disposition": set(DISPOSITIONS),
     }[target]
     if label.get("human") not in allowed:
-        raise ValueError(f"{REVIEW_TARGETS[target]} 的人工结论只能是 {sorted(allowed)}")
+        raise ValueError(f"{LABEL_TARGETS[target]} 的人工结论只能是 {sorted(allowed)}")
     for key in ("trace_key", "case_id", "run_id", "machine"):
         if not label.get(key):
             raise ValueError(f"缺少字段：{key}")
+    defect = str(label.get("defect") or "").strip().upper()
+    if defect and not _DEFECT_ID.match(defect):
+        raise ValueError(f"缺陷编号格式应为 D-001：{defect}")
     record = {
         "trace_key": label["trace_key"],
         "case_id": label["case_id"],
@@ -580,15 +600,33 @@ def add_label(path: Path, label: dict[str, Any]) -> dict[str, Any]:
         "target": target,
         "machine": label["machine"],
         "human": label["human"],
-        "agree": label["machine"] == label["human"],
+        # 复核结论没有机器对应物，一致与否无意义
+        "agree": None if target == "disposition" else label["machine"] == label["human"],
         "note": str(label.get("note") or "")[:500],
         "reviewer": str(label.get("reviewer") or "")[:40],
         "at": datetime.now().isoformat(timespec="seconds"),
     }
+    if defect:
+        record["defect"] = defect
+    if label.get("batch_of"):
+        # 批量沿用：复核人只看了 batch_of 那一条，其余同组样本照搬结论。κ 统计时可据此剔除
+        record["batch_of"] = str(label["batch_of"])[:64]
+    return record
+
+
+def add_labels(path: Path, labels: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """全部校验通过才一次性追加写入；任一条不合法则一条都不写。"""
+    if not labels:
+        raise ValueError("没有要保存的标注")
+    records = [make_label(lb) for lb in labels]
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as fh:
-        fh.write(json.dumps(record, ensure_ascii=False) + "\n")
-    return record
+        fh.writelines(json.dumps(r, ensure_ascii=False) + "\n" for r in records)
+    return records
+
+
+def add_label(path: Path, label: dict[str, Any]) -> dict[str, Any]:
+    return add_labels(path, [label])[0]
 
 
 def cohen_kappa(pairs: list[tuple[str, str]]) -> float | None:
@@ -605,10 +643,14 @@ def cohen_kappa(pairs: list[tuple[str, str]]) -> float | None:
 
 
 def agreement(labels: list[dict[str, Any]]) -> dict[str, Any]:
+    """人机一致率与 κ。批量沿用的标注（batch_of）没被逐条看过，不计入，只计复核人亲眼看过的样本。"""
     latest = latest_labels(labels)
     stats = {}
     for target, name in REVIEW_TARGETS.items():
-        pairs = [(lb["machine"], lb["human"]) for (_, t), lb in latest.items() if t == target]
+        pairs = [
+            (lb["machine"], lb["human"]) for (_, t), lb in latest.items()
+            if t == target and not lb.get("batch_of")
+        ]
         agree = sum(1 for m, h in pairs if m == h)
         stats[target] = {
             "name": name,
@@ -617,7 +659,13 @@ def agreement(labels: list[dict[str, Any]]) -> dict[str, Any]:
             "rate": round(agree / len(pairs) * 100, 1) if pairs else None,
             "kappa": cohen_kappa(pairs),
         }
-    return {"targets": stats, "labels": sorted(latest.values(), key=lambda lb: lb["at"], reverse=True)}
+    dispositions = Counter(lb["human"] for (_, t), lb in latest.items() if t == "disposition")
+    return {
+        "targets": stats,
+        "dispositions": {k: dispositions.get(k, 0) for k in DISPOSITIONS},
+        "batched": sum(1 for lb in latest.values() if lb.get("batch_of")),
+        "labels": sorted(latest.values(), key=lambda lb: lb["at"], reverse=True),
+    }
 
 
 # ---------------------------------------------------------------- 待复核队列与概览
@@ -693,6 +741,8 @@ def review_queue(
             continue
         key = trace_key(trace)
         case = cases.get(trace["case_id"]) if source == "cases" else None
+        human = {t: latest[(key, t)] for t in LABEL_TARGETS if (key, t) in latest}
+        disposition = human.get("disposition", {}).get("human")
         items.append({
             "trace_key": key,
             "run_id": run_id,
@@ -706,20 +756,65 @@ def review_queue(
             "layer": trace.get("layer"),
             "layer_reason": trace.get("layer_reason"),
             "reasons": reasons,
-            "reviewed": any((key, t) in latest for t in ("verdict", "layer")),
+            "family": family_of(trace["case_id"]) if source == "cases" else trace["case_id"],
+            "variant": variant_of(trace["case_id"]) if source == "cases" else None,
+            "failed_checks": [c["check"] for c in trace["verdict"]["checks"] if not c["passed"]],
+            "machine": {t: machine_value(trace, t) for t in REVIEW_TARGETS},
+            "human": {t: lb["human"] for t, lb in human.items()},
+            "reviewer": next((lb.get("reviewer") for lb in human.values() if lb.get("reviewer")), None),
+            "defect": next((lb["defect"] for lb in human.values() if lb.get("defect")), None),
+            "disposition": disposition,
+            # 定了判定或归因层就算复核完；判为「用例无效」也算（没有可判的东西）；「拿不准」进待讨论
+            "reviewed": (
+                any(t in human for t in ("verdict", "layer")) or disposition == "case_invalid"
+            ) and disposition != "unsure",
+            "discuss": disposition == "unsure",
             "at": at,
         })
     priority = list(QUEUE_REASONS)
     items.sort(key=lambda i: i["at"], reverse=True)
-    items.sort(key=lambda i: (i["reviewed"], priority.index(i["reasons"][0])))
-    pending = [i for i in items if not i["reviewed"]]
+    items.sort(key=lambda i: (i["reviewed"], priority.index(i["reasons"][0]), i["family"], i["variant"] or ""))
+    pending = [i for i in items if not i["reviewed"] and not i["discuss"]]
     return {
         "reasons": QUEUE_REASONS,
         "pending": len(pending),
-        "reviewed": len(items) - len(pending),
+        "discuss": sum(1 for i in items if i["discuss"]),
+        "reviewed": sum(1 for i in items if i["reviewed"]),
         "by_reason": {r: sum(1 for i in pending if r in i["reasons"]) for r in QUEUE_REASONS},
         "items": items,
     }
+
+
+GEN_SEP = "__gen_"
+
+
+def family_of(case_id: str) -> str:
+    """改写用例归回它的基准用例：同一问题的几种说法放在一组复核。"""
+    return case_id.split(GEN_SEP, 1)[0]
+
+
+def variant_of(case_id: str) -> str | None:
+    return case_id.split(GEN_SEP, 1)[1] if GEN_SEP in case_id else None
+
+
+def judgement_of(trace: dict[str, Any]) -> dict[str, Any] | None:
+    """LLM 裁判的完整结论（逐条问题、模型、rubric），复核时要看到它到底指出了什么。"""
+    check = llm_check(trace)
+    ref = next((e for e in (check or {}).get("evidence", []) if e.startswith("judgement:")), None)
+    if ref is None:
+        return None
+    name = ref.split(":", 1)[1] + ".json"
+    for folder in (_judge_cache(trace.get("meta") or {}), CACHE_DIR):
+        file = folder / name
+        if file.is_file():
+            data = json.loads(file.read_text(encoding="utf-8"))
+            return {
+                "model": data.get("model"),
+                "prompt_version": data.get("prompt_version"),
+                "verdict": data.get("verdict"),
+                "rubric": (data.get("evidence") or {}).get("rubric"),
+            }
+    return None
 
 
 def trace_row(
@@ -731,13 +826,19 @@ def trace_row(
     if chat is not None:
         for line in chat.read_text(encoding="utf-8").splitlines():
             if line.strip() and json.loads(line).get("case_id") == case_id:
-                return chat_row(judge_chat_trace(json.loads(line), config), run_id)
+                row = chat_row(judge_chat_trace(json.loads(line), config), run_id)
+                row["judgement"] = judgement_of(row["trace"])
+                return row
         return None
     run_dir = results_dir / run_id
     if not (run_dir / "traces.jsonl").is_file():
         return None
     trace = next((t for t in load_run(run_dir) if t["case_id"] == case_id), None)
-    return None if trace is None else case_row(trace, cases.get(case_id), run_id)
+    if trace is None:
+        return None
+    row = case_row(trace, cases.get(case_id), run_id)
+    row["judgement"] = judgement_of(trace)
+    return row
 
 
 def overview(
