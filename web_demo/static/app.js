@@ -139,6 +139,19 @@
     return /^\d{8}$/.test(s) ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6)}` : formatTime(s);
   }
 
+  // 列表预览用的纯文本：去掉 Markdown 表格分隔线、竖线、加粗和标题符号
+  function mdPlain(text) {
+    return String(text || "")
+      .split("\n")
+      .filter((line) => !/^\s*\|?[\s:|-]+\|?\s*$/.test(line))
+      .map((line) => line.replace(/^\s*[-*]\s+/, ""))
+      .join(" ")
+      .replace(/\*\*|`|^#+\s*/gm, "")
+      .replace(/\s*\|\s*/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
   function clip(text, n) {
     const s = String(text || "");
     return s.length > n ? `${s.slice(0, n)}…` : s;
@@ -556,7 +569,7 @@
       <a class="conv-row" href="#/chat/${encodeURIComponent(c.conversation_id)}">
         <span class="conv-main">
           <b>${c.real_account ? '<span class="tag warn" title="真实账号的对话含本人真实数据，只留本地">真实账号</span> ' : ""}${escapeHtml(c.title ? clip(c.title, 60) : "（未记录用户输入）")}</b>
-          <small>${escapeHtml(clip(c.last_answer.replace(/\s+/g, " "), 90))}</small>
+          <small>${escapeHtml(clip(mdPlain(c.last_answer), 90))}</small>
         </span>
         <span class="conv-cell">${c.turns} 轮</span>
         <span class="conv-cell">${convStatus(c)}${c.layers.map((l) => ` <span class="tag">${escapeHtml(l)}</span>`).join("")}</span>
@@ -595,17 +608,17 @@
       const rule = verdictClass(t.verdict.rule);
       const question = lastUser(row);
       return `
-        <button type="button" class="turn ${i === sel ? "is-selected" : ""} is-${rule}" data-turn="${i}" aria-pressed="${i === sel}">
+        <div class="turn ${i === sel ? "is-selected" : ""} is-${rule}" data-turn="${i}" role="button" tabindex="0" aria-pressed="${i === sel}">
           <span class="turn-no">第 ${escapeHtml(t.turn || i + 1)} 轮</span>
           ${question ? `<span class="bubble user">${escapeHtml(question)}</span>` : '<span class="bubble user is-missing">（未记录用户输入）</span>'}
-          <span class="bubble agent">${escapeHtml(clip(t.answer, 140))}</span>
+          <div class="bubble agent md-bubble ${i === sel ? "" : "is-clamped"}">${t.answer ? renderAnswer(t.answer, []).html : '<p class="muted">（无回答）</p>'}</div>
           <span class="turn-foot">
             <span class="verdict-pill ${rule}">${statusLabel(t.verdict.rule)}</span>
             ${t.layer ? `<span class="layer-mini">${escapeHtml(t.layer)} ${escapeHtml(layerName(t.layer))}</span>` : ""}
             ${t.verdict.judge_degraded ? '<span class="layer-mini is-empty">未判定</span>' : ""}
             <span class="muted small">${escapeHtml(latencyLabel(t.latency_ms))}</span>
           </span>
-        </button>`;
+        </div>`;
     }).join("");
     view.innerHTML = `
       ${pageHead(escapeHtml(clip(title, 40)), `${rows.length} 轮 · ${failed ? `<span class="fail-text">${failed} 轮失败</span>` : "全部通过"} · 模型 ${escapeHtml(first.trace.model)} · ${escapeHtml(formatDay(c.date))}`, {
@@ -618,11 +631,22 @@
         </aside>
         <section class="detail-panel" id="detailPanel">${auditPanelHtml(itemFromRow(rows[sel], c.labels), rows[sel], { inPlace: true, compact: true })}</section>
       </section>`;
-    view.querySelectorAll("[data-turn]").forEach((b) => b.addEventListener("click", () => {
+    const openTurn = (b) => {
       state.selectedTurn = Number(b.dataset.turn);
       history.replaceState(null, "", `#/chat/${encodeURIComponent(c.conversation_id)}/${state.selectedTurn + 1}`);
       renderChat();
-    }));
+      $(`[data-turn="${state.selectedTurn}"]`)?.focus({ preventScroll: true });
+    };
+    // 轮次里有渲染后的回答（含表格），不能放进 <button>，用 role=button 的 div 并补上键盘操作
+    view.querySelectorAll("[data-turn]").forEach((b) => {
+      b.addEventListener("click", () => openTurn(b));
+      b.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openTurn(b);
+        }
+      });
+    });
     state.audit = null;
     bindAudit(itemFromRow(rows[sel], c.labels), rows[sel], {
       opts: { inPlace: true, compact: true },
@@ -1361,7 +1385,7 @@
   document.addEventListener("keydown", (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.target.closest("input, textarea, select")) return;
-    if (e.key === "Enter" && e.target.closest("button, a")) return; // 回车已经在触发聚焦按钮的点击
+    if (e.key === "Enter" && e.target.closest("button, a, [role=button]")) return; // 回车已经在触发聚焦按钮的点击
     const key = e.key.toLowerCase();
     const inQueue = location.hash.startsWith("#/queue") && state.queue;
     if (inQueue && (key === "j" || key === "s")) stepQueue(1);

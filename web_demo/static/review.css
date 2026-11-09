@@ -1014,3 +1014,50 @@ kbd {
   align-items: center;
   white-space: nowrap;
 }
+
+/* 会话页左侧：回答按 Markdown 渲染；未选中的轮次折叠成预览 */
+
+.bubble.md-bubble {
+  white-space: normal;
+}
+
+.md-bubble p {
+  margin: 0 0 6px;
+}
+
+.md-bubble > :last-child {
+  margin-bottom: 0;
+}
+
+.md-bubble ul,
+.md-bubble ol {
+  margin: 0 0 6px;
+  padding-left: 18px;
+}
+
+.md-bubble .table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.md-bubble .rv-md-table {
+  margin: 2px 0 6px;
+  font-size: 12px;
+}
+
+.md-bubble .rv-md-table th,
+.md-bubble .rv-md-table td {
+  padding: 3px 7px;
+}
+
+.md-bubble.is-clamped {
+  max-height: 168px;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+
+.turn:focus-visible {
+  outline: 2px solid var(--green-bright);
+  outline-offset: 2px;
+}
