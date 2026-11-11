@@ -90,8 +90,17 @@ def run_suite(suite: str) -> Path:
     return run_dir
 
 
+def _softbreak(self, tokens, idx, options, env) -> str:
+    """中文段落的源码折行不该变成空格；两侧都是西文字符时才保留。"""
+    prev = tokens[idx - 1].content[-1:] if idx > 0 else ""
+    nxt = tokens[idx + 1].content[:1] if idx + 1 < len(tokens) else ""
+    return " " if prev.isascii() and nxt.isascii() and prev.strip() and nxt.strip() else ""
+
+
 def md_to_pdf(md_file: Path, pdf: Path) -> None:
-    html_body = MarkdownIt("commonmark").enable("table").render(md_file.read_text(encoding="utf-8"))
+    md = MarkdownIt("commonmark").enable("table")
+    md.add_render_rule("softbreak", _softbreak)
+    html_body = md.render(md_file.read_text(encoding="utf-8"))
     html = (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<base href="{md_file.parent.as_uri()}/"><style>{PDF_CSS}</style></head><body>{html_body}</body></html>')
     tmp = DIST / "_intro.html"
