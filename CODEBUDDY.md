@@ -160,4 +160,5 @@ python -m agentlens generate cases/onegzus/                     # LLM 保义改�
 python -m agentlens run cases/calibration/ --adapter onegzus    # 输出「故障注入校准」表：检出率 / 归因准确率 / 95% CI
 python -m agentlens compare <基线> <本次>                        # 基线门禁：新增失败或 p90 耗时涨超 20% → 退出码 1
 python -m agentlens report <run_id> [--baseline <run_id>]       # HTML 报告 → results/<run_id>/report.html
+python scripts/pack_submission.py                                # 提交包 → dist/AgentLens-提交包(.zip)：离线回放现跑 + 介绍文档转 PDF（需本机 Chrome）
 ```
