@@ -10,3 +10,6 @@ results/
 
 # 真实账号线上对话的 LLM 裁判缓存：含本人真实数据，只留本地
 judgements/local/
+
+# 提交包产物（scripts/pack_submission.py 生成）
+dist/
