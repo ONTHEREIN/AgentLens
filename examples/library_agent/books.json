@@ -1,0 +1,27 @@
+{
+  "_note": "全部虚构：书名、作者、读者均为演示用构造数据",
+  "books": [
+    {"book_id": "B001", "title": "机器学习入门十二讲", "author": "林知远", "year": 2021, "tags": ["机器学习", "人工智能"]},
+    {"book_id": "B002", "title": "深度学习实践手册", "author": "周若溪", "year": 2023, "tags": ["深度学习", "机器学习", "神经网络"]},
+    {"book_id": "B003", "title": "数据结构与算法图解", "author": "陈一舟", "year": 2019, "tags": ["数据结构", "算法"]},
+    {"book_id": "B004", "title": "Python 编程从零开始", "author": "许青禾", "year": 2022, "tags": ["Python", "编程"]},
+    {"book_id": "B005", "title": "操作系统原理与实验", "author": "王砚秋", "year": 2020, "tags": ["操作系统"]},
+    {"book_id": "B006", "title": "软件测试的艺术与方法", "author": "赵明川", "year": 2018, "tags": ["软件测试", "软件工程"]},
+    {"book_id": "B007", "title": "自然语言处理导论", "author": "林知远", "year": 2024, "tags": ["自然语言处理", "人工智能"]},
+    {"book_id": "B008", "title": "数据库系统概念精讲", "author": "孙未央", "year": 2021, "tags": ["数据库"]}
+  ],
+  "copies": {
+    "B001": [{"location": "主馆 3 楼 A 区", "status": "available"}, {"location": "主馆 3 楼 A 区", "status": "on_loan", "due": "2026-10-08"}],
+    "B002": [{"location": "主馆 3 楼 A 区", "status": "on_loan", "due": "2026-09-15"}],
+    "B003": [{"location": "分馆 2 楼 自习区", "status": "available"}, {"location": "主馆 4 楼 B 区", "status": "available"}],
+    "B004": [{"location": "主馆 4 楼 B 区", "status": "on_loan", "due": "2026-09-25"}],
+    "B005": [{"location": "主馆 4 楼 C 区", "status": "available"}],
+    "B006": [{"location": "分馆 1 楼 新书架", "status": "available"}],
+    "B007": [{"location": "主馆 3 楼 A 区", "status": "reference_only"}],
+    "B008": [{"location": "主馆 4 楼 C 区", "status": "on_loan", "due": "2026-10-15"}]
+  },
+  "my_loans": [
+    {"book_id": "B004", "title": "Python 编程从零开始", "borrowed": "2026-08-26", "due": "2026-09-25", "renewals_left": 1},
+    {"book_id": "B002", "title": "深度学习实践手册", "borrowed": "2026-08-01", "due": "2026-09-15", "renewals_left": 0}
+  ]
+}
