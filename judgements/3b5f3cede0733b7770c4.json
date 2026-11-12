@@ -1,0 +1,68 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "perf_notice_search_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "近期咱们校园内发布了哪些公告？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "通知"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 4,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "办事大厅·申请",
+            "title": "校园卡服务已更新",
+            "date": "2026-09-17",
+            "summary": "可在应用中查看常用校园服务。",
+            "source": "jwxt"
+          },
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "以下是近期校园发布的公告（按时间倒序）：\n\n| 日期 | 类别 | 标题 | 摘要 |\n|---|---|---|---|\n| 2026-09-18 | 通知公告 | 2026 年秋季学期课程提醒 | 请关注近期课程安排和考试时间 |\n| 2026-09-17 | 办事大厅·申请 | 校园卡服务已更新 | 可在应用中查看常用校园服务 |\n| 2026-09-16 | 校园活动 | 校园创新实践周报名开始 | 欢迎同学报名参加创新实践活动 |\n| 2026-09-12 | 教务通知 | 关于期末考试安排的说明 | 考试安排已更新，请及时查看 |\n\n其中「2026 年秋季学期课程提醒」和「关于期末考试安排的说明」与本学期学习安排相关，建议优先查看；创新实践周报名正在进行，感兴趣可以留意截止时间。\n\n需要我帮你查本周课表或本学期考试安排吗？",
+    "rubric": null
+  }
+}

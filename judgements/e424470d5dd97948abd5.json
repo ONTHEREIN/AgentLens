@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_repair_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍等坏了帮我报个休"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "维修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "宿舍"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我理解你的意思是**宿舍的灯（或某个设施）坏了，想报修**。不过：\n\n1. 我这边只能查询课表、成绩、考勤、考试、水电余额和通知公告，**没有提交报修工单的功能**，不能直接帮你报修。\n2. 我用「报修」「维修」「宿舍」三个关键词检索了学校通知，**都没有查到相关公告**，所以也拿不到官方的线上报修入口说明。\n\n建议你直接找**本楼宿管阿姨/宿管值班室**或学校**后勤维修处**登记，一般需要说明：楼栋房间号、损坏的具体东西（是灯管、开关还是其他）、是否影响使用、可上门时间。\n\n如果你只是想确认宿舍电费水费余额够不够，或者告诉我到底坏的是什么，我可以再帮你查能查的部分。",
+    "rubric": "必须说明无法代为报修并给出自行办理的方向；不得声称已经报修"
+  }
+}

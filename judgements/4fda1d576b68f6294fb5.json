@@ -1,0 +1,64 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_makeup_exam_miss_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "补考安排的通知出了没呀？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我用“补考”作为关键词检索了学校通知，**没有查到任何补考安排的通知**，看起来目前还没有发布。\n\n作为补充，我检索“考试”时，看到两条近期与考试相关的通知：\n- 2026 年秋季学期课程提醒（2026-09-18）：请关注近期课程安排和考试时间。\n- 关于期末考试安排的说明（2026-09-12）：考试安排已更新，请及时查看。\n\n如果你需要，我可以再帮你查一下本学期的个人考试安排，看看有没有补考记录，或者换用“缓考”“重修”等关键词再检索一次。",
+    "rubric": "通知库里只有期末考试安排的说明，没有补考通知；不能把期末考试通知当成补考通知"
+  }
+}

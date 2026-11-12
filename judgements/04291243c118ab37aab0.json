@@ -1,0 +1,62 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_card_days_left_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "照现在这么用，宿舍电还能撑几天"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_card_balance",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "status": "ok",
+          "studentId": "DEMO-2026-001",
+          "roomId": "DEMO|A1|A1|101",
+          "roomDisplay": "演示宿舍 A1-101",
+          "powerBalance": 68.4,
+          "powerUnit": "度",
+          "powerText": "68.4 度",
+          "coldWaterBalance": 9.6,
+          "coldWaterUnit": "吨",
+          "coldWaterText": "9.6 吨",
+          "hotWaterBalance": 42.8,
+          "hotWaterUnit": "元",
+          "hotWaterText": "42.80元",
+          "reminderEnabled": true,
+          "lowPowerThreshold": 30.0,
+          "lowColdWaterThreshold": 5.0,
+          "lowHotWaterThreshold": 10.0,
+          "reminderTimes": [
+            "08:00"
+          ],
+          "reminderItems": [
+            "power",
+            "cold_water",
+            "hot_water"
+          ],
+          "updatedAt": "2026-09-19T08:00:00+08:00",
+          "stale": false
+        }
+      }
+    ],
+    "answer": "查到了你的电费余额，但**算不出还能用几天**——系统只提供余额，没有提供每日用电量或近几天用电记录，我无法据此推算。\n\n当前情况（查询时间：2026-09-19 08:00）：\n\n| 项目 | 余额 |\n|---|---|\n| 宿舍电费 | **68.4 度** |\n| 冷水 | 9.6 吨 |\n| 热水 | 42.80 元 |\n\n宿舍：演示宿舍 A1-101\n\n几点说明：\n- 电费预警线是 30 度，你现在 68.4 度还在安全区间以上，暂时没到提醒阈值；\n- 冷水 9.6 吨、热水 42.80 元也都高于预警线（5 吨 / 10 元），短期不用太担心；\n- 如果你知道宿舍日均用电大概多少度，用 68.4 ÷ 日均度数就能估出天数；比如日均 3 度，大约还能用 22 天左右（这只是按你提供的数字举例，不是我查到的实际用电数据）。\n\n需要的话我可以再帮你查一下有没有相关的电费充值或停电通知。",
+    "rubric": "余额工具只返回剩余 68.4 度，不含每日用电量；若给出天数，必须说明是按假设的日用量估算，不得冒充系统数据"
+  }
+}

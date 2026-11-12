@@ -1,0 +1,65 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_activity_rag_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "创心实践周怎么报明"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "创心实践周"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "实践周 报名"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我只查到一条相关通知：\n\n**《校园创新实践周报名开始》**\n- 类别：校园活动\n- 发布时间：2026-09-16\n- 发布来源：教务系统（jwxt）\n- 摘要：欢迎同学报名参加创新实践活动。\n- 详情：https://demo.local/notices/activity\n\n不过，这条通知的摘要没有写明具体的报名方式、截止时间或报名入口。系统里也没有检索到更详细的报名流程说明。建议你：\n1. 打开上面链接查看通知全文；\n2. 或者到教务系统查看该通知详情页，也可以直接咨询辅导员，确认报名截止时间。\n\n如果你需要，我也可以帮你看看本周课表或其他通知。",
+    "rubric": "通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_activity_rag_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近课好多啊终于快放假了，那个创新实践周怎么报名来着？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "创新实践周"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s6",
+        "tool": "get_schedule",
+        "args": {
+          "week": 4
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 7,
+        "data": [
+          {
+            "name": "软件工程导论",
+            "teacher": "林老师",
+            "classroom": "A3-201",
+            "weekday": 1,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "高等数学（下）",
+            "teacher": "周老师",
+            "classroom": "B2-305",
+            "weekday": 1,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据结构",
+            "teacher": "陈老师",
+            "classroom": "实训楼 204",
+            "weekday": 2,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "大学英语（四）",
+            "teacher": "王老师",
+            "classroom": "A1-108",
+            "weekday": 3,
+            "startSection": 1,
+            "endSection": 2,
+            "weeks": "1-16"
+          },
+          {
+            "name": "数据库原理",
+            "teacher": "赵老师",
+            "classroom": "A3-302",
+            "weekday": 3,
+            "startSection": 7,
+            "endSection": 8,
+            "weeks": "1-16"
+          },
+          {
+            "name": "操作系统",
+            "teacher": "黄老师",
+            "classroom": "B1-204",
+            "weekday": 4,
+            "startSection": 3,
+            "endSection": 4,
+            "weeks": "1-16"
+          },
+          {
+            "name": "体育（网球）",
+            "teacher": "何老师",
+            "classroom": "体育馆 2 号场",
+            "weekday": 5,
+            "startSection": 5,
+            "endSection": 6,
+            "weeks": "1-16"
+          }
+        ]
+      }
+    ],
+    "answer": "**创新实践周报名**\n\n学校通知中找到了《校园创新实践周报名开始》（发布日期 2026-09-16，来源：教务系统 jwxt），通知地址：https://demo.local/notices/activity。\n不过通知摘要只写了「欢迎同学报名参加创新实践活动」，具体的报名入口、截止时间等细节没有在检索结果中体现，建议你打开上面的链接查看完整通知，或者留意教务系统内的报名入口。\n\n**顺便说一下你本周（第 4 周）的课表**，确实挺满的：\n\n| 星期 | 课程 | 教师 | 教室 | 节次 |\n|---|---|---|---|---|\n| 周一 | 软件工程导论 | 林老师 | A3-201 | 1-2 节 |\n| 周一 | 高等数学（下） | 周老师 | B2-305 | 5-6 节 |\n| 周二 | 数据结构 | 陈老师 | 实训楼 204 | 3-4 节 |\n| 周三 | 大学英语（四） | 王老师 | A1-108 | 1-2 节 |\n| 周三 | 数据库原理 | 赵老师 | A3-302 | 7-8 节 |\n| 周四 | 操作系统 | 黄老师 | B1-204 | 3-4 节 |\n| 周五 | 体育（网球） | 何老师 | 体育馆 2 号场 | 5-6 节 |\n\n共 7 门课，其中周三、周一各有两门。这些课程都排了 1-16 周，所以第 4 周正好在正常上课阶段。需要我帮你查考试安排或考勤情况吗？",
+    "rubric": "通知只有标题与「欢迎同学报名参加」的摘要，没有报名方式；不得编造报名链接、截止时间或流程"
+  }
+}

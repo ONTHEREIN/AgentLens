@@ -7,86 +7,37 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_YKn4lWz0SxhLPSoWj2Pf6458",
+          "id": "call_00_f3h3avLOL2Z0Cj7i6ewA5645",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想了解学校最近发布的各类通知，需要检索通知公告\", \"steps\": [\"search_notices\"]}"
-        },
+          "arguments": "{\"intent\": \"用户想了解学校最近发布的通知公告\", \"steps\": [\"search_notices\"]}"
+        }
+      ],
+      "reasoning": "用户问最近学校有什么通知。需要调用 search_notices，但需要关键词。可以先用一个宽泛关键词，比如\"通知\"。\n\n先 make_plan。",
+      "prompt_tokens": 1256,
+      "completion_tokens": 101,
+      "latency_ms": 1413.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
         {
-          "id": "call_01_wLlaCcWf3CZ0QYIM4Qlm3887",
+          "id": "call_00_ET_ySGFpDjqOjSCMgqjIX5D2222",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"通知\"}"
         }
       ],
-      "reasoning": "用户问最近学校有什么通知，比较宽泛。search_notices 需要关键词。可以用\"通知\"或\"最近\"。先 make_plan。\n\n我可以搜索几个关键词：通知、教务、考试等。先搜索\"通知\"。",
-      "prompt_tokens": 1256,
-      "completion_tokens": 149,
-      "latency_ms": 1215.3
+      "reasoning": "",
+      "prompt_tokens": 1376,
+      "completion_tokens": 39,
+      "latency_ms": 552.1
     },
     {
-      "content": "",
-      "tool_calls": [
-        {
-          "id": "call_00_qndgZs7U6THXX1RzSoJy3229",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"教务\"}"
-        },
-        {
-          "id": "call_01_Nb4FXnLrlTNdJsuliWXH6224",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"考试\"}"
-        },
-        {
-          "id": "call_02_Uo4obqFGBAw7ZKeQM6JC0291",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"选课\"}"
-        },
-        {
-          "id": "call_03_EvXV1XnmFX6CcnUxCYnb4741",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"活动\"}"
-        }
-      ],
-      "reasoning": "搜索\"通知\"无结果。换关键词试试，比如\"教务\"、\"考试\"、\"选课\"、\"奖学金\"。可以并行调用多个。",
-      "prompt_tokens": 1433,
-      "completion_tokens": 157,
-      "latency_ms": 1161.3
-    },
-    {
-      "content": "",
-      "tool_calls": [
-        {
-          "id": "call_00_YGwb6UvbBR1pc7iB5gho5243",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"讲座\"}"
-        },
-        {
-          "id": "call_01_G4JuWO6fBnG7g00Mb6Fe7482",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"奖学金\"}"
-        },
-        {
-          "id": "call_02_5CzdWbkFvX3sBNmWfJgJ7210",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"宿舍\"}"
-        },
-        {
-          "id": "call_03_QxjKXz4HfNpzcjwDbH623745",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"图书馆\"}"
-        }
-      ],
-      "reasoning": "还可以再搜索几个关键词，比如\"奖学金\"、\"图书馆\"、\"水电\"、\"宿舍\"。也许够了。再试\"讲座\"、\"安全\"等。可以做一轮补充。",
-      "prompt_tokens": 1821,
-      "completion_tokens": 162,
-      "latency_ms": 966.0
-    },
-    {
-      "content": "我按“通知”“教务”“考试”“选课”“活动”“讲座”“奖学金”“宿舍”“图书馆”等关键词检索了通知公告，找到以下 3 条：\n\n| 日期 | 分类 | 标题 | 摘要 |\n|---|---|---|---|\n| 2026-09-18 | 通知公告 | 2026 年秋季学期课程提醒 | 请关注近期课程安排和考试时间。 |\n| 2026-09-16 | 校园活动 | 校园创新实践周报名开始 | 欢迎同学报名参加创新实践活动。 |\n| 2026-09-12 | 教务通知 | 关于期末考试安排的说明 | 考试安排已更新，请及时查看。 |\n\n三条通知都来自教务系统（jwxt）。如果需要，我可以继续帮你查本学期的考试安排、本周课表，或者搜索其他关键词的通知。",
+      "content": "最近学校发布了这些通知：\n\n1. **2026 年秋季学期课程提醒**（2026-09-18，通知公告）— 请关注近期课程安排和考试时间。\n2. **校园卡服务已更新**（2026-09-17，办事大厅·申请）— 可在应用中查看常用校园服务。\n3. **校园创新实践周报名开始**（2026-09-16，校园活动）— 欢迎同学报名参加创新实践活动。\n4. **关于期末考试安排的说明**（2026-09-12，教务通知）— 考试安排已更新，请及时查看。\n\n需要我帮你查一下本周课表或考试安排吗？",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 2023,
-      "completion_tokens": 178,
-      "latency_ms": 1487.0
+      "prompt_tokens": 1668,
+      "completion_tokens": 145,
+      "latency_ms": 1792.2
     }
   ]
 }

@@ -7,56 +7,51 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_dJAobvfWDLUoheH4FBTV4495",
+          "id": "call_00_B7E7lOBDYgrnuL6UuIqE5796",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道学校的补考安排通知是否已经发布，同时看看自己有没有补考安排。\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+          "arguments": "{\"intent\": \"用户想知道学校是否已发布补考安排的通知\", \"steps\": [\"search_notices\"]}"
         }
       ],
-      "reasoning": "The user asks whether the notice about supplementary exam (补考) arrangements has been published. I should search notices for \"补考\". Maybe also check exams. Let me make plan.\n\nSteps: search_notices with keyword 补考. Maybe also get_exams to see my exam arrangements. The question is \"补考安排的通知出了没呀？\" - primarily notice search. I could also check get_exams for current term。Let me do both? The plan requires listing steps. I'll do search_notices first, and maybe get_exams to check personal 补考 arrangement.\n\nI'll plan: search_notices(补考), get_exams (current term). They're independent, call in same block.",
+      "reasoning": "The user asks whether the makeup exam (补考) arrangement notice has been published. I should search notices with keyword 补考. First make_plan.\n\nNote: the user asks about 补考安排通知. Maybe also could check exams, but the question is about notice. Let me search notices \"补考\".\n\nI'll make plan then call search_notices.",
       "prompt_tokens": 1260,
-      "completion_tokens": 229,
-      "latency_ms": 2248.8
+      "completion_tokens": 144,
+      "latency_ms": 1684.9
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_2UK77D6KYbviYfjd99ZV5784",
+          "id": "call_00_ET_nOKE7mMWF6gmVi8hHnrW8979",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"补考\"}"
-        },
-        {
-          "id": "call_01_ET_5dWDKMQHHfEnRvJ7sjW42423",
-          "name": "get_exams",
-          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1508,
-      "completion_tokens": 86,
-      "latency_ms": 984.4
+      "prompt_tokens": 1423,
+      "completion_tokens": 40,
+      "latency_ms": 1014.4
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_BJ649zrLvlgX22SualK71547",
+          "id": "call_00_uvLFw0UGAKW9OLBNPjfY4544",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"考试\"}"
         }
       ],
-      "reasoning": "No 补考 notices found. Report. Maybe also try searching \"考试\" notice? Could be helpful. Let me search \"考试\" to see if there's a general exam notice. That's reasonable additional step.",
-      "prompt_tokens": 1745,
-      "completion_tokens": 83,
-      "latency_ms": 1320.9
+      "reasoning": "No results. Maybe try other keywords like \"考试\" or \"缓考\"/\"重修\". Let me try \"考试安排\".",
+      "prompt_tokens": 1476,
+      "completion_tokens": 65,
+      "latency_ms": 1029.4
     },
     {
-      "content": "已帮你查过了：\n\n**补考通知：目前还没有。** 用「补考」关键词检索学校通知公告，返回结果是空的，说明补考安排的通知还没发布。\n\n**你的考试安排**（2026-2027 学年第 1 学期，均为期末考试，不是补考）：\n- 数据库原理：2026-12-24（周四）09:00-11:00，A3-302，座位 18\n- 操作系统：2026-12-28（周一）14:00-16:00，B1-204，座位 27\n\n**相关通知**（但与补考无关）：\n- 《2026 年秋季学期课程提醒》（09-18 发布）：提醒关注近期课程安排和考试时间\n- 《关于期末考试安排的说明》（09-12 发布）：考试安排已更新，请及时查看\n\n建议过几天再查一次，或者留意教务系统（jwxt）的通知更新。需要我到时候再帮你查一下吗？",
+      "content": "我用“补考”作为关键词检索了学校通知，**没有查到任何补考安排的通知**，看起来目前还没有发布。\n\n作为补充，我检索“考试”时，看到两条近期与考试相关的通知：\n- 2026 年秋季学期课程提醒（2026-09-18）：请关注近期课程安排和考试时间。\n- 关于期末考试安排的说明（2026-09-12）：考试安排已更新，请及时查看。\n\n如果你需要，我可以再帮你查一下本学期的个人考试安排，看看有没有补考记录，或者换用“缓考”“重修”等关键词再检索一次。",
       "tool_calls": [],
-      "reasoning": "",
-      "prompt_tokens": 1970,
-      "completion_tokens": 213,
-      "latency_ms": 1993.6
+      "reasoning": "No 补考 notice found. Answer: 没有检索到补考相关通知。可作为补充：近期有考试相关通知（期末考试的说明），但没有补考安排。Could also mention I could check 本人考试安排? The tool get_exams requires year/term — currently 2026-2027-1. But user asks about notice. Maybe offer to check personal exam schedule for makeup exams. Perhaps just answer.",
+      "prompt_tokens": 1683,
+      "completion_tokens": 219,
+      "latency_ms": 1869.3
     }
   ]
 }

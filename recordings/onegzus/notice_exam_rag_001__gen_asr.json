@@ -7,42 +7,42 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_3g6H8KCKGtnAXWAymlAf5491",
+          "id": "call_00_J5FXrh8qqomw4Hs6fb4f5602",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想问（猜测是）期末考试安排是否已经发布通知，需要查学校通知并核对自己的考试安排\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+          "arguments": "{\"intent\": \"用户问考试安排是否发了通知（消息有错别字），想了解考试安排和相关通知\", \"steps\": [\"search_notices\", \"get_exams\"]}"
         }
       ],
-      "reasoning": "The user's message is garbled: \"期默考试安排有发桶汁吗\" — probably \"期末考试安排有发通知吗\" (Has there been a notice about final exam arrangements?). Or \"期中考试安排有发通知吗\"?\n\n\"期默\" likely typo for \"期末\" or \"期中\". \"发桶汁\" = \"发通知\". So the question: has a notice been issued about exam arrangements?\n\nI should plan: search_notices with keyword \"考试\" and maybe get_exams. The user asks about notice publication, so search_notices primary; also could check own exam arrangements via get_exams. Let's do both — steps: search_notices, get_exams.\n\nActually the ambiguity: \"期中\" vs \"期末\". I'll search \"考试\" generally and also could search \"期末考试\". Let me do make_plan then call search_notices(\"考试\") and get_exams() in parallel. Maybe also search_notices(\"期末考试\"). But two searches with different keywords are independent — can do both.\n\nLet me make plan with steps [\"search_notices\",\"get_exams\"]. Then call search_notices twice? Steps list is about tool names. Fine.\n\nI'll do: search_notices(keyword=\"考试\") and get_exams() in one block.\n\nActually get_exams current semester = 2026-2027 第1学期 — exam arrangements for this term. That's useful.\n\nLet's do it.",
+      "reasoning": "The user's message is garbled: \"期默考试安排有发桶汁吗\" — likely \"期末/期中考试安排有发通知吗?\" Something like \"考试安排有发通知吗\" — asking whether there's a notice about exam arrangements. Let me interpret: \"期末考试安排有发通知吗\" (Did they post a notice about final exam arrangements?).\n\nSo plan: search_notices with keyword \"考试\", and get_exams for current semester.\n\nLet me make plan then call tools.",
       "prompt_tokens": 1261,
-      "completion_tokens": 384,
-      "latency_ms": 3855.3
+      "completion_tokens": 188,
+      "latency_ms": 2146.6
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_Opicui1004hOtKmKVaZs9230",
+          "id": "call_00_6i1QvFmi0hnWdBsc1zDx2205",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"考试\"}"
         },
         {
-          "id": "call_01_ET_t5CE9ssSGvUO7MuMyA7Z6818",
+          "id": "call_01_za8xvhfpR6jDZows18fL7274",
           "name": "get_exams",
           "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
         }
       ],
-      "reasoning": "",
-      "prompt_tokens": 1664,
-      "completion_tokens": 85,
-      "latency_ms": 1006.6
+      "reasoning": "Call both in parallel with keyword \"考试\".",
+      "prompt_tokens": 1468,
+      "completion_tokens": 94,
+      "latency_ms": 1143.9
     },
     {
-      "content": "有通知，而且你的期末考试安排也已经出来了：\n\n**相关通知**\n- 《关于期末考试安排的说明》（教务通知，2026-09-12）：考试安排已更新，请及时查看。\n- 《2026 年秋季学期课程提醒》（2026-09-18）：请关注近期课程安排和考试时间。\n\n**你本学期的期末考试安排**\n\n| 课程 | 日期 | 星期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24 | 四 | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 2026-12-28 | 一 | 14:00-16:00 | B1-204 | 27 |\n\n此外，如果你刚才是想问“期中”考试，我可以再帮你查；目前工具返回的本学期考试安排只有这两门期末考试记录。",
+      "content": "是的，教务系统已经发布了考试相关通知，你的考试安排也已更新。\n\n**相关通知**\n- 《关于期末考试安排的说明》：2026-09-12，教务通知\n- 《2026 年秋季学期课程提醒》：2026-09-18，通知公告\n\n**本学期你的考试安排（2026-2027 学年第 1 学期）**\n| 课程 | 类型 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|---|\n| 数据库原理（3 学分） | 期末考试 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统（3 学分） | 期末考试 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n如果需要，我还可以帮你查询本周课表或考勤情况。",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 2029,
-      "completion_tokens": 192,
-      "latency_ms": 1288.5
+      "prompt_tokens": 1842,
+      "completion_tokens": 197,
+      "latency_ms": 1570.7
     }
   ]
 }

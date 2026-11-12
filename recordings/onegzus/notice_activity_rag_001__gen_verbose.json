@@ -7,51 +7,42 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_WP596vHSiO1BzeDRWOO40574",
+          "id": "call_00_CxqjVyBc8ApH0XmQF9kF3078",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道「创新实践周」的报名方式，需要检索学校相关通知公告。\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"用户想了解创新实践周的报名方式，同时提到最近课多，可能需要查看本周课表。\", \"steps\": [\"search_notices\", \"get_schedule\"]}"
         }
       ],
-      "reasoning": "User asks about 创新实践周 registration — need to search notices. Also they mention \"课好多\" — maybe check schedule too? The intent is mainly about 创新实践周报名. Let me make plan: search_notices with keyword \"创新实践周\". Maybe also check this week's schedule since they mention 课多? Their question is about registration. I'll do search_notices, and maybe get_schedule to see if the week is free. Let's keep it focused: search notices for 创新实践周. Maybe also \"实践周\". I'll just do one plan with search_notices step.\n\nActually could also check schedule for next week to see. I'll do search_notices only, then possibly follow up.\n\nLet me call make_plan then search_notices.",
+      "reasoning": "The user asks about \"创新实践周\" registration — need to search notices. Also maybe schedule. Let me make plan.",
       "prompt_tokens": 1269,
-      "completion_tokens": 236,
-      "latency_ms": 2426.8
+      "completion_tokens": 109,
+      "latency_ms": 1295.3
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_uK1W63QM6fvHtTEG3hi52369",
+          "id": "call_00_ET_UKKr9GAPJizCif23lXHg5429",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"创新实践周\"}"
+        },
+        {
+          "id": "call_01_ET_LC6qnVr6g8gk4w1V5poE7680",
+          "name": "get_schedule",
+          "arguments": "{\"week\": 4}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1524,
-      "completion_tokens": 41,
-      "latency_ms": 756.1
+      "prompt_tokens": 1397,
+      "completion_tokens": 70,
+      "latency_ms": 1076.5
     },
     {
-      "content": "",
-      "tool_calls": [
-        {
-          "id": "call_00_HHYKKiZRbeohHMuE4VnG2213",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"报名\"}"
-        }
-      ],
-      "reasoning": "The notice summary is vague — only \"欢迎同学报名参加创新实践活动\". No registration details. I should report honestly that the notice doesn't include details, and suggest checking the URL/教务系统. Maybe search another keyword like \"报名\" to find more? Could try \"报名\" search.",
-      "prompt_tokens": 1640,
-      "completion_tokens": 98,
-      "latency_ms": 1430.6
-    },
-    {
-      "content": "我查到了相关通知，但内容比较简略：\n\n**《校园创新实践周报名开始》**\n- 发布单位：教务系统（jwxt）\n- 分类：校园活动\n- 发布日期：2026-09-16\n- 链接：https://demo.local/notices/activity\n- 摘要：欢迎同学报名参加创新实践活动\n\n说明一下：这条通知在系统里只写了「欢迎同学报名参加创新实践活动」，**没有给出具体的报名入口、截止时间、报名条件等信息**，我不能凭空补充。建议你点开上面的链接查看通知全文，或者直接问辅导员或教务处；我这边能检索到的就这些。\n\n另外，我这边的功能里没有「报名」这一项，只能帮你查课表、成绩、考勤、考试安排、宿舍水电余额和通知。如果你还需要看这周（第 4 周）或者实践周前后的课表安排，可以告诉我。",
+      "content": "**创新实践周报名**\n\n学校通知中找到了《校园创新实践周报名开始》（发布日期 2026-09-16，来源：教务系统 jwxt），通知地址：https://demo.local/notices/activity。\n不过通知摘要只写了「欢迎同学报名参加创新实践活动」，具体的报名入口、截止时间等细节没有在检索结果中体现，建议你打开上面的链接查看完整通知，或者留意教务系统内的报名入口。\n\n**顺便说一下你本周（第 4 周）的课表**，确实挺满的：\n\n| 星期 | 课程 | 教师 | 教室 | 节次 |\n|---|---|---|---|---|\n| 周一 | 软件工程导论 | 林老师 | A3-201 | 1-2 节 |\n| 周一 | 高等数学（下） | 周老师 | B2-305 | 5-6 节 |\n| 周二 | 数据结构 | 陈老师 | 实训楼 204 | 3-4 节 |\n| 周三 | 大学英语（四） | 王老师 | A1-108 | 1-2 节 |\n| 周三 | 数据库原理 | 赵老师 | A3-302 | 7-8 节 |\n| 周四 | 操作系统 | 黄老师 | B1-204 | 3-4 节 |\n| 周五 | 体育（网球） | 何老师 | 体育馆 2 号场 | 5-6 节 |\n\n共 7 门课，其中周三、周一各有两门。这些课程都排了 1-16 周，所以第 4 周正好在正常上课阶段。需要我帮你查考试安排或考勤情况吗？",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1813,
-      "completion_tokens": 195,
-      "latency_ms": 1681.1
+      "prompt_tokens": 1939,
+      "completion_tokens": 368,
+      "latency_ms": 2804.8
     }
   ]
 }

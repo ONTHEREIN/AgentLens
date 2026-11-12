@@ -1,0 +1,99 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_exam_rag_001__swap_tool",
+  "verdict": {
+    "faithful": false,
+    "score": 2,
+    "issues": [
+      {
+        "claim": "1. 《关于期末考试安排的说明》——教务通知，2026-09-12 发布，摘要为“考试安排已更新，请及时查看。”（jwxt）\n2. 《2026 年秋季学期课程提醒》——通知公告，2026-09-18 发布，摘要为“请关注近期课程安排和考试时间。”（jwxt）",
+        "problem": "观测数据中仅包含考试安排信息，未调用任何获取通知的工具，也未提供通知的标题、发布时间、摘要等内容，该部分为捏造的幻觉。",
+        "span": ""
+      },
+      {
+        "claim": "如需查看原文，可打开 https://demo.local/notices/exam。",
+        "problem": "观测数据中未提供该链接，属于捏造。",
+        "span": ""
+      }
+    ]
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "期末考试安排有发通知吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      },
+      {
+        "span": "s5",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "有通知。\n\n**相关通知（2 条）**\n1. 《关于期末考试安排的说明》——教务通知，2026-09-12 发布，摘要为“考试安排已更新，请及时查看。”（jwxt）\n2. 《2026 年秋季学期课程提醒》——通知公告，2026-09-18 发布，摘要为“请关注近期课程安排和考试时间。”（jwxt）\n\n**你本学期（2026-2027 学年第 1 学期）已公布的考试安排**\n- 数据库原理：2026-12-24（周四）09:00-11:00，A3-302，座位 18，3 学分\n- 操作系统：2026-12-28（周一）14:00-16:00，B1-204，座位 27，3 学分\n\n如需查看原文，可打开 https://demo.local/notices/exam。",
+    "rubric": null
+  }
+}

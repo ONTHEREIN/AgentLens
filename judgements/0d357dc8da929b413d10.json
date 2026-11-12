@@ -1,0 +1,92 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_makeup_exam_miss_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "补考安排的通知出勒没"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考安排"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "没查到补考相关的通知。\n\n我用“补考”“补考安排”检索，都没有结果；换成“考试”后搜到的只有两条通知：\n\n- 《2026 年秋季学期课程提醒》：2026-09-18，提到“请关注近期课程安排和考试时间”\n- 《关于期末考试安排的说明》：2026-09-12，提到“考试安排已更新，请及时查看”\n\n这两条都没有提到补考。目前还没有专门的补考安排通知；要不要我帮你查一下本人的考试安排？",
+    "rubric": "通知库里只有期末考试安排的说明，没有补考通知；不能把期末考试通知当成补考通知"
+  }
+}

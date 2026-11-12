@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_miss_rag_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "奖学金平定的通知出来了没"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "评奖"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金评定"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我用「奖学金」「评奖」「奖学金评定」在通知公告里都检索了，目前**没有查到任何相关通知**，也就是系统里还没有奖学金评定的公告。\n\n建议你：\n- 过几天再让我查一次（通知可能还没发布）；\n- 或者换个关键词（比如「评优」「综合素质测评」）试试，我可以帮你搜。\n\n需要我现在用其他关键词再查吗？",
+    "rubric": "没有相关通知时应明确说明未检索到，不得编造通知内容或时间"
+  }
+}

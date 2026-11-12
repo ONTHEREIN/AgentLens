@@ -7,42 +7,37 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_i6FbsoneQAaCFH2EpjBU5826",
+          "id": "call_00_JikxBvUyEeUkvDSVDqfF8717",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道「数据结构」这门课是哪位老师上的，同时随口抱怨选课系统崩溃。\", \"steps\": [\"get_schedule\", \"search_notices\"]}"
+          "arguments": "{\"intent\": \"用户想知道\\\"数据结构\\\"课程的任课老师，先查本周课表，若没有该课再查其他教学周\", \"steps\": [\"get_schedule\"]}"
         }
       ],
-      "reasoning": "The user asks about who teaches 数据结构 (Data Structures). I should check schedule. First make_plan, then call get_schedule. Maybe also search notices about 选课系统? The user's main question is the teacher for 数据结构. Let me plan: get_schedule (current week) to find the course. Possibly the course appears in current schedule. Let's do make_plan then get_schedule.\n\nAlso they complain about 选课系统崩溃 — could search notices for 选课系统. That's secondary but helpful. I'll include search_notices in plan.",
+      "reasoning": "The user asks who teaches 数据结构 (Data Structures). Need to check schedule. Let me make a plan and call get_schedule.\n\nMaybe multiple weeks? The course could be any week. Let's call get_schedule for no week (current week 4) first, and maybe check other weeks if not found.\n\nI should make_plan first.",
       "prompt_tokens": 1270,
-      "completion_tokens": 202,
-      "latency_ms": 2256.2
+      "completion_tokens": 155,
+      "latency_ms": 1897.7
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_rGXmmPtA80Vr6QsV2OsD6442",
+          "id": "call_00_ET_ZOgljneu3Ko0ZuGEPiUK4840",
           "name": "get_schedule",
           "arguments": "{\"week\": 4}"
-        },
-        {
-          "id": "call_01_ET_pmGBaA5nFvWPvKnFylpl6225",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"选课系统\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1491,
-      "completion_tokens": 70,
-      "latency_ms": 1064.9
+      "prompt_tokens": 1444,
+      "completion_tokens": 39,
+      "latency_ms": 793.6
     },
     {
-      "content": "**数据结构这门课由陈老师授课**，上课时间为每周二第 3-4 节，地点在实训楼 204，第 1-16 周都有课（本周第 4 周正常上）。\n\n另外，我按「选课系统」查了一下校内通知，暂时没有搜到相关公告，因此选课系统崩溃的情况可能还没有正式通知。你可以关注教务处的后续消息，或者直接跟教务老师反馈一下～",
+      "content": "数据结构课是**陈老师**教的，上课时间为教学周 1-16 周的**周二第 3-4 节**，地点在**实训楼 204**。\n\n不过选课系统崩溃的问题我这边查不到相关信息；我这边的工具只能查课表、成绩、考勤、考试安排、宿舍水电余额和通知公告。你可以先问问教务处。\n\n如果有其他想查的，告诉我～",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1971,
-      "completion_tokens": 96,
-      "latency_ms": 1544.3
+      "prompt_tokens": 1884,
+      "completion_tokens": 88,
+      "latency_ms": 1098.9
     }
   ]
 }

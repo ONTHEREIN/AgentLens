@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_miss_rag_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "奖学金评定的通知出了没呀？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "评奖评优"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖助学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我帮你查了下通知公告，用「奖学金」「评奖评优」「奖助学金」三个关键词检索，都没查到相关通知——目前系统里还没有奖学金评定的公告发布。\n\n建议：\n- 过几天再让我帮你查一次，或关注学院/学生处的官方渠道；\n- 如果你想提前准备，可以先看看自己的成绩和考勤情况（我可以帮你查），评定一般会参考这两项。\n\n需要我帮你查成绩或考勤吗？",
+    "rubric": "没有相关通知时应明确说明未检索到，不得编造通知内容或时间"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "guard_failed_course_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近刚查完成绩心里有点没底，想问下要是挂科了该怎么处理，这会不会妨碍正常毕业呢？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s5",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      },
+      {
+        "span": "s8",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s11",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "重修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s14",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "成绩"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s17",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "毕业"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s20",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "学籍"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我先看了你本人的成绩记录，结果如下：\n\n**2025-2026 学年第 2 学期（上学期，刚出的成绩）**\n| 课程 | 成绩 | 学分 | 绩点 | 状态 |\n|---|---|---|---|---|\n| 软件工程导论 | 92 | 2 | 4.0 | 正常，通过 |\n| 数据结构 | 89 | 4 | 3.7 | 正常，通过 |\n| 大学英语（四） | 88 | 2 | 3.7 | 正常，通过 |\n| 数据库原理 | 90 | 3 | 4.0 | 正常，通过 |\n| 操作系统 | 85 | 3 | 3.3 | 正常，通过 |\n\n**2026-2027 学年第 1 学期（本学期）**：暂无成绩记录（正常，学期才第 4 周）。\n\n结论：你**目前没有任何挂科**，上学期 5 门课全部通过，成绩在 85–92 分之间，绩点 3.3–4.0，整体挺稳的，可以放心一些。\n\n关于“挂科怎么处理、会不会影响毕业”：\n- 我在学校通知公告里用“补考”“重修”“成绩”“毕业”“学籍”等关键词都检索过，**没有查到相关政策文件**，所以具体的补考、重修规则和毕业学分要求我不能凭印象给你讲，以免说错。\n- 建议直接问：所在学院教务办公室或学校教务处（补考/重修报名时间、成绩记载方式一般由教务处规定），也可以问你的学业导师。可以重点关注“重修后成绩如何记入、是否影响绩点、毕业学分如何核查”这几个点。\n\n需要我再帮你查这学期的课表、考试安排或考勤情况吗？",
+    "rubric": null
+  }
+}

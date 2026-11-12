@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_miss_rag_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "最近快期末了事情真多，对了，奖学金评定的通知出来了没？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "评定"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖助学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "我帮你在学校通知里检索了“奖学金”“评定”“奖助学金”这几个关键词，暂时**没有检索到奖学金评定相关的通知**。\n\n另外提醒一下：现在是 2026-2027 学年第 1 学期第 4 周（9 月 21 日），离期末还有一段时间，可能是我校奖学金评定通知还没发布，也可能通知用了别的说法（比如“评优评先”“综合测评”）。\n\n如果需要，我可以：\n- 换关键词（如“综合测评”“评优”“国家奖学金”）再查；\n- 或者顺便帮你查一下本学期课表、考试成绩、考勤、考试安排、宿舍水电余额。",
+    "rubric": "没有相关通知时应明确说明未检索到，不得编造通知内容或时间"
+  }
+}

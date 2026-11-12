@@ -7,70 +7,47 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_tGI4wVn0YFFdpSbVpFll3126",
+          "id": "call_00_PzCo8nVcHmrd1azPj5r22225",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道学校是否发布了期末考试安排的通知，并顺便查看自己的考试安排\", \"steps\": [\"search_notices\", \"get_exams\"]}"
-        }
-      ],
-      "reasoning": "User asks whether there's a notice about final exam arrangements. I should plan: search_notices with keyword \"期末考试\", maybe also get_exams to show their exam schedule. Let me plan steps: search_notices, get_exams.\n\nThese are independent, can call in same block after make_plan.",
-      "prompt_tokens": 1258,
-      "completion_tokens": 141,
-      "latency_ms": 1114.9
-    },
-    {
-      "content": "",
-      "tool_calls": [
+          "arguments": "{\"intent\": \"用户想知道学校是否发布了期末考试安排相关的通知\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+        },
         {
-          "id": "call_00_ET_3q8m8uFZ5qrCkKMC1mrE2055",
+          "id": "call_01_tbR31CKhKdpVRAvI5KEN2410",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"期末考试\"}"
         },
         {
-          "id": "call_01_ET_5kP65pkqcZwteLowKcbr6961",
+          "id": "call_02_a1Ety5ssnABK3mJ11gth8794",
           "name": "get_exams",
           "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
         }
       ],
-      "reasoning": "",
-      "prompt_tokens": 1418,
-      "completion_tokens": 85,
-      "latency_ms": 674.7
+      "reasoning": "The user asks: \"期末考试安排有发通知吗\" - has there been a notice about final exam arrangements? I should search notices with keyword like \"期末考试\" and also check exam arrangements maybe. Let me plan.\n\nSteps: search_notices, get_exams.\n\nCurrent term is 2026-2027 第1学期, so year \"2026\", term \"1\".",
+      "prompt_tokens": 1258,
+      "completion_tokens": 226,
+      "latency_ms": 2072.9
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_nWWqA8SUw3Gg3ZnY6f3p9222",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"期末考试\"}"
-        }
-      ],
-      "reasoning": "Notice search failed with upstream_timeout. Retry.",
-      "prompt_tokens": 1662,
-      "completion_tokens": 50,
-      "latency_ms": 1135.7
-    },
-    {
-      "content": "",
-      "tool_calls": [
-        {
-          "id": "call_00_O6TMLDvkKNxU41kKkYzk4503",
+          "id": "call_00_lPwUy8ZN0eCDbSWSbq2g8737",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"考试\"}"
         }
       ],
-      "reasoning": "Try another keyword, e.g., \"考试\".",
-      "prompt_tokens": 1733,
-      "completion_tokens": 49,
-      "latency_ms": 636.5
+      "reasoning": "Notice search failed with timeout. Should I retry? Maybe try again once with different keyword. Let me retry.",
+      "prompt_tokens": 1658,
+      "completion_tokens": 63,
+      "latency_ms": 1096.0
     },
     {
-      "content": "抱歉，通知公告查询接口连续三次超时，我暂时无法确认学校是否发布了期末考试安排的通知，也请你稍后再让我查一次。\n\n不过，你的个人考试安排已经查到了（2026-2027 学年第 1 学期）：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n需要我帮你再查别的关键词通知（比如“考试安排”“教务处”）或查看课表之类的其他信息吗？",
+      "content": "通知检索接口连续两次超时，暂时查不到公告内容，所以我不能确定是否发过相关通知。不过本校考试安排系统里已有你的期末考试记录：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n建议稍后再让我查一次通知，或者直接关注学院/教务处的最新公告确认。",
       "tool_calls": [],
-      "reasoning": "",
-      "prompt_tokens": 1803,
-      "completion_tokens": 173,
-      "latency_ms": 1536.8
+      "reasoning": "Notice search keeps timing out. Report honestly: couldn't retrieve notices, but exam arrangements exist in system.",
+      "prompt_tokens": 1742,
+      "completion_tokens": 168,
+      "latency_ms": 1902.3
     }
   ]
 }

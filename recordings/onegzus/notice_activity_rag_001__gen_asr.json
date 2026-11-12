@@ -7,56 +7,51 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_zw7OwnOE5NJySRmmyxOy2465",
+          "id": "call_00_kVypLssIxW74WJatpxDF2770",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道「创心实践周」如何报名，需要检索学校通知中的相关说明。\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"用户想知道「创心实践周」怎么报名，需要在通知公告里检索相关报名信息\", \"steps\": [\"search_notices\"]}"
         }
       ],
-      "reasoning": "The user asks \"创心实践周怎么报明\" — probably \"创心实践周怎么报名\" (how to sign up for 创心实践周). I should search notices for \"创心实践周\".",
+      "reasoning": "The user asks \"创心实践周怎么报明\" — likely \"创心实践周怎么报名\" (how to sign up for Chuangxin practice week). Need to search notices. First make plan, then search.",
       "prompt_tokens": 1259,
-      "completion_tokens": 122,
-      "latency_ms": 1288.6
+      "completion_tokens": 124,
+      "latency_ms": 1603.7
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_IefNekZpmbo78bvYoQ7s1470",
+          "id": "call_00_ET_w1cF6CA7StUSQZe7NT6Y2359",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"创心实践周\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1400,
+      "prompt_tokens": 1402,
       "completion_tokens": 42,
-      "latency_ms": 785.8
+      "latency_ms": 576.6
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_QgGaaEynihvACarJZmon8650",
+          "id": "call_00_gwoFFLWOvrSOphZNfKDk9932",
           "name": "search_notices",
-          "arguments": "{\"keyword\": \"创新实践周\"}"
-        },
-        {
-          "id": "call_01_eMZI53xWYxVDhv1b3aUX4131",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"报名\"}"
+          "arguments": "{\"keyword\": \"实践周 报名\"}"
         }
       ],
-      "reasoning": "The notice summary is vague. I should report only what's available. Maybe search \"创新实践周报名\" for more details? Let me try another keyword to get more info, e.g., \"报名\". But tool takes single keyword. Could do parallel searches: \"创新实践周\" and \"报名\".",
-      "prompt_tokens": 1517,
-      "completion_tokens": 132,
-      "latency_ms": 1472.5
+      "reasoning": "The notice is terse. Report what's available: notice title, date, category, source. Maybe search more keywords like \"报名\" to get details? Could do a second search \"实践周 报名\" to find more. Let's try one more search to be helpful — but independent calls now. Let's search \"报名\".",
+      "prompt_tokens": 1519,
+      "completion_tokens": 110,
+      "latency_ms": 1445.9
     },
     {
-      "content": "我查到了相关通知，但通知里没有写具体的报名流程和条件，只能提供以下信息：\n\n**通知：《校园创新实践周报名开始》**\n- 分类：校园活动\n- 发布日期：2026-09-16\n- 来源：教务系统（jwxt）\n- 链接：https://demo.local/notices/activity\n- 摘要：欢迎同学报名参加创新实践活动。\n\n由于通知摘要中未包含报名方式、截止时间、面向对象等细节，建议你点击上面的链接查看通知原文，或咨询教务处或辅导员确认报名入口。\n\n如果你需要，我也可以帮你查一下本周课表，看看实践周期间你的课程安排。",
+      "content": "我只查到一条相关通知：\n\n**《校园创新实践周报名开始》**\n- 类别：校园活动\n- 发布时间：2026-09-16\n- 发布来源：教务系统（jwxt）\n- 摘要：欢迎同学报名参加创新实践活动。\n- 详情：https://demo.local/notices/activity\n\n不过，这条通知的摘要没有写明具体的报名方式、截止时间或报名入口。系统里也没有检索到更详细的报名流程说明。建议你：\n1. 打开上面链接查看通知全文；\n2. 或者到教务系统查看该通知详情页，也可以直接咨询辅导员，确认报名截止时间。\n\n如果你需要，我也可以帮你看看本周课表或其他通知。",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1795,
-      "completion_tokens": 142,
-      "latency_ms": 1791.9
+      "prompt_tokens": 1704,
+      "completion_tokens": 149,
+      "latency_ms": 1845.3
     }
   ]
 }

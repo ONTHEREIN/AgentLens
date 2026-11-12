@@ -7,42 +7,37 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_kuyqC88cLSW9kZ0yLASf2685",
+          "id": "call_00_97Ikx7Z7mQ0sD4sf49Tb7655",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道距离「数据库原理」考试还有多少天，需要先查本学期考试安排，再按考试日期计算天数差。\", \"steps\": [\"get_exams\", \"search_notices\"]}"
+          "arguments": "{\"intent\": \"查询\\\"数据库原理\\\"考试的安排日期，并计算距离今天（2026-09-21）还有多少天\", \"steps\": [\"get_exams\"]}"
         }
       ],
-      "reasoning": "The user asks how many days until the \"数据库原理\" exam. I need to call get_exams, and also search_notices maybe. But first make_plan.\n\nSteps: get_exams. Maybe also search_notices for exam schedule updates. Let's plan get_exams then maybe search_notices(\"数据库原理\").\n\nActually keep it simple: get_exams first, then if needed search_notices.\n\nLet me do make_plan then get_exams.\n\nNote: today is 2026-09-21. Current semester is 2026-2027 term 1, so year=\"2026\", term=\"1\".",
+      "reasoning": "The user asks how many days until the 数据库原理 exam. I need to query exams. Today is 2026-09-21. Exam might be in current semester (2026-2027 term 1) or later. Let me query exams for current semester and maybe next.\n\nLet me plan: get_exams for current semester (year 2026, term 1). Possibly also term 2? Let's first query current.\n\nI should call make_plan first.",
       "prompt_tokens": 1259,
-      "completion_tokens": 219,
-      "latency_ms": 2271.4
+      "completion_tokens": 182,
+      "latency_ms": 1378.2
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_PgCwXbfWpZhl1GwjmhNn7499",
+          "id": "call_00_ET_S8mw8IVgVnNS07tWP5Hq0112",
           "name": "get_exams",
           "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
-        },
-        {
-          "id": "call_01_ET_3jfSTqM5HqiIY8pkXoim5267",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"数据库原理 考试\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1497,
-      "completion_tokens": 88,
-      "latency_ms": 1020.7
+      "prompt_tokens": 1460,
+      "completion_tokens": 56,
+      "latency_ms": 1242.1
     },
     {
-      "content": "**数据库原理考试**安排如下：\n\n- 时间：2026-12-24（周四）09:00–11:00\n- 地点：A3-302，座位 18 号\n- 类型：期末考试（3 学分）\n\n从今天（2026-09-21）算起，**还有 94 天**。\n\n另外，你本学期还有一门**操作系统**期末考试：2026-12-28（周一）14:00–16:00，地点 B1-204，座位 27 号，距今 98 天。教务也已发布「关于期末考试安排的说明」，建议留意后续是否有调整。",
+      "content": "**距离“数据库原理”考试还有 94 天。**\n\n考试安排：\n\n| 项目 | 内容 |\n|---|---|\n| 课程 | 数据库原理（3 学分） |\n| 时间 | 2026-12-24（星期四）09:00-11:00 |\n| 地点 | A3-302 |\n| 座位 | 18 |\n| 类型 | 期末考试 |\n\n今天是 2026-09-21，距离考试还有 94 天，大约 13 周多，可以按周安排复习。\n\n另外提醒：操作系统期末考试安排在 2026-12-28（星期一）14:00-16:00，地点在 B1-204，座位是 27 号，与数据库原理考试只相隔 4 天。",
       "tool_calls": [],
-      "reasoning": "Calculate days: from 2026-09-21 to 2026-12-24. September: 21 -> 30 = 9 days remaining after 21st. Let's compute day-of-year. 2026 not leap year.\n\nSept 21 day-of-year: Jan31+Feb28=59, Mar31=90, Apr30=120, May31=151, Jun30=181, Jul31=212, Aug31=243, Sep21=264.\nDec 24: 243+30(Sep)=273 +31(Oct)=304 +30(Nov)=334 +24=358.\n358-264 = 94 days.",
-      "prompt_tokens": 1865,
-      "completion_tokens": 275,
-      "latency_ms": 1936.4
+      "reasoning": "Calculate days from 2026-09-21 to 2026-12-24.\n\nSeptember: 30-21 = 9 days remaining in Sept (to Sept 30). Then Oct 31, Nov 30, Dec 24.\n9 + 31 = 40, +30 = 70, +24 = 94 days.\n\nLet me verify: Sept 21 → Sept 30 = 9 days. Sept 30 → Oct 31 = 31. Oct 31 → Nov 30 = 30. Nov 30 → Dec 24 = 24. Total = 94 days.\n\nAlso weekday check: 2026-12-24 is Thursday. Sept 21 2026 is Monday. Days diff 94, 94 mod 7 = 3 (94 = 91+3), Monday +3 = Thursday. ✓",
+      "prompt_tokens": 1658,
+      "completion_tokens": 341,
+      "latency_ms": 2500.3
     }
   ]
 }

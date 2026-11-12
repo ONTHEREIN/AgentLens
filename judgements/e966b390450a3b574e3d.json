@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_miss_rag_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "奖学金评定的通知出来了没"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "奖学金"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "评奖"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "还没有，我用“奖学金”“评奖”这两个关键词搜了学校通知公告，都没有查到相关通知。\n\n建议：\n- 过几天再问我一次，或者留意学院/辅导员通知；\n- 想查关键词也可以告诉我，我帮你检索，比如“奖学金评定”“国家奖学金”“助学金”。\n\n另外，如果你打算申请，可以先准备好成绩（我可以帮你查本人成绩）、考勤记录等材料。",
+    "rubric": "没有相关通知时应明确说明未检索到，不得编造通知内容或时间"
+  }
+}

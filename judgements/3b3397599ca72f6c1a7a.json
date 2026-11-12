@@ -1,0 +1,156 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "guard_failed_course_001__gen_asr",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "挂科了砸办会影响必业吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2025",
+          "term": "2"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 5,
+        "data": [
+          {
+            "courseName": "软件工程导论",
+            "score": "92",
+            "credit": "2",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据结构",
+            "score": "89",
+            "credit": "4",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "大学英语（四）",
+            "score": "88",
+            "credit": "2",
+            "gradePoint": "3.7",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "数据库原理",
+            "score": "90",
+            "credit": "3",
+            "gradePoint": "4.0",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          },
+          {
+            "courseName": "操作系统",
+            "score": "85",
+            "credit": "3",
+            "gradePoint": "3.3",
+            "term": "2025-2026-2",
+            "gradeStatus": "正常",
+            "gradePassed": true
+          }
+        ]
+      },
+      {
+        "span": "s6",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s8",
+        "tool": "get_grades",
+        "args": {
+          "term": "1",
+          "year": "2025"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s11",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "重修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s14",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "学籍"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s17",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "我查了一下你的成绩记录，先说结论：**按系统里的数据，你没有挂科。**\n\n**2025-2026 学年第二学期（上学期）成绩**\n\n| 课程 | 学分 | 成绩 | 绩点 | 状态 |\n|---|---|---|---|---|\n| 软件工程导论 | 2 | 92 | 4.0 | 通过 |\n| 数据结构 | 4 | 89 | 3.7 | 通过 |\n| 大学英语（四） | 2 | 88 | 3.7 | 通过 |\n| 数据库原理 | 3 | 90 | 4.0 | 通过 |\n| 操作系统 | 3 | 85 | 3.3 | 通过 |\n\n5 门课全部及格，最低 85 分，没有不及格记录。2025-2026 学年第一学期系统里则没有成绩数据。\n\n另外，我用「补考」「重修」「学籍」等关键词检索了学校通知，**都没有搜到相关文件或安排**，所以关于补考、重修的具体规则和“挂科是否影响毕业”的学校规定，我这边没有可依据的资料，不能替你下结论。\n\n建议：\n1. 如果你说的“挂科”是听来的消息，或者是在别的系统（如辅修、体育、实验课）看到的不及格，可以告诉我具体课程名，我再帮你核对；\n2. 你也可以直接问辅导员或教务处，确认必修课不及格后的补考、重修安排；这是最稳妥的途径。\n\n如果你需要，我可以帮你查本学期的课表、考试安排，或宿舍水电余额。",
+    "rubric": null
+  }
+}

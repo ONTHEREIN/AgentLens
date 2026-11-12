@@ -7,47 +7,56 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_DLcy6LdWq2k6PcwWVPJo0258",
+          "id": "call_00_oWQEa7JOLBs69Y6N04aa3811",
           "name": "make_plan",
           "arguments": "{\"intent\": \"用户想知道学校是否已发布补考安排的通知\", \"steps\": [\"search_notices\"]}"
-        },
-        {
-          "id": "call_01_BPxgW1KC0ChFzJdc4nWF0498",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"补考\"}"
         }
       ],
-      "reasoning": "用户问补考安排的通知出了没。需要搜索通知。先 make_plan，然后 search_notices 关键词\"补考\"。",
+      "reasoning": "用户问补考安排的通知。需要搜索通知。先make_plan。",
       "prompt_tokens": 1258,
-      "completion_tokens": 127,
-      "latency_ms": 974.7
+      "completion_tokens": 85,
+      "latency_ms": 1270.5
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ZdSLNaQyIn57wgMetP7f8560",
+          "id": "call_00_ET_9KToLC6G0MTbHSykT0BO6742",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"补考\"}"
+        }
+      ],
+      "reasoning": "",
+      "prompt_tokens": 1362,
+      "completion_tokens": 40,
+      "latency_ms": 1190.9
+    },
+    {
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_xTsZ1UwQnVbzlcDJhJ0z2918",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"考试\"}"
         },
         {
-          "id": "call_01_mUq3ZkCTj702GzQ3X9C31623",
+          "id": "call_01_JteAorcTef8XpzVOoOb59257",
           "name": "search_notices",
-          "arguments": "{\"keyword\": \"重修\"}"
+          "arguments": "{\"keyword\": \"补考安排\"}"
         }
       ],
-      "reasoning": "搜索\"补考\"无结果。可以再试\"缓考\"或\"考试\"？用户问的是补考安排通知。可尝试换关键词\"考试\"或者\"重修\"。多试一个。",
-      "prompt_tokens": 1413,
-      "completion_tokens": 111,
-      "latency_ms": 1126.2
+      "reasoning": "没有结果。可以再搜\"补考安排\"或\"考试\"。试一下\"考试\"。",
+      "prompt_tokens": 1415,
+      "completion_tokens": 90,
+      "latency_ms": 1267.9
     },
     {
-      "content": "我在教务通知里检索了“补考”，**暂时没有查到任何补考安排的通知**；换成“重修”搜索，也是同样的结果。\n\n近期与考试相关的通知有两条，内容都没有提到补考：\n- 《2026 年秋季学期课程提醒》（2026-09-18，教务处）——请关注近期课程安排和考试时间\n- 《关于期末考试安排的说明》（2026-09-12，教务处）——考试安排已更新，请及时查看\n\n需要的话，我可以帮你查一下你本人的本学期考试安排，看看有没有补考场次。",
+      "content": "我按「补考」「补考安排」「考试」三个关键词查了学校通知公告，**没有找到专门关于补考安排的通知**。\n\n目前与考试相关的通知只有两条：\n\n| 日期 | 标题 | 摘要 |\n|---|---|---|\n| 2026-09-12 | 关于期末考试安排的说明（教务通知） | 考试安排已更新，请及时查看 |\n| 2026-09-18 | 2026 年秋季学期课程提醒（通知公告） | 请关注近期课程安排和考试时间 |\n\n结论：补考安排的专项通知似乎还没有发布，建议过几天再查一次，也可以留意教务系统里“考试安排”的更新。需要我帮你查一下本学期你本人的考试安排吗？",
       "tool_calls": [],
-      "reasoning": "搜索\"补考\"无结果，\"考试\"有两条通知但都不是补考安排。可以说：暂未查到补考安排的通知。\n\n要不要顺便查考试安排？用户问通知，可以提示。但不要编造。可以回答：教务系统里没检索到\"补考\"相关通知；最近与考试相关的通知有两条（列出）。如需查本人的补考/考试安排，可以帮查考试安排。\n\n也许直接查一下考试安排更主动？用户问的是通知发布没，不是本人考试安排。可以提一句\"需要我帮你查本人的考试安排吗\"。保持简洁。",
-      "prompt_tokens": 1675,
-      "completion_tokens": 247,
-      "latency_ms": 2562.2
+      "reasoning": "",
+      "prompt_tokens": 1785,
+      "completion_tokens": 157,
+      "latency_ms": 1224.3
     }
   ]
 }

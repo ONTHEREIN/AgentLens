@@ -7,42 +7,42 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_pJksG5oiFXPDoCvhWCXX4232",
+          "id": "call_00_bGCDvuO8rw0VpaQs9hnR6767",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道学校是否已发布补考安排的通知\", \"steps\": [\"search_notices\"]}"
-        },
-        {
-          "id": "call_01_hDKHY2Q4DEq8adawOTBp6190",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"补考\"}"
+          "arguments": "{\"intent\": \"用户想知道关于补考安排的通知是否已经发布\", \"steps\": [\"search_notices\", \"get_exams\"]}"
         }
       ],
-      "reasoning": "The user asks about supplementary exam (补考) notices. Let me make a plan and search notices. Also maybe check exams schedule? The user specifically asks about 补考安排的通知. So search_notices with keyword \"补考\". Perhaps also get_exams for current semester? The question is about notice. Let me plan: search_notices(\"补考\"), maybe search_notices(\"补考安排\"). Just one.\n\nI could also get_exams to see if they have any exams... but the intent is the notice. Keep it to search_notices. Maybe also get_exams current semester to check personal arrangements — but that's not asked. I'll do search_notices with 补考.\n\nNote: user says \"刚吃完饭\" — casual. Answer politely.",
+      "reasoning": "The user asks about makeup exam (补考) notice. I should search notices for \"补考\". Maybe also check exams? The intent is about notice. Let me make plan then search notices with keyword 补考.\n\nMaybe also get_exams for current term? The question is about notice announcement. Let me do search_notices with \"补考\". Possibly independently also get_exams to see their exam arrangement. I'll do plan with search_notices and get_exams (they're independent, can call together). But minimal: search_notices suffices. I'll include get_exams too since relevant to their own makeup exams... but caution about not fabricating. I'll just do search_notices plus get_exams in parallel.",
       "prompt_tokens": 1269,
-      "completion_tokens": 256,
-      "latency_ms": 2565.4
+      "completion_tokens": 224,
+      "latency_ms": 2432.4
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_UK4kDpSoVxEoZMAV3z9G8856",
+          "id": "call_00_ET_5E4wo95YzyHEhLspLM2q7354",
           "name": "search_notices",
-          "arguments": "{\"keyword\": \"考试\"}"
+          "arguments": "{\"keyword\": \"补考\"}"
+        },
+        {
+          "id": "call_01_ET_DfO8vxvnP5UTVFOf0El37449",
+          "name": "get_exams",
+          "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
         }
       ],
-      "reasoning": "No results. Maybe try \"补考安排\" or \"考试\". Let me try another keyword to confirm.",
-      "prompt_tokens": 1553,
-      "completion_tokens": 61,
-      "latency_ms": 983.5
+      "reasoning": "",
+      "prompt_tokens": 1512,
+      "completion_tokens": 86,
+      "latency_ms": 1117.2
     },
     {
-      "content": "我用「补考」为关键词检索了学校通知，**目前没有查到任何补考相关的通知**，看来补考安排的通知还没发布。\n\n顺便提一下，我以「考试」为关键词检索，能查到 2 条相关公告：\n- 《2026 年秋季学期课程提醒》（2026-09-18，教务处）：提醒关注近期课程安排和考试时间\n- 《关于期末考试安排的说明》（2026-09-12，教务处）：考试安排已更新\n\n如果你需要，我可以帮你查一下你本人的考试安排，或者你告诉我补考涉及的课程名，我再按课程名检索一次通知。",
+      "content": "我帮你查了一下：\n\n**补考通知**：在通知公告里用「补考」检索，目前没有查到任何相关通知，也就是说补考安排的通知应该还没发布。建议过几天再查，或者留意教务处、学院群里的通知。\n\n**你本学期的考试安排**（目前只有两门期末考试，没有补考记录）：\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 2026-12-28（一） | 14:00-16:00 | B1-204 | 27 |\n\n如果你愿意，我也可以帮你查查上学期的成绩或考勤情况，看看哪些课可能需要补考。",
       "tool_calls": [],
-      "reasoning": "No 补考 notice found. Answer honestly: searched \"补考\" nothing; only general exam notices exist. Mention the two notices found. Offer to check personal exam schedule (get_exams) if needed.\n\nNote \"关于期末考试安排的说明\" dated 2026-09-12 — probably last semester's final exam. I shouldn't over-interpret. Just report.",
-      "prompt_tokens": 1756,
-      "completion_tokens": 209,
-      "latency_ms": 2355.4
+      "reasoning": "",
+      "prompt_tokens": 1749,
+      "completion_tokens": 182,
+      "latency_ms": 1618.6
     }
   ]
 }

@@ -1,0 +1,52 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_card_service_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "校园卡服务最近有什么变化吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "校园卡"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "办事大厅·申请",
+            "title": "校园卡服务已更新",
+            "date": "2026-09-17",
+            "summary": "可在应用中查看常用校园服务。",
+            "source": "jwxt"
+          },
+          {
+            "category": "校园活动",
+            "title": "校园创新实践周报名开始",
+            "date": "2026-09-16",
+            "url": "https://demo.local/notices/activity",
+            "summary": "欢迎同学报名参加创新实践活动。",
+            "source": "jwxt"
+          }
+        ]
+      }
+    ],
+    "answer": "搜索结果里与校园卡直接相关的通知只有一条：\n\n**《校园卡服务已更新》**\n- 分类：办事大厅·申请\n- 日期：2026-09-17，来源：教务系统\n- 摘要：可在应用中查看常用校园服务。\n\n这条通知摘要没有说明更多细节，例如具体哪些功能变了、办理流程怎么调整。另一条 9 月 16 日的《校园创新实践周报名开始》与校园卡无关。\n\n如果需要，我可以帮你查宿舍水电余额，或者换个关键词（比如“一卡通”“缴费”）再搜一次通知。",
+    "rubric": "唯一相关的是办事大厅 2026-09-17「校园卡服务已更新」，摘要为可在应用中查看常用校园服务；不得补充通知里没有的细节"
+  }
+}

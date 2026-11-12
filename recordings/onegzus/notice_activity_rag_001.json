@@ -7,37 +7,42 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_0gG1yQRnk8jZI0ZEEbpV0093",
+          "id": "call_00_zEyVqnOZpFDmCkqpXK2y9826",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"查询\\\"创新实践周\\\"的报名方式\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"用户想知道「创新实践周」如何报名，属于学校通知类信息，需检索相关公告\", \"steps\": [\"search_notices\"]}"
         }
       ],
-      "reasoning": "The user asks how to sign up for \"创新实践周\" (Innovation Practice Week). I should search notices.\n\nFirst call make_plan.",
+      "reasoning": "The user asks: \"创新实践周怎么报名\" (How to sign up for Innovation Practice Week?). This is about school notices. I should call make_plan first, then search_notices with keyword \"创新实践周\" maybe also \"报名\".\n\nLet me make plan then call search_notices. Could do two searches in parallel: \"创新实践周\" and \"报名\". But the independent calls should be in the same block. Let me do plan first.",
       "prompt_tokens": 1257,
-      "completion_tokens": 98,
-      "latency_ms": 1335.9
+      "completion_tokens": 173,
+      "latency_ms": 1868.8
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_izbL1T1wdrBfNl4YY5we8103",
+          "id": "call_00_bXfFikcPhLOew5YTvmT93589",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"创新实践周\"}"
+        },
+        {
+          "id": "call_01_pDtK2tdFEdpWfrYCVfig1665",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"报名\"}"
         }
       ],
-      "reasoning": "",
-      "prompt_tokens": 1374,
-      "completion_tokens": 41,
-      "latency_ms": 984.8
+      "reasoning": "Now call search_notices with keyword \"创新实践周\" and also \"报名\".",
+      "prompt_tokens": 1449,
+      "completion_tokens": 87,
+      "latency_ms": 936.3
     },
     {
-      "content": "我检索到一条相关通知：\n\n**《校园创新实践周报名开始》**\n- 发布单位：jwxt（教务系统）\n- 发布时间：2026-09-16\n- 分类：校园活动\n- 通知链接：https://demo.local/notices/activity\n- 内容摘要：欢迎同学报名参加创新实践活动。\n\n不过这条通知只提供了标题和摘要，**没有写明具体的报名入口、报名截止时间或操作步骤**。建议你打开上面的通知链接查看完整说明，或直接咨询班级辅导员或教务处。要我帮你再查一下其他关键词（如“实践周报名”“第二课堂”）吗？",
+      "content": "我查到了相关通知，但内容比较简略：\n\n**《校园创新实践周报名开始》**\n- 分类：校园活动\n- 发布日期：2026-09-16\n- 发布单位：jwxt（教务系统）\n- 摘要：欢迎同学报名参加创新实践活动\n- 通知链接：https://demo.local/notices/activity\n\n不过，这条通知里没有写明具体的报名方式、报名截止时间以及需要提交的材料，我这边能查到的数据也只有这些。建议你：\n\n1. 打开上面的通知链接查看全文；\n2. 或者直接咨询辅导员或教务处（通知由教务系统 jwxt 发布）；\n3. 也可以在教务系统里找“创新实践周”相关的报名入口。\n\n需要我帮你查一下本周的课表，看看创新实践周期间是否有课安排吗？",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1490,
-      "completion_tokens": 135,
-      "latency_ms": 1810.6
+      "prompt_tokens": 1682,
+      "completion_tokens": 176,
+      "latency_ms": 1495.6
     }
   ]
 }

@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_repair_001__gen_colloquial",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍灯坏了哎，帮我报修一下呗。"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "宿舍"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "维修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "抱歉，这个忙我帮不上 😅 我只能查询课表、成绩、考勤、考试安排、宿舍水电余额和学校通知，**没有报修/提交工单的权限**。学校通知里也没检索到“报修”“维修”相关内容。\n\n你可以试试这些途径：\n- 去宿舍楼一层管理员（宿管）处登记报修，一般有纸质或扫码的报修单；\n- 通过学校后勤/公寓管理部门的官方渠道（后勤服务大厅、企业微信或校园 App 的“报修”入口）提交；\n- 如果是灯座/线路问题涉及用电安全，建议同时告知宿管，尽快处理。\n\n另外提醒一句：需要的话我可以帮你查一下**宿舍水电费余额**，看看是不是欠费导致的断电。",
+    "rubric": "必须说明无法代为报修并给出自行办理的方向；不得声称已经报修"
+  }
+}

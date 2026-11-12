@@ -7,51 +7,61 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_SKuJHnE8BdCHzHspxJ9P5070",
+          "id": "call_00_bRgQSKlteyMEPm2OvtWE0882",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想了解学校是否发布了关于重新考试（补考/重考）具体安排的公告\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"查询学校是否发布了关于重新考试（补考/重修考试）具体计划的公告\", \"steps\": [\"search_notices\"]}"
         }
       ],
-      "reasoning": "User asks about \"重新考试\" (retake exam) — search notices. First make plan.",
+      "reasoning": "用户问的是\"关于重新考试的具体计划，学校发布相关公告了吗？\"需要搜索通知。先 make_plan，然后 search_notices。关键词可能是\"重新考试\"或\"补考\"。让我先搜索\"重新考试\"。",
       "prompt_tokens": 1264,
-      "completion_tokens": 98,
-      "latency_ms": 1275.7
+      "completion_tokens": 125,
+      "latency_ms": 1457.4
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_QREcSNRi4lROFitXzjIO5486",
+          "id": "call_00_ET_PQVmXfOhuLRtFGbU4Kh94938",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"重新考试\"}"
-        }
-      ],
-      "reasoning": "",
-      "prompt_tokens": 1381,
-      "completion_tokens": 40,
-      "latency_ms": 868.5
-    },
-    {
-      "content": "",
-      "tool_calls": [
+        },
         {
-          "id": "call_00_gXSAAbFdYiQwk6tiMYRd1976",
+          "id": "call_01_ET_WKlTjlupdnknzfWftXFJ0409",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"补考\"}"
         }
       ],
-      "reasoning": "Let me also search \"补考\" to be thorough.",
-      "prompt_tokens": 1563,
-      "completion_tokens": 52,
-      "latency_ms": 906.7
+      "reasoning": "",
+      "prompt_tokens": 1408,
+      "completion_tokens": 70,
+      "latency_ms": 855.1
     },
     {
-      "content": "我用“重新考试”“补考”两个关键词查了学校通知，结果如下：\n\n**检索到 2 条相关通知（均未专门说明重考或补考的具体计划）**\n1. 《2026 年秋季学期课程提醒》——2026-09-18，教务系统（jwxt）\n   摘要：请关注近期课程安排和考试时间。\n2. 《关于期末考试安排的说明》——2026-09-12，教务通知（jwxt）\n   摘要：考试安排已更新，请及时查看。\n   🔗 https://demo.local/notices/exam\n\n用关键词“补考”检索没有返回任何结果。\n\n也就是说，目前没有检索到专门针对“重新考试（补考）”具体安排的公告；这两条通知只进行了笼统提醒。如果你需要，我可以再帮你查一下本人的考试安排，或者换用其他关键词（如“缓考”“重修”）再检索一次。",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_00_xMxjBQPLpgM7ZoAY1X1W9116",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"重修\"}"
+        },
+        {
+          "id": "call_01_P4HkCQOQQ5eMeQU1L0oh9753",
+          "name": "search_notices",
+          "arguments": "{\"keyword\": \"考试安排\"}"
+        }
+      ],
+      "reasoning": "再搜\"重修\"、\"考试\"看看。",
+      "prompt_tokens": 1629,
+      "completion_tokens": 79,
+      "latency_ms": 1153.6
+    },
+    {
+      "content": "我用“重新考试”“补考”“重修”“考试安排”这几个关键词检索了学校通知公告，**目前没有找到专门针对“重新考试（补考/重修考试）具体计划”的公告**。\n\n检索到的相关通知只有这两条，都是常规提醒，没有重新考试的具体安排：\n\n1. **关于期末考试安排的说明**（2026-09-12，教务通知）——考试安排已更新，请及时查看。\n2. **2026 年秋季学期课程提醒**（2026-09-18，通知公告）——请关注近期课程安排和考试时间。\n\n用“补考”“重修”这两个关键词检索时，结果都为空。建议你留意教务系统后续通知，或向学院教务老师确认重新考试的具体时间安排。",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1628,
-      "completion_tokens": 196,
-      "latency_ms": 2142.5
+      "prompt_tokens": 1859,
+      "completion_tokens": 161,
+      "latency_ms": 1832.1
     }
   ]
 }

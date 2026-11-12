@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "perf_exams_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "结课后的考核定在几号？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "本学期期末考试安排（2026-2027 学年第 1 学期）共两场：\n\n| 课程 | 日期 | 时间 | 考场/座位 |\n|---|---|---|---|\n| 数据库原理（3 学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 / 18 号 |\n| 操作系统（3 学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 / 27 号 |\n\n如果你问的是某一门具体课程的结课考核，告诉我是哪门，我再帮你确认。另外这两场是期末考试，具体结课时间要看任课老师通知，需要的话我可以帮你查相关通知。",
+    "rubric": null
+  }
+}

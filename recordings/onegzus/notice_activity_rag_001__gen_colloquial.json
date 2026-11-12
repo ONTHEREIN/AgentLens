@@ -7,51 +7,51 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_hwgTVAT90BmwHPHRsMRT5943",
+          "id": "call_00_jpW0hbSaJXOUmlfxPz7B1907",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道「创新实践周」的报名方式，需要检索学校通知中关于创新实践周的安排说明。\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"用户想知道“创新实践周”的报名方式，需要检索学校通知公告中相关说明。\", \"steps\": [\"search_notices\"]}"
         }
       ],
-      "reasoning": "The user asks about how to register for 创新实践周 (Innovation Practice Week). I should search notices.\n\nLet me make a plan first.",
+      "reasoning": "User asks about 创新实践周 registration. Need to search notices.",
       "prompt_tokens": 1261,
-      "completion_tokens": 111,
-      "latency_ms": 1679.1
+      "completion_tokens": 92,
+      "latency_ms": 1262.4
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_cvTqeB3ldDFDIJ1ERL305254",
+          "id": "call_00_ET_43j2Hsx3LkgiNbA2qNvB3504",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"创新实践周\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1391,
+      "prompt_tokens": 1372,
       "completion_tokens": 41,
-      "latency_ms": 500.8
+      "latency_ms": 1162.0
     },
     {
-      "content": "搜到一条相关通知：\n\n**《校园创新实践周报名开始》**（校园活动，2026-09-16，来源：教务系统）\nhttps://demo.local/notices/activity\n内容摘要：欢迎同学报名参加创新实践活动。\n\n不过这条通知里没有写明具体的报名入口和截止时间。我再换个关键词查一下：",
+      "content": "",
       "tool_calls": [
         {
-          "id": "call_00_5y7KSooYRGsIyketnrZD9111",
+          "id": "call_00_uckcVr053QjS4NTiL8f59379",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"报名\"}"
         }
       ],
-      "reasoning": "The notice summary is minimal: \"欢迎同学报名参加创新实践活动。\" No details about how to register. I should tell the user that the notice doesn't contain specific registration steps, and maybe search another keyword like \"报名\".",
-      "prompt_tokens": 1507,
-      "completion_tokens": 154,
-      "latency_ms": 1649.2
+      "reasoning": "The result is thin. Maybe search \"报名\" too? Let's do another search for details.",
+      "prompt_tokens": 1488,
+      "completion_tokens": 59,
+      "latency_ms": 1241.3
     },
     {
-      "content": "目前系统里只有这一条通知，内容比较简短，没有写具体报名流程。\n\n建议你：\n1. 打开通知原文页面（https://demo.local/notices/activity）看完整内容，可能附有报名表或链接；\n2. 通知来源是教务系统，一般这类活动由教务处/学院组织，可以直接问辅导员或教务秘书确认报名方式和截止时间；\n3. 我这边可以帮你查课表、成绩、考勤、考试安排、宿舍水电余额和通知，但没法代为报名，报名操作需要你在学校系统里完成。\n\n需要我顺便帮你看看第 4 周的课表，确认实践周期间有没有课吗？",
+      "content": "我查到了相关通知，但内容比较简略：\n\n**《校园创新实践周报名开始》**\n- 分类：校园活动\n- 发布日期：2026-09-16\n- 发布来源：jwxt（教务系统）\n- 链接：https://demo.local/notices/activity\n- 摘要：欢迎同学报名参加创新实践活动。\n\n通知原文里没有写明具体的报名入口、截止时间和操作步骤，建议你点开上面这个链接，查看完整正文；如果链接中的内容不够详细，可以直接问辅导员或教务处的老师确认报名方式。\n\n需要的话，我也可以帮你查本学期的课表或考试安排，看看创新实践周期间有没有课程或考试冲突。",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1736,
-      "completion_tokens": 142,
-      "latency_ms": 2354.6
+      "prompt_tokens": 1622,
+      "completion_tokens": 147,
+      "latency_ms": 1620.5
     }
   ]
 }

@@ -1,0 +1,69 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_makeup_exam_miss_001__gen_verbose",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "今天天气真不错，刚吃完饭，想问下补考安排的通知出了没？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s6",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "我帮你查了一下：\n\n**补考通知**：在通知公告里用「补考」检索，目前没有查到任何相关通知，也就是说补考安排的通知应该还没发布。建议过几天再查，或者留意教务处、学院群里的通知。\n\n**你本学期的考试安排**（目前只有两门期末考试，没有补考记录）：\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统 | 2026-12-28（一） | 14:00-16:00 | B1-204 | 27 |\n\n如果你愿意，我也可以帮你查查上学期的成绩或考勤情况，看看哪些课可能需要补考。",
+    "rubric": "通知库里只有期末考试安排的说明，没有补考通知；不能把期末考试通知当成补考通知"
+  }
+}

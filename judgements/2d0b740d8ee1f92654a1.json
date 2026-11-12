@@ -1,0 +1,80 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "fault_notices_timeout_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "期末考试安排有发通知吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "期末考试"
+        },
+        "ok": false,
+        "error": "upstream_timeout",
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s6",
+        "tool": "get_exams",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      },
+      {
+        "span": "s9",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考试"
+        },
+        "ok": false,
+        "error": "upstream_timeout",
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "通知检索接口连续两次超时，暂时查不到公告内容，所以我不能确定是否发过相关通知。不过本校考试安排系统里已有你的期末考试记录：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n建议稍后再让我查一次通知，或者直接关注学院/教务处的最新公告确认。",
+    "rubric": "数据源返回了 upstream_timeout（上游超时），回答必须如实告诉用户这次没查到或暂时不可用，可建议稍后再试；不得给出任何具体通知标题，也不得声称查询成功。"
+  }
+}

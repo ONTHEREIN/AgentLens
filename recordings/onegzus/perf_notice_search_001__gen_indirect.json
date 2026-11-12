@@ -7,91 +7,28 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_VXspD844fCqOIksuskqA9964",
+          "id": "call_00_lBp8urenJ5pfUR9Kg0vk4103",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道近期校园内发布了哪些公告通知\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"用户想了解近期校园内发布的公告，需要用公告检索工具按常见关键词查找。\", \"steps\": [\"search_notices\"]}"
         },
         {
-          "id": "call_01_UJD8KV57kp0Vre9amoPD2574",
+          "id": "call_01_2bmjZwqCC0FgIsk9UdmB1469",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"通知\"}"
-        },
-        {
-          "id": "call_02_0Bz5eEkUJuYwXhKFrOMg7583",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"公告\"}"
         }
       ],
-      "reasoning": "用户问校园内近期发布了哪些公告。需要调用 search_notices，关键词。先 make_plan。\n\n工具需要关键词，我先用\"校园\"或\"通知\"。可能需要多次调用。先 make_plan，然后搜索\"通知\"或\"公告\"。\n\n我打算搜\"公告\"和\"通知\"两个关键词，可以并行。",
+      "reasoning": "The user asks about recent campus notices. I should search notices by keyword. There's no \"recent\" keyword... I can search with a general keyword like \"公告\" or \"通知\". Let me make a plan first.\n\nLet me call make_plan then search_notices with keyword \"通知\" perhaps. Maybe multiple keywords. Let's do \"通知\" first.",
       "prompt_tokens": 1260,
-      "completion_tokens": 196,
-      "latency_ms": 1691.4
+      "completion_tokens": 180,
+      "latency_ms": 1427.4
     },
     {
-      "content": "",
-      "tool_calls": [
-        {
-          "id": "call_00_XIVesbQmVPCPVWhQJ0rv6924",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"校园\"}"
-        },
-        {
-          "id": "call_01_uqXuhRrp5CeXPCcSSHuv5597",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"选课\"}"
-        },
-        {
-          "id": "call_02_YC44epiHteUjVWMIi9z51378",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"讲座\"}"
-        },
-        {
-          "id": "call_03_bSajsSCdg5zXP9Y3kOVM3796",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"活动\"}"
-        }
-      ],
-      "reasoning": "没结果。换个关键词，比如\"校园\"、\"活动\"、\"讲座\"、\"考试\"、\"选课\"、\"奖学金\"。用户问\"近期咱们校园内发布了哪些公告\"，可能关键词\"校园\"。试试几个。",
-      "prompt_tokens": 1493,
-      "completion_tokens": 172,
-      "latency_ms": 1380.3
-    },
-    {
-      "content": "",
-      "tool_calls": [
-        {
-          "id": "call_00_BZa1wEpUEzNa70cLhQ6I6692",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"考试\"}"
-        },
-        {
-          "id": "call_01_pSvudTENiLaKubjs7qFD9287",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"毕业\"}"
-        },
-        {
-          "id": "call_02_fKCNQArDDJjN43yPz6yy9156",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"服务\"}"
-        },
-        {
-          "id": "call_03_6wwE04uzW6Xcd01nvpU15077",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"报名\"}"
-        }
-      ],
-      "reasoning": "可能还想搜其他关键词，如\"考试\"、\"水电\"、\"报销\"、\"图书馆\"。也许搜\"教务\"、\"奖学金\"。再试几个以确保没遗漏。",
-      "prompt_tokens": 1878,
-      "completion_tokens": 160,
-      "latency_ms": 1648.5
-    },
-    {
-      "content": "我检索了学校通知公告，近期（9 月中旬）发布的有以下 4 条，按发布日期排序如下：\n\n| 日期 | 标题 | 类别 | 要点 |\n|---|---|---|---|\n| 09-18 | 2026 年秋季学期课程提醒 | 通知公告 | 请关注近期课程安排和考试时间 |\n| 09-17 | 校园卡服务已更新 | 办事大厅·申请 | 可在应用中查看常用校园服务 |\n| 09-16 | 校园创新实践周报名开始 | 校园活动 | 欢迎同学报名参加创新实践活动 |\n| 09-12 | 关于期末考试安排的说明 | 教务通知 | 考试安排已更新，请及时查看 |\n\n前三条都能在通知列表里找到，其中「校园创新实践周报名开始」还附有链接：https://demo.local/notices/activity。\n\n需要我帮你查这学期的课表或考试安排吗？这两份通知都提醒要关注课程和考试时间。",
+      "content": "以下是近期校园发布的公告（按时间倒序）：\n\n| 日期 | 类别 | 标题 | 摘要 |\n|---|---|---|---|\n| 2026-09-18 | 通知公告 | 2026 年秋季学期课程提醒 | 请关注近期课程安排和考试时间 |\n| 2026-09-17 | 办事大厅·申请 | 校园卡服务已更新 | 可在应用中查看常用校园服务 |\n| 2026-09-16 | 校园活动 | 校园创新实践周报名开始 | 欢迎同学报名参加创新实践活动 |\n| 2026-09-12 | 教务通知 | 关于期末考试安排的说明 | 考试安排已更新，请及时查看 |\n\n其中「2026 年秋季学期课程提醒」和「关于期末考试安排的说明」与本学期学习安排相关，建议优先查看；创新实践周报名正在进行，感兴趣可以留意截止时间。\n\n需要我帮你查本周课表或本学期考试安排吗？",
       "tool_calls": [],
-      "reasoning": "汇总去重，按日期倒序：\n\n1. 2026-09-18 2026年秋季学期课程提醒（通知公告）\n2. 2026-09-17 校园卡服务已更新（办事大厅·申请）\n3. 2026-09-16 校园创新实践周报名开始（校园活动）\n4. 2026-09-12 关于期末考试安排的说明（教务通知）",
-      "prompt_tokens": 2318,
-      "completion_tokens": 299,
-      "latency_ms": 2199.7
+      "reasoning": "Provide answer. Maybe also search \"公告\"? The results seem enough. But could search additional keyword to be thorough. I'll just answer with these four.\n\nShould I make another call? The user asked \"近期发布的公告\" — the search returned 4 items dated 9-12 to 9-18. Good enough. Answer.",
+      "prompt_tokens": 1708,
+      "completion_tokens": 270,
+      "latency_ms": 1701.8
     }
   ]
 }

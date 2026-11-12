@@ -7,42 +7,42 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_LWF9BrwmbMlKkDiW3oX02415",
+          "id": "call_00_LYhydgNkY5dg8D6cQbku9651",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道学校是否已发布期末考试安排的通知，并顺便了解自己的考试安排。\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+          "arguments": "{\"intent\": \"用户想知道学校是否已发布期末考安排的通知\", \"steps\": [\"search_notices\", \"get_exams\"]}"
         }
       ],
-      "reasoning": "The user asks whether the notice about final exam arrangements has been published. I should search notices with keyword like \"期末考\" or \"考试安排\". Also maybe get_exams? The question is about notice. Let me plan: search_notices with \"期末考试\". Maybe also get_exams to show their exam schedule. The user asks \"期末考安排的通知发了没呀\" — mainly about the notice. I could call search_notices and get_exams in parallel.\n\nLet me make_plan first.",
+      "reasoning": "The user asks whether the notice about final exam arrangements has been published. I should search notices with keyword \"期末考试\". Maybe also check exams? Let me plan.\n\nPlan: search_notices with keyword \"期末考试\". Possibly also get_exams to see arrangements. The question is about the notice, so search_notices primarily. But answering \"考试安排\" might also be useful. Let me do both — exams for current semester.\n\nLet me first make plan, then call both in parallel (independent).",
       "prompt_tokens": 1259,
-      "completion_tokens": 182,
-      "latency_ms": 1311.9
+      "completion_tokens": 173,
+      "latency_ms": 1721.0
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_b8dGMzcnM11FZ4Xe7rrn5557",
+          "id": "call_00_ET_4NUlDlchEPDPIRxyLjEH7194",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"期末考试\"}"
         },
         {
-          "id": "call_01_ET_w6nvfotPReU5AYhlluu14383",
+          "id": "call_01_ET_wmrhd7rGdchvFmDraIx15640",
           "name": "get_exams",
           "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1460,
+      "prompt_tokens": 1451,
       "completion_tokens": 85,
-      "latency_ms": 672.3
+      "latency_ms": 1118.7
     },
     {
-      "content": "已发布。学校于 2026-09-12 发布了教务通知《关于期末考试安排的说明》，通知中说明考试安排已更新，请及时查看。9 月 18 日还有一条《2026 年秋季学期课程提醒》，提示关注考试时间。\n\n你的期末考试安排，也就是 2026-2027 学年第 1 学期：\n1. 数据库原理（3 学分）：2026-12-24（周四）09:00-11:00，A3-302，座位 18\n2. 操作系统（3 学分）：2026-12-28（周一）14:00-16:00，B1-204，座位 27\n\n目前只安排了两门，后续可能有更新，可以再留意教务通知。",
+      "content": "通知已经发了。\n\n**通知**：《关于期末考试安排的说明》（教务通知，2026-09-12 发布），内容为“考试安排已更新，请及时查看”。另外，9 月 18 日还有一条《2026 年秋季学期课程提醒》，其中提到关注近期考试时间。\n\n**你本人的期末考安排（2026-2027 学年第 1 学期）目前查到 2 门**：\n\n| 课程 | 日期 | 时间 | 地点 | 座位 | 学分 |\n|---|---|---|---|---|---|\n| 数据库原理 | 12-24（周四） | 09:00-11:00 | A3-302 | 18 | 3 |\n| 操作系统 | 12-28（周一） | 14:00-16:00 | B1-204 | 27 | 3 |\n\n现在只是第 4 周，后面的考试安排可能还会陆续更新，你可以关注教务系统里的通知。需要我帮你查一下第 4 周的课表或其他信息吗？",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1825,
-      "completion_tokens": 165,
-      "latency_ms": 1204.4
+      "prompt_tokens": 1816,
+      "completion_tokens": 221,
+      "latency_ms": 1908.0
     }
   ]
 }

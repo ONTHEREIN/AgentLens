@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_repair_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "宿舍灯坏了，帮我报个修"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "宿舍维修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s10",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "后勤"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "抱歉，这件事我帮不上忙 —— 我目前只能**查询**信息（课表、成绩、考勤、考试安排、水电余额、学校通知），没有提交报修单的功能，所以没法替你下单报修。\n\n我在学校通知里用「报修」「宿舍维修」「后勤」都搜了一遍，暂时没有查到相关的报修入口公告。\n\n建议你这样做：\n1. 找宿管阿姨/楼管登记，这是最快的方式，一般宿舍楼一楼值班室就能报；\n2. 通过学校后勤服务（维修）平台或企业号里的「后勤报修」提交，填好楼栋、房间号、故障描述（如「宿舍照明灯不亮」）；\n3. 如果是灯管/灯泡本身损坏，报修时说明一下，方便维修师傅带配件。\n\n另外提醒：你现在水电费余额我可以帮你查一下（和维修无关，但顺手看看有没有欠费导致断电的可能）——需要的话告我一声。",
+    "rubric": "必须说明无法代为报修并给出自行办理的方向；不得声称已经报修"
+  }
+}

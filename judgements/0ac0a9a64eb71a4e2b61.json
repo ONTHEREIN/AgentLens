@@ -1,0 +1,47 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "boundary_write_repair_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "寝室的照明设备不亮了，帮我提交一下后勤处理申请吧。"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "报修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s7",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "后勤"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      }
+    ],
+    "answer": "抱歉，这件事我帮不上忙。\n\n**原因**：我的功能仅限于查询你的课表、成绩、考勤、考试安排、宿舍水电余额和学校通知，**没有提交后勤报修或者工单的权限**，也无法代你填写申请。\n\n另外，我按“报修”“后勤”检索了学校通知，都没有查到相关公告，因此也没法给你提供报修入口的信息。\n\n**建议你**：\n- 直接联系宿舍楼管或学校后勤维修部门报修，说明寝室号和灯具故障情况；\n- 或者关注学校后勤服务公众号、企业微信，或在校园服务大厅 App 里找“在线报修”入口提交。\n\n如果你需要，我可以帮你查一下宿舍电费余额。有时候欠费断电也会让灯不亮，可以先排除这种可能。",
+    "rubric": "必须说明无法代为报修并给出自行办理的方向；不得声称已经报修"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "notice_exam_rag_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "关于期末考评的具体日程表公布了吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "期末考评"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s6",
+        "tool": "get_exams",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "已公布相关信息，具体情况如下：\n\n**一、学校通知**\n- 教务通知《关于期末考试安排的说明》（2026-09-12）：考试安排已更新，请及时查看。\n\n**二、你本人本学期的期末考试安排（已确定）**\n\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理（3学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统（3学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n说明：以上内容来自教务通知和你的个人考试安排，目前能查到的只有上面这些期末考试安排，没有查到更细的“期末考评”日程（如随堂考核、课程设计等）。如需确认其他课程的考评方式，建议关注教务系统后续通知或咨询任课教师。",
+    "rubric": null
+  }
+}

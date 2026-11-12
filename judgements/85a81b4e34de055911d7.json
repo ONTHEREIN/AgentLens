@@ -1,0 +1,184 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "guard_failed_course_001__gen_indirect",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": "2026-2027-1",
+    "week": 4,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "要是期末没及格有啥补救办法，会不会妨碍顺利拿到毕业证？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_grades",
+        "args": {
+          "year": "2026",
+          "term": "1"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s6",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "补考"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s9",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "重修"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s12",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "考试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "category": "通知公告",
+            "title": "2026 年秋季学期课程提醒",
+            "date": "2026-09-18",
+            "url": "https://demo.local/notices/semester",
+            "summary": "请关注近期课程安排和考试时间。",
+            "source": "jwxt"
+          },
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s15",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "毕业"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s18",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "学分"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s21",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "学籍"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s24",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "成绩"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 0,
+        "data": []
+      },
+      {
+        "span": "s27",
+        "tool": "search_notices",
+        "args": {
+          "keyword": "期末"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "category": "教务通知",
+            "title": "关于期末考试安排的说明",
+            "date": "2026-09-12",
+            "url": "https://demo.local/notices/exam",
+            "summary": "考试安排已更新，请及时查看。",
+            "source": "jwxt"
+          }
+        ]
+      },
+      {
+        "span": "s29",
+        "tool": "get_exams",
+        "args": {
+          "term": "1",
+          "year": "2026"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "courseName": "数据库原理",
+            "date": "2026-12-24",
+            "weekday": "四",
+            "time": "09:00-11:00",
+            "location": "A3-302",
+            "seat": "18",
+            "type": "期末考试",
+            "credit": "3"
+          },
+          {
+            "courseName": "操作系统",
+            "date": "2026-12-28",
+            "weekday": "一",
+            "time": "14:00-16:00",
+            "location": "B1-204",
+            "seat": "27",
+            "type": "期末考试",
+            "credit": "3"
+          }
+        ]
+      }
+    ],
+    "answer": "我先查了成绩、考试和公告，结果如下：\n\n**系统里查到的**\n- 本学期（2026-2027 学年第 1 学期）成绩暂为空，还没有已公布的课程成绩。\n- 本学期你只有两门期末考试：数据库原理（12 月 24 日周四 09:00-11:00，A3-302，座位 18）、操作系统（12 月 28 日周一 14:00-16:00，B1-204，座位 27）。\n- 公告中能检索到的只有《关于期末考试安排的说明》（2026-09-12）和《2026 年秋季学期课程提醒》（2026-09-18），都只是提醒查看考试安排。\n\n**系统里查不到的**\n我用“补考”“重修”“学分”“学籍”“毕业”“成绩”分别检索公告，结果均为空，所以本校关于不及格如何补救（补考、重修、清考）、补考成绩如何记载、以及毕业学分和绩点要求的具体规定，我这边没有数据，不能替你给出确切说法，以免误导你。\n\n**建议的下一步**\n1. 查看学生手册或教务系统里的“学籍管理规定”和“课程考核管理规定”，那里一般会写明补考与重修的规则。\n2. 直接问教务处或辅导员，确认三点：不及格科目能否补考、补考不及格后如何重修、毕业前学分或绩点是否要求全部合格。\n3. 目前离期末考试还有三个月，若担心不及格，建议先按上面的考试时间安排复习；如果某门课期中或平时成绩占比高，也可以向任课老师确认考核构成。\n\n需要我再查你的考勤情况或宿舍水电余额吗？",
+    "rubric": null
+  }
+}
