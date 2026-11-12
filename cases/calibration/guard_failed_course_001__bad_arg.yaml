@@ -20,4 +20,4 @@ inject:
   base: guard_failed_course_001
   op: bad_arg
   layer: L3
-  detail: get_grades.year → '2025-2026'（不符合 schema）
+  detail: get_grades.year → '2026-2027'（不符合 schema）

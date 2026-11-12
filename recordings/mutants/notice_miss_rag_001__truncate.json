@@ -7,48 +7,43 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_mig6ccgutCSTkiNQrgVF5353",
+          "id": "call_00_O6gHT4gidbdt8aF4xll59383",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道学校是否已发布奖学金评定相关的通知\", \"steps\": [\"search_notices\"]}"
+          "arguments": "{\"intent\": \"查询学校是否已发布奖学金评定相关通知\", \"steps\": [\"search_notices\"]}"
         }
       ],
-      "reasoning": "The user asks about scholarship notices. I should make_plan then search_notices with keyword \"奖学金\".",
+      "reasoning": "The user asks whether scholarship evaluation notices are out. Need to search notices. First make_plan.",
       "prompt_tokens": 1258,
-      "completion_tokens": 90,
-      "latency_ms": 1102.5
+      "completion_tokens": 88,
+      "latency_ms": 1081.9
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_c421S8FDJCr5BMI1n1634481",
+          "id": "call_00_ET_tnN5IZAipSmcRmzQRFg39489",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"奖学金\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1367,
+      "prompt_tokens": 1365,
       "completion_tokens": 39,
-      "latency_ms": 447.4
+      "latency_ms": 709.7
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_G7C3teXomZkSM33hMh7u4845",
+          "id": "call_00_wd3bZp5Lt7m94IsQFnsx4239",
           "name": "search_notices",
-          "arguments": "{\"keyword\": \"奖学金评定\"}"
-        },
-        {
-          "id": "call_01_YDir5UCw2qxjMsHuyR731611",
-          "name": "search_notices",
-          "arguments": "{\"keyword\": \"评奖评优\"}"
+          "arguments": "{\"keyword\": \"评奖\"}"
         }
       ],
-      "reasoning": "No results. Maybe try \"奖学金评定\" or \"评奖评优\"? Let's try another keyword to be thorough.",
-      "prompt_tokens": 1419,
-      "completion_tokens": 97,
-      "latency_ms": 826.3
+      "reasoning": "No results. Try \"奖学金评定\" or \"评奖\" maybe. Let's try another keyword to be safe.",
+      "prompt_tokens": 1417,
+      "completion_tokens": 64,
+      "latency_ms": 1086.9
     }
   ]
 }

@@ -7,42 +7,42 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_LtRg8Fa6XbtB4ldhrkSd2613",
+          "id": "call_00_IpezFS6mwSmCi2YGlWYn3875",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道学校是否发布了期末考试安排相关通知，并顺便确认本人本学期的考试安排\", \"steps\": [\"search_notices\", \"get_exams\"]}"
+          "arguments": "{\"intent\": \"用户想知道学校是否发布了期末考试安排的通知，同时也可查一下本人的考试安排\", \"steps\": [\"search_notices\", \"get_exams\"]}"
         }
       ],
-      "reasoning": "The user asks: \"期末考试安排有发通知吗\" - has there been a notice about final exam arrangements? I should search notices for \"期末考试\" and also possibly query exam arrangements. Let me make a plan first.\n\nPlan: search_notices with keyword \"期末考试\", and get_exams for current semester. These are independent, so can call in same block after make_plan.",
+      "reasoning": "User asks: 期末考试安排有发通知吗 (Has there been a notice about final exam arrangements?)\n\nI should make a plan, then call search_notices with keyword \"期末考试\" and maybe get_exams. Let's do plan then calls.",
       "prompt_tokens": 1258,
-      "completion_tokens": 160,
-      "latency_ms": 1297.1
+      "completion_tokens": 130,
+      "latency_ms": 1651.1
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_ET_Qr35iVfaKcEbTEQ1UYCG8793",
+          "id": "call_00_ET_Qnw2afa23lT4ZkanbVLT6839",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"期末考试\"}"
         },
         {
-          "id": "call_01_ET_Ozg0QWVi0kyWhlmLmJXb9413",
+          "id": "call_01_ET_kfTMuEWSZ4qF6mtycXRN9918",
           "name": "get_exams",
           "arguments": "{\"year\": \"2026-2027\", \"term\": \"1\"}"
         }
       ],
       "reasoning": "",
-      "prompt_tokens": 1437,
+      "prompt_tokens": 1407,
       "completion_tokens": 85,
-      "latency_ms": 1418.5
+      "latency_ms": 1277.5
     },
     {
-      "content": "有通知，而且你的考试安排也出来了。\n\n**相关通知**\n1. 《关于期末考试安排的说明》—— 教务通知，2026-09-12 发布，说明考试安排已更新，请及时查看（来源：教务处 jwxt）\n2. 《2026 年秋季学期课程提醒》—— 通知公告，2026-09-18 发布，提醒关注近期课程安排和考试时间\n\n**你本学期的期末考试安排（2026-2027 学年第 1 学期）**\n\n| 课程 | 日期 | 时间 | 地点 | 座位 |\n|---|---|---|---|---|\n| 数据库原理（3 学分） | 2026-12-24（周四） | 09:00-11:00 | A3-302 | 18 |\n| 操作系统（3 学分） | 2026-12-28（周一） | 14:00-16:00 | B1-204 | 27 |\n\n目前只查到这两门课的考试安排，如果后续还有课程变动，可以再查一次。",
+      "content": "有通知。\n\n**相关通知（2 条）**\n1. 《关于期末考试安排的说明》——教务通知，2026-09-12 发布，摘要为“考试安排已更新，请及时查看。”（jwxt）\n2. 《2026 年秋季学期课程提醒》——通知公告，2026-09-18 发布，摘要为“请关注近期课程安排和考试时间。”（jwxt）\n\n**你本学期（2026-2027 学年第 1 学期）已公布的考试安排**\n- 数据库原理：2026-12-24（周四）09:00-11:00，A3-302，座位 18，3 学分\n- 操作系统：2026-12-28（周一）14:00-16:00，B1-204，座位 27，3 学分\n\n如需查看原文，可打开 https://demo.local/notices/exam。",
       "tool_calls": [],
       "reasoning": "",
-      "prompt_tokens": 1802,
-      "completion_tokens": 225,
-      "latency_ms": 1518.5
+      "prompt_tokens": 1772,
+      "completion_tokens": 196,
+      "latency_ms": 1617.6
     }
   ]
 }

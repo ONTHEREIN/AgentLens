@@ -7,34 +7,34 @@
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_GiGpqn0Fk55BvDPqqyoL9036",
+          "id": "call_00_X6h6M2GAxW2CQxuJYJVF5569",
           "name": "make_plan",
-          "arguments": "{\"intent\": \"用户想知道本学期期末考试安排是否有调整\", \"steps\": [\"get_exams\", \"search_notices\"]}"
+          "arguments": "{\"intent\": \"查询本学期期末考试安排，并检索学校通知中关于考试安排调整的公告\", \"steps\": [\"get_exams\", \"search_notices\"]}"
         }
       ],
-      "reasoning": "The user asks whether the final exam schedule has recent adjustments. I should check exam schedule and possibly search notices about exam adjustments.\n\nLet me make plan, then call get_exams and search_notices in parallel.\n\nNote: \"期末考试\" — current semester is 2026-2027 第1学期, so exams for current semester. Let's query exams with default (current) plus search notices for \"考试\".",
+      "reasoning": "用户问期末考试安排最近有调整吗。需要查考试安排，同时可能需要检索通知中的考试调整信息。\n\n先 make_plan，然后调用 get_exams（当前学期）和 search_notices(\"考试\")。这两个独立，可以并行。",
       "prompt_tokens": 1258,
-      "completion_tokens": 155,
-      "latency_ms": 1226.9
+      "completion_tokens": 131,
+      "latency_ms": 1451.6
     },
     {
       "content": "",
       "tool_calls": [
         {
-          "id": "call_00_wokGaBZbFL1HBv5dzFiy9222",
+          "id": "call_00_ET_PHn477LNsSlEuZ4CetNE5147",
           "name": "get_exams",
           "arguments": "{\"year\": \"2026\", \"term\": \"1\"}"
         },
         {
-          "id": "call_01_mUihdkz1vKgFPYJYxGtP9651",
+          "id": "call_01_ET_He7UGL5r8aBsSFL3wO985681",
           "name": "search_notices",
           "arguments": "{\"keyword\": \"考试\"}"
         }
       ],
-      "reasoning": "Call get_exams (default current semester) and search_notices with keyword \"考试\".",
-      "prompt_tokens": 1432,
-      "completion_tokens": 103,
-      "latency_ms": 697.5
+      "reasoning": "",
+      "prompt_tokens": 1408,
+      "completion_tokens": 85,
+      "latency_ms": 1016.2
     }
   ]
 }
