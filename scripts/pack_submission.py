@@ -25,8 +25,8 @@ NAME = "AgentLens-提交包"
 
 # 用例集 → 期望（通过, 失败）；与 07-复现指南.md 的表一致，对不上就中止，不打包一份和文档矛盾的结果
 SUITES = {
-    "onegzus": (56, 13),
-    "generated": (201, 71),
+    "onegzus": (58, 11),
+    "generated": (211, 61),
     "faults": (8, 5),
     "calibration": None,  # 校准集看检出率 / 归因准确率，不看通过数
     "library": (9, 2),    # 接入示例（馆藏助手），adapter 不同
@@ -156,6 +156,7 @@ def main() -> None:
 
     (pkg / "02-缺陷清单").mkdir()
     shutil.copy(ROOT / "docs" / "缺陷清单.md", pkg / "02-缺陷清单")
+    shutil.copy(ROOT / "docs" / "修复验证-2026-11-12.md", pkg / "02-缺陷清单")
 
     cases = pkg / "03-测试用例"
     for suite in SUITES:
