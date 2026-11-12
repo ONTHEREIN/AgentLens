@@ -114,6 +114,8 @@ LLM 裁判（M2，尚未实现）只负责答案忠实度 / rubric 这类规则�
 
 新增 adapter 的步骤：实现 `invoke()` → 在 `cli.py` 的 `ADAPTERS` 注册 → 用例 YAML 的
 `expect.tools` 用新工具名。`--adapter` 的 choices 由该字典自动派生。
+完整示例：`adapters/library.py` + `examples/library_agent/`（馆藏助手，事件日志 → span 的映射表见其 README），
+用例在 `cases/library/`，录制在 `recordings/library/`。示例 agent 的护栏刻意从简，不算软帮手的缺陷，不进缺陷清单。
 
 ### 用例（`cases/*.yaml`）
 
@@ -155,6 +157,7 @@ LLM 裁判（M2，尚未实现）只负责答案忠实度 / rubric 这类规则�
 - 门禁还没拿真实修复验证过（修被测对象要 rein 拍板）
 
 ```bash
+python -m agentlens run cases/library/ --adapter library       # 接入示例：馆藏助手（回放；AGENTLENS_RECORD=1 重录，key 读 .env.agent）
 python -m agentlens inject cases/onegzus/                       # 由真实录制生成校准用例 → cases/calibration/
 python -m agentlens generate cases/onegzus/                     # LLM 保义改写 → cases/generated/（需 .env.judge，离线联网一次）
 python -m agentlens run cases/calibration/ --adapter onegzus    # 输出「故障注入校准」表：检出率 / 归因准确率 / 95% CI

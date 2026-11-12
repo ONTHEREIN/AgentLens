@@ -98,7 +98,8 @@ agentlens/
 │   ├── tools.py           # 5 个工具打桩在构造数据上（M3 故障注入挂载点）
 │   └── adapters/
 │       ├── base.py        # Adapter 契约：invoke(case) -> AgentOutput
-│       └── campus_copilot.py  # 参考被测对象（确定性，刻意保留 3 类缺陷）
+│       ├── campus_copilot.py  # 参考被测对象（确定性，刻意保留 3 类缺陷）
+│       └── library.py     # 接入示例：把 examples/library_agent 的事件日志翻成 span
 ├── cases/                 # YAML 用例（声明式，非开发同学也能提交）
 ├── fixtures/campus.json   # 构造/脱敏数据（禁止替换为真实数据）
 ├── results/<run_id>/      # traces.jsonl（唯一真相源）+ summary.json
@@ -138,7 +139,9 @@ v0 是确定性实现，**刻意保留三类缺陷**作为归因演示素材（�
 | 关键词首命中，`课` 排在 `成绩` 之前 | L2 工具选型（课表/成绩歧义） |
 | 护栏用敏感词表，`挂科` 直接拒答 | L6 护栏误伤 |
 
-接一个新 Agent 只需要实现 `adapters/base.py` 的 `invoke()`（G5：≤2 人时）。
+接一个新 Agent 只需要实现 `adapters/base.py` 的 `invoke()`（G5：≤2 人时）。完整示例见
+[`examples/library_agent/`](examples/library_agent/README.md)：一个不认识 AgentLens 的极简借阅助手，
+真实模型录制 + 回放，11 条用例覆盖七维度。
 
 ---
 
