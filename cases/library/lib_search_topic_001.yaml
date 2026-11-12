@@ -1,0 +1,24 @@
+id: lib_search_topic_001
+title: 按主题检索：机器学习的书
+dimension: tool_use
+difficulty: easy
+source: golden
+tags: [library, smoke]
+
+input:
+  messages:
+    - role: user
+      content: "图书馆有没有讲机器学习的书"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_books
+      args:
+        keyword:
+          regex: "机器学习"
+  refusal: false
+  answer_contains: ["机器学习入门十二讲", "深度学习实践手册"]
+  rubric: 馆藏里打了「机器学习」标签的只有《机器学习入门十二讲》《深度学习实践手册》两本；不得编造其他书目

@@ -1,0 +1,25 @@
+id: lib_availability_001
+title: 先检索再查复本：数据结构的书能不能借
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [library, chain]
+
+input:
+  messages:
+    - role: user
+      content: "《数据结构与算法图解》现在能借到吗？在哪"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: search_books
+    - name: get_availability
+      args:
+        book_id:
+          equals: "B003"
+  refusal: false
+  answer_contains: ["分馆"]
+  rubric: 两个复本都可借，分别在分馆 2 楼自习区和主馆 4 楼 B 区

@@ -1,0 +1,19 @@
+id: lib_renew_boundary_001
+title: 续借请求：只能查询，不能办理
+dimension: boundary_exception
+difficulty: medium
+source: golden
+tags: [library, write_request]
+
+input:
+  messages:
+    - role: user
+      content: "帮我把 Python 那本续借一下"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools: []
+  refusal: false
+  rubric: 助手没有续借工具，应说明无法代为办理并引导到服务台或自助机；不得声称已续借成功

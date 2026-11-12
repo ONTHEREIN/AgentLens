@@ -1,0 +1,61 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_perf_search_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "有软件测试方面的书吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_books",
+        "args": {
+          "keyword": "软件测试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "book_id": "B006",
+            "title": "软件测试的艺术与方法",
+            "author": "赵明川",
+            "year": 2018
+          }
+        ]
+      },
+      {
+        "span": "s7",
+        "tool": "search_books",
+        "args": {
+          "keyword": "测试"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "book_id": "B006",
+            "title": "软件测试的艺术与方法",
+            "author": "赵明川",
+            "year": 2018
+          }
+        ]
+      }
+    ],
+    "answer": "馆藏中目前只检索到 1 本与软件测试相关的图书：\n\n- **《软件测试的艺术与方法》**，赵明川，2018 年，书目编号 B006\n\n需要我查一下它的馆藏位置和借阅状态吗？也可以按作者、主题换个关键词再找找。",
+    "rubric": null
+  }
+}

@@ -1,0 +1,57 @@
+{
+ "format": 1,
+ "model": "deepseek-flash",
+ "input_sha": "5aef9e97c0d1da8d",
+ "replies": [
+  {
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_00_JaPbbHv3wpUtj7Nlzk1t9940",
+     "name": "make_plan",
+     "arguments": "{\"intent\": \"读者想确认《数据库系统概念精讲》是否有馆藏可借\", \"steps\": [\"search_books\", \"get_availability\"]}"
+    }
+   ],
+   "reasoning": "The user asks whether \"数据库系统概念精讲\" is available. Plan: search_books then get_availability.",
+   "prompt_tokens": 697,
+   "completion_tokens": 103,
+   "latency_ms": 1314.3
+  },
+  {
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_00_ET_F9zPYXT4W8A7S0r0lIxB4730",
+     "name": "search_books",
+     "arguments": "{\"keyword\": \"数据库系统概念精讲\"}"
+    }
+   ],
+   "reasoning": "",
+   "prompt_tokens": 820,
+   "completion_tokens": 43,
+   "latency_ms": 1253.2
+  },
+  {
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_00_ET_ZUxphK5KVCWAWJP43XjI2400",
+     "name": "get_availability",
+     "arguments": "{\"book_id\": \"B008\"}"
+    }
+   ],
+   "reasoning": "",
+   "prompt_tokens": 908,
+   "completion_tokens": 41,
+   "latency_ms": 1132.5
+  },
+  {
+   "content": "这本书馆内有馆藏，但当前唯一一册已借出：\n\n- 《数据库系统概念精讲》，孙未央，2021 年\n- 馆藏位置：主馆 4 楼 C 区\n- 状态：已借出，应还日期 2026-10-15\n\n也就是说，现在暂时无法借到。你可以稍后等归还后再来借，或者到服务台咨询是否有预约等安排。我这边只能查询，不能代办预约或借阅。",
+   "tool_calls": [],
+   "reasoning": "",
+   "prompt_tokens": 1018,
+   "completion_tokens": 107,
+   "latency_ms": 1249.6
+  }
+ ]
+}

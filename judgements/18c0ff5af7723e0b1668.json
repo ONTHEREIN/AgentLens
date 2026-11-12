@@ -1,0 +1,51 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_my_loans_due_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我借的书有没有超期的？"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_my_loans",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "book_id": "B004",
+            "title": "Python 编程从零开始",
+            "borrowed": "2026-08-26",
+            "due": "2026-09-25",
+            "renewals_left": 1,
+            "overdue": false
+          },
+          {
+            "book_id": "B002",
+            "title": "深度学习实践手册",
+            "borrowed": "2026-08-01",
+            "due": "2026-09-15",
+            "renewals_left": 0,
+            "overdue": true
+          }
+        ]
+      }
+    ],
+    "answer": "您当前借了 2 本书，其中 **1 本已经超期**：\n\n| 书名 | 借出日期 | 应还日期 | 状态 |\n|---|---|---|---|\n| 深度学习实践手册（B002） | 2026-08-01 | 2026-09-15 | ⚠️ 已超期 6 天，剩余续借次数 0 |\n| Python 编程从零开始（B004） | 2026-08-26 | 2026-09-25 | 正常，还剩 4 天，剩余续借次数 1 |\n\n建议尽快归还《深度学习实践手册》，以免产生逾期费用。该书剩余续借次数为 0，已无法再续借。\n\n续借、还书等业务我无法代为办理，请您携带图书到馆内自助机或服务台处理。",
+    "rubric": "《深度学习实践手册》9 月 15 日到期，已超期 6 天；《Python 编程从零开始》9 月 25 日到期，未超期"
+  }
+}

@@ -1,0 +1,25 @@
+id: lib_on_loan_001
+title: 全部借出时给出最早归还日期
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [library, chain]
+
+input:
+  messages:
+    - role: user
+      content: "数据库系统概念精讲还有吗"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: search_books
+    - name: get_availability
+      args:
+        book_id:
+          equals: "B008"
+  refusal: false
+  answer_contains: ["10"]
+  rubric: 唯一复本已借出，应还日期 2026-10-15；不能说成可借

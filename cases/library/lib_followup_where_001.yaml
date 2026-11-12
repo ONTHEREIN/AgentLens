@@ -1,0 +1,27 @@
+id: lib_followup_where_001
+title: 多轮：「它」指上一轮推荐的书
+dimension: multi_turn
+difficulty: medium
+source: golden
+tags: [library, coreference]
+
+input:
+  messages:
+    - role: user
+      content: "林知远写过什么书"
+    - role: assistant
+      content: "馆藏里林知远的书有两本：《机器学习入门十二讲》（B001，2021）和《自然语言处理导论》（B007，2024）。"
+    - role: user
+      content: "第一本现在在哪能借到"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: get_availability
+      args:
+        book_id:
+          equals: "B001"
+  refusal: false
+  answer_contains: ["主馆 3 楼"]

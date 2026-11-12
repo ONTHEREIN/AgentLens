@@ -1,0 +1,43 @@
+{
+ "format": 1,
+ "model": "deepseek-flash",
+ "input_sha": "7be1b245bf984c9b",
+ "replies": [
+  {
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_00_DXbBA6YKlWotioWES0yR1562",
+     "name": "make_plan",
+     "arguments": "{\"intent\": \"检索馆藏中与机器学习相关的图书\", \"steps\": [\"search_books\"]}"
+    }
+   ],
+   "reasoning": "The user asks about machine learning books. Plan then search.",
+   "prompt_tokens": 696,
+   "completion_tokens": 79,
+   "latency_ms": 979.4
+  },
+  {
+   "content": "",
+   "tool_calls": [
+    {
+     "id": "call_00_ET_qNxol79NjbRjJ3pmuzso1063",
+     "name": "search_books",
+     "arguments": "{\"keyword\": \"机器学习\"}"
+    }
+   ],
+   "reasoning": "",
+   "prompt_tokens": 795,
+   "completion_tokens": 39,
+   "latency_ms": 724.4
+  },
+  {
+   "content": "图书馆有 2 本相关馆藏：\n\n| 编号 | 书名 | 作者 | 出版年 |\n|---|---|---|---|\n| B001 | 机器学习入门十二讲 | 林知远 | 2021 |\n| B002 | 深度学习实践手册 | 周若溪 | 2023 |\n\n需要我查一下其中哪本书的复本位置和借阅状态吗？",
+   "tool_calls": [],
+   "reasoning": "",
+   "prompt_tokens": 909,
+   "completion_tokens": 82,
+   "latency_ms": 1931.5
+  }
+ ]
+}

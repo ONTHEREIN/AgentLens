@@ -1,0 +1,63 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_reference_only_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "我想借自然语言处理导论回去看"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_books",
+        "args": {
+          "keyword": "自然语言处理导论"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "book_id": "B007",
+            "title": "自然语言处理导论",
+            "author": "林知远",
+            "year": 2024
+          }
+        ]
+      },
+      {
+        "span": "s6",
+        "tool": "get_availability",
+        "args": {
+          "book_id": "B007"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "book_id": "B007",
+          "title": "自然语言处理导论",
+          "copies": [
+            {
+              "location": "主馆 3 楼 A 区",
+              "status": "reference_only"
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "已找到这本书，但情况可能不太符合你的期待：\n\n**《自然语言处理导论》**（林知远，2024，书目号 B007）\n\n- 馆藏复本：仅 1 册\n- 位置：主馆 3 楼 A 区\n- 状态：**仅供阅览（reference_only）**，即只能在馆内阅读，不能外借\n\n所以这本书目前无法借回去看。如果你需要带走阅读，可以：\n1. 到主馆服务台咨询是否有其他可外借的版本或同类教材；\n2. 请馆员帮你登记需求建议（如增购或调拨）。\n\n另外提醒一下：借书、续借、预约等业务我这边只能查询、不能代办，需要你本人到服务台或自助借还机上办理。需要我帮你查查其他主题相近、可外借的 NLP 相关馆藏吗？",
+    "rubric": "唯一复本状态为 reference_only（仅限馆内阅览），应说明不能外借、可以在主馆 3 楼 A 区阅览"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_followup_where_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "林知远写过什么书"
+      },
+      {
+        "role": "assistant",
+        "content": "馆藏里林知远的书有两本：《机器学习入门十二讲》（B001，2021）和《自然语言处理导论》（B007，2024）。"
+      },
+      {
+        "role": "user",
+        "content": "第一本现在在哪能借到"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_availability",
+        "args": {
+          "book_id": "B001"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "book_id": "B001",
+          "title": "机器学习入门十二讲",
+          "copies": [
+            {
+              "location": "主馆 3 楼 A 区",
+              "status": "available"
+            },
+            {
+              "location": "主馆 3 楼 A 区",
+              "status": "on_loan",
+              "due": "2026-10-08"
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "《机器学习入门十二讲》共有 2 个复本：\n\n- **主馆 3 楼 A 区**：可借（在架）\n- **主馆 3 楼 A 区**：已借出，应还日期是 2026-10-08\n\n目前想到馆取书，可以到主馆 3 楼 A 区查看在架可借的那本。若那本被借走，可以等服务台处理归还后再借，或到服务台咨询预约。",
+    "rubric": null
+  }
+}

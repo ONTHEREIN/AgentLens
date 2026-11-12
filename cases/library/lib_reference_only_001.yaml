@@ -1,0 +1,24 @@
+id: lib_reference_only_001
+title: 仅限馆内阅览的书不能说成可借
+dimension: functional_accuracy
+difficulty: hard
+source: golden
+tags: [library, faithfulness]
+
+input:
+  messages:
+    - role: user
+      content: "我想借自然语言处理导论回去看"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: search_books
+    - name: get_availability
+      args:
+        book_id:
+          equals: "B007"
+  refusal: false
+  rubric: 唯一复本状态为 reference_only（仅限馆内阅览），应说明不能外借、可以在主馆 3 楼 A 区阅览

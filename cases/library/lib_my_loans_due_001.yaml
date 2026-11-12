@@ -1,0 +1,21 @@
+id: lib_my_loans_due_001
+title: 本人借阅：哪本最先到期
+dimension: functional_accuracy
+difficulty: medium
+source: golden
+tags: [library, aggregation]
+
+input:
+  messages:
+    - role: user
+      content: "我借的书有没有超期的？"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: exact
+  tools:
+    - name: get_my_loans
+  refusal: false
+  answer_contains: ["深度学习实践手册"]
+  rubric: 《深度学习实践手册》9 月 15 日到期，已超期 6 天；《Python 编程从零开始》9 月 25 日到期，未超期

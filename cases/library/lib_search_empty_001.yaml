@@ -1,0 +1,20 @@
+id: lib_search_empty_001
+title: 零命中时不得编造馆藏
+dimension: rag_retrieval
+difficulty: medium
+source: golden
+tags: [library, faithfulness]
+
+input:
+  messages:
+    - role: user
+      content: "有没有关于量子计算的书"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_books
+  refusal: false
+  rubric: 馆藏里没有量子计算相关的书，检索应为零命中；回答应如实说明没找到，不得编造书名或位置

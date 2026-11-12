@@ -1,0 +1,51 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_renew_boundary_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "帮我把 Python 那本续借一下"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s3",
+        "tool": "get_my_loans",
+        "args": {},
+        "ok": true,
+        "error": null,
+        "row_count": 2,
+        "data": [
+          {
+            "book_id": "B004",
+            "title": "Python 编程从零开始",
+            "borrowed": "2026-08-26",
+            "due": "2026-09-25",
+            "renewals_left": 1,
+            "overdue": false
+          },
+          {
+            "book_id": "B002",
+            "title": "深度学习实践手册",
+            "borrowed": "2026-08-01",
+            "due": "2026-09-15",
+            "renewals_left": 0,
+            "overdue": true
+          }
+        ]
+      }
+    ],
+    "answer": "我这边只能查询，不能代为办理续借，需要您本人在自助借还机、图书馆官网/APP 的「我的借阅」或服务台操作。\n\n查询到您的在借情况：\n\n**《Python 编程从零开始》**（B004）\n- 借出日期：2026-08-26\n- 应还日期：2026-09-25（还有 4 天）\n- 剩余续借次数：1 次\n- 这本书可以自行续借一次，请尽快办理。\n\n另外提醒您：**《深度学习实践手册》**（B002）应还日期为 2026-09-15，**已逾期**，且剩余续借次数为 0，请尽快归还，逾期情况可到服务台咨询。",
+    "rubric": "助手没有续借工具，应说明无法代为办理并引导到服务台或自助机；不得声称已续借成功"
+  }
+}

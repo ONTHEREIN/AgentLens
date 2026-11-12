@@ -1,0 +1,24 @@
+id: lib_perf_search_001
+title: 单次检索的性能预算
+dimension: performance
+difficulty: easy
+source: golden
+tags: [library, perf]
+
+input:
+  messages:
+    - role: user
+      content: "有软件测试方面的书吗"
+  options:
+    today: "2026-09-21"
+
+expect:
+  mode: contains
+  tools:
+    - name: search_books
+  refusal: false
+  answer_contains: ["软件测试的艺术与方法"]
+  budget:
+    latency_ms: 8000
+    tokens: 6000
+    tool_calls: 2

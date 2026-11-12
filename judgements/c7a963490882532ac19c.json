@@ -1,0 +1,64 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_on_loan_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "数据库系统概念精讲还有吗"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_books",
+        "args": {
+          "keyword": "数据库系统概念精讲"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "book_id": "B008",
+            "title": "数据库系统概念精讲",
+            "author": "孙未央",
+            "year": 2021
+          }
+        ]
+      },
+      {
+        "span": "s6",
+        "tool": "get_availability",
+        "args": {
+          "book_id": "B008"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "book_id": "B008",
+          "title": "数据库系统概念精讲",
+          "copies": [
+            {
+              "location": "主馆 4 楼 C 区",
+              "status": "on_loan",
+              "due": "2026-10-15"
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "这本书馆内有馆藏，但当前唯一一册已借出：\n\n- 《数据库系统概念精讲》，孙未央，2021 年\n- 馆藏位置：主馆 4 楼 C 区\n- 状态：已借出，应还日期 2026-10-15\n\n也就是说，现在暂时无法借到。你可以稍后等归还后再来借，或者到服务台咨询是否有预约等安排。我这边只能查询，不能代办预约或借阅。",
+    "rubric": "唯一复本已借出，应还日期 2026-10-15；不能说成可借"
+  }
+}

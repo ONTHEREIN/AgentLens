@@ -1,0 +1,67 @@
+{
+  "prompt_version": "faithfulness-v2",
+  "model": "qwen3.7-plus",
+  "case_id": "lib_availability_001",
+  "verdict": {
+    "faithful": true,
+    "score": 5,
+    "issues": []
+  },
+  "evidence": {
+    "today": "2026-09-21",
+    "current_term": null,
+    "week": null,
+    "conversation": [
+      {
+        "role": "user",
+        "content": "《数据结构与算法图解》现在能借到吗？在哪"
+      }
+    ],
+    "observations": [
+      {
+        "span": "s4",
+        "tool": "search_books",
+        "args": {
+          "keyword": "数据结构与算法图解"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": 1,
+        "data": [
+          {
+            "book_id": "B003",
+            "title": "数据结构与算法图解",
+            "author": "陈一舟",
+            "year": 2019
+          }
+        ]
+      },
+      {
+        "span": "s6",
+        "tool": "get_availability",
+        "args": {
+          "book_id": "B003"
+        },
+        "ok": true,
+        "error": null,
+        "row_count": null,
+        "data": {
+          "book_id": "B003",
+          "title": "数据结构与算法图解",
+          "copies": [
+            {
+              "location": "分馆 2 楼 自习区",
+              "status": "available"
+            },
+            {
+              "location": "主馆 4 楼 B 区",
+              "status": "available"
+            }
+          ]
+        }
+      }
+    ],
+    "answer": "《数据结构与算法图解》（陈一舟，2019）有 2 个复本，均可借：\n\n- 分馆 2 楼 自习区\n- 主馆 4 楼 B 区\n\n到对应书架上取书，再到自助借书机或服务台办理借出手续即可。",
+    "rubric": "两个复本都可借，分别在分馆 2 楼自习区和主馆 4 楼 B 区"
+  }
+}
