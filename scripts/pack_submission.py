@@ -1,6 +1,6 @@
 """组装比赛提交包：dist/AgentLens-提交包/ + 同名 .zip。
 
-全程离线：四个用例集按录制回放、LLM 裁判只读缓存，结果现跑现装，不复用 results/ 里的旧运行。
+全程离线：各用例集按录制回放、LLM 裁判只读缓存，结果现跑现装，不复用 results/ 里的旧运行。
 被测智能体只打包回放所需的最小子集（agent 核心 + 演示数据 + 数据模型），不含真实教务系统的接入代码。
 
     .venv/bin/python scripts/pack_submission.py [--gzus-dir ../GZUS-PRO-agent]
@@ -29,7 +29,9 @@ SUITES = {
     "generated": (201, 71),
     "faults": (8, 5),
     "calibration": None,  # 校准集看检出率 / 归因准确率，不看通过数
+    "library": (9, 2),    # 接入示例（馆藏助手），adapter 不同
 }
+ADAPTER_OF = {"library": "library"}
 
 GZUS_FILES = [
     "services/api/pyproject.toml",
@@ -72,7 +74,7 @@ def run_suite(suite: str) -> Path:
     """回放跑一个用例集，返回新建的 results/<run_id>/。"""
     before = set((ROOT / "results").iterdir()) if (ROOT / "results").exists() else set()
     env = {**os.environ, "AGENTLENS_RECORD": "0"}
-    proc = sh([sys.executable, "-m", "agentlens", "run", f"cases/{suite}/", "--adapter", "onegzus",
+    proc = sh([sys.executable, "-m", "agentlens", "run", f"cases/{suite}/", "--adapter", ADAPTER_OF.get(suite, "onegzus"),
                "--llm-judge", "--html"], cwd=ROOT, env=env, capture_output=True)
     new = sorted(set((ROOT / "results").iterdir()) - before)
     if len(new) != 1:
@@ -143,7 +145,7 @@ def main() -> None:
     shutil.rmtree(pkg, ignore_errors=True)
     pkg.mkdir(parents=True)
 
-    print("回放四个用例集…")
+    print("回放各用例集…")
     runs = {suite: run_suite(suite) for suite in SUITES}
 
     print("组装目录…")
