@@ -54,6 +54,7 @@
   const ADAPTER_LABELS = {
     onegzus: "软帮手智能体",
     campus_copilot: "CampusCopilot 桩",
+    library: "馆藏助手（接入示例）",
   };
 
   const REVIEW_TARGETS = ["verdict", "layer", "llm_faithfulness"];

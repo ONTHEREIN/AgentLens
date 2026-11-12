@@ -30,6 +30,7 @@ if str(ROOT) not in sys.path:
 from agentlens import audit  # noqa: E402
 from agentlens.adapters.base import BaseAdapter  # noqa: E402
 from agentlens.adapters.campus_copilot import CampusCopilotAdapter  # noqa: E402
+from agentlens.adapters.library import LibraryAdapter  # noqa: E402
 from agentlens.adapters.onegzus import OneGzusAdapter  # noqa: E402
 from agentlens.cases import Case, CaseError, load_cases  # noqa: E402
 from agentlens.judge.llm import JudgeConfig  # noqa: E402
@@ -70,6 +71,11 @@ SUITES: dict[str, dict] = {
         "dir": ROOT / "cases" / "calibration",
         "adapter": lambda: OneGzusAdapter(record=False),
         "injected": True,
+    },
+    "library": {
+        "label": "馆藏助手 · 接入示例（只回放）",
+        "dir": ROOT / "cases" / "library",
+        "adapter": lambda: LibraryAdapter(record=False),
     },
     "seed": {
         "label": "CampusCopilot 桩对象（种子用例）",
